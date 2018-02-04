@@ -7,18 +7,19 @@ import io.realm.annotations.RealmClass
 import io.realm.annotations.Required
 
 @RealmClass
-open class Meal @JvmOverloads constructor(@Required var description: String = "") : RealmModel {
+open class Meal @JvmOverloads constructor(
+        @Required var title: String = "",
+        @Required var description: String = "") : RealmModel {
 
     @PrimaryKey
     var id = 0
 
-    fun persist() {
-        Realm.getDefaultInstance().use {
-            it.beginTransaction()
-            val meals = it.where(this::class.java).findAll()
-            id = if (meals.isEmpty()) 0 else meals.last()!!.id + 1
+    fun persist(realm: Realm) {
+        val meals = realm.where(this::class.java).findAll()
+        id = if (meals.isEmpty()) 0 else meals.last()!!.id + 1
+
+        realm.executeTransactionAsync {
             it.copyToRealmOrUpdate(this)
-            it.commitTransaction()
         }
     }
 }
