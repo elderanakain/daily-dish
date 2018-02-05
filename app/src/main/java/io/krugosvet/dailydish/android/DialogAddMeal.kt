@@ -11,7 +11,6 @@ import io.krugosvet.dailydish.android.utils.showKeyboard
 import kotlinx.android.synthetic.main.dialog_add_meal.*
 import kotterknife.bindView
 
-
 class DialogAddMeal : BaseDialogFragment() {
 
     private val addMealButton by bindView<TextView>(R.id.add_meal_button)
@@ -25,15 +24,14 @@ class DialogAddMeal : BaseDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        showKeyboard(activity!!)
+        showKeyboard(activity)
+        error.subscribeToEditText(mealTitle, getString(R.string.dialog_add_meal_empty_title_toast))
 
         addMealButton.findViewById<TextView>(R.id.add_meal_button).setOnClickListener {
-            val mealTitle = mealTitle.text.toString()
+            val mealTitleText = mealTitle.text.toString()
 
-            if (mealTitle.isEmpty()) {
-                error.text = getString(R.string.dialog_add_meal_empty_title_toast)
-            } else {
-                (activity as DialogAddMealListener).onAddButtonClick(mealTitle, mealDescription.text.toString())
+            if (!mealTitleText.isEmpty()) {
+                (activity as DialogAddMealListener).onAddButtonClick(mealTitleText, mealDescription.text.toString())
                 dismiss()
             }
         }

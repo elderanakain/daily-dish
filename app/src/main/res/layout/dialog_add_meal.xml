@@ -65,12 +65,11 @@
             android:layout_gravity="center"
             android:text="@string/dialog_add_meal_button_add_text" />
 
-        <TextView
+        <io.krugosvet.dailydish.android.utils.errorBox.ErrorBoxImpl
             android:id="@+id/error"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="#ff0000"/>
+            android:gravity="center" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
