@@ -1,6 +1,6 @@
 package io.krugosvet.dailydish.android.utils
 
-import android.app.DialogFragment
+import android.support.v4.app.DialogFragment
 
 open class BaseDialogFragment: DialogFragment() {
 

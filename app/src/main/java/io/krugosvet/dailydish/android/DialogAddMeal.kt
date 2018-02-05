@@ -1,19 +1,18 @@
 package io.krugosvet.dailydish.android
 
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.widget.TextView
-import android.widget.Toast
+import io.krugosvet.dailydish.android.utils.BaseDialogFragment
 import io.krugosvet.dailydish.android.utils.showKeyboard
 import kotlinx.android.synthetic.main.dialog_add_meal.*
 import kotterknife.bindView
 
 
-class DialogAddMeal : DialogFragment() {
+class DialogAddMeal : BaseDialogFragment() {
 
     private val addMealButton by bindView<TextView>(R.id.add_meal_button)
 
@@ -32,7 +31,7 @@ class DialogAddMeal : DialogFragment() {
             val mealTitle = mealTitle.text.toString()
 
             if (mealTitle.isEmpty()) {
-                Toast.makeText(context, getString(R.string.dialog_add_meal_empty_title_toast), Toast.LENGTH_SHORT).show()
+                error.text = getString(R.string.dialog_add_meal_empty_title_toast)
             } else {
                 (activity as DialogAddMealListener).onAddButtonClick(mealTitle, mealDescription.text.toString())
                 dismiss()
