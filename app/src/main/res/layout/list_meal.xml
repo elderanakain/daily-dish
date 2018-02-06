@@ -13,30 +13,21 @@
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_medium"
             android:paddingTop="8dp"
-            android:textColor="@color/title_text"
-            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/innerLayout"
-            tools:layout_editor_absoluteY="16dp"
-            tools:text="Lorem ipsum" />
+            tools:text="Lorem ipsum"
+            style="@style/TitleTextView" />
 
         <TextView
             android:id="@+id/description"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:fontFamily="@font/roboto"
-            android:textSize="14sp"
-            android:textColor="@color/body_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title"
-            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel sagittis dolor. Cras vulputate dictum urna id tincidunt. Mauris efficitur ligula orci, eget consequat nulla interdum nec." />
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel sagittis dolor. Cras vulputate dictum urna id tincidunt. Mauris efficitur ligula orci, eget consequat nulla interdum nec."
+            style="@style/BodyTextView" />
 
     </android.support.constraint.ConstraintLayout>
 
