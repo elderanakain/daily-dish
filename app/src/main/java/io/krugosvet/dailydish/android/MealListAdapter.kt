@@ -23,10 +23,6 @@ class MealListAdapter(private val mealList: OrderedRealmCollection<Meal>)
         holder.bind(mealList[position])
     }
 
-    override fun getItemId(index: Int): Long {
-        return getItem(index)?.id?.toLong() ?: 0
-    }
-
     inner class MealViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val title = view.findViewById<TextView>(R.id.title)
         private val description = view.findViewById<TextView>(R.id.description)
