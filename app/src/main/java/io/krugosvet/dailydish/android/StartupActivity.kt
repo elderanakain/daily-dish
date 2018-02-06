@@ -6,7 +6,7 @@ import io.krugosvet.dailydish.android.db.objects.Meal
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_startup.*
 
-class StartupActivity : AppCompatActivity() {
+class StartupActivity : AppCompatActivity(), DialogAddMeal.DialogAddMealListener {
 
     private val realm = Realm.getDefaultInstance()
 
@@ -16,12 +16,16 @@ class StartupActivity : AppCompatActivity() {
         mealList.adapter = MealListAdapter(realm.where(Meal::class.java).findAll())
 
         floatingButton.setOnClickListener {
-            Meal("Test").persist()
+            DialogAddMeal().show(supportFragmentManager, "")
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         realm.close()
+    }
+
+    override fun onAddButtonClick(mealTitle: String, mealDescription: String) {
+        Meal(mealTitle, mealDescription).persist(realm)
     }
 }
