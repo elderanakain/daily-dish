@@ -4,4 +4,5 @@
     <string name="dialog_add_meal_description_field_hint">Meal description:</string>
     <string name="dialog_add_meal_button_add_text">Add</string>
     <string name="dialog_add_meal_empty_title_toast">Please, enter a title</string>
+    <string name="meal_card_delete_button">Delete</string>
 </resources>
