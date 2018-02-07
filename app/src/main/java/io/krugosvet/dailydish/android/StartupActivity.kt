@@ -13,7 +13,7 @@ class StartupActivity : AppCompatActivity(), DialogAddMeal.DialogAddMealListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startup)
-        mealList.adapter = MealListAdapter(realm.where(Meal::class.java).findAll())
+        mealList.adapter = MealListAdapter(realm)
 
         floatingButton.setOnClickListener {
             DialogAddMeal().show(supportFragmentManager, "")

@@ -1,7 +1,11 @@
 <resources>
     <string name="app_name">DailyDish</string>
-    <string name="dialog_add_meal_name_field_hint">Meal title:</string>
-    <string name="dialog_add_meal_description_field_hint">Meal description:</string>
+    <string name="dialog_add_meal_name_field_hint">Meal title</string>
+    <string name="dialog_add_meal_description_field_hint">Meal description</string>
     <string name="dialog_add_meal_button_add_text">Add</string>
-    <string name="dialog_add_meal_empty_title_toast">Please, enter a title</string>
+    <string name="dialog_add_meal_empty_title_error">Please, enter a title</string>
+    <string name="dialog_add_meal_empty_description_error">Please, enter a description</string>
+    <string name="dialog_add_meal_empty_form_error">Please, enter a %s</string>
+    <string name="meal_card_delete_button">Delete</string>
+    <string name="add_meal_dialog_title">Add a new meal</string>
 </resources>
