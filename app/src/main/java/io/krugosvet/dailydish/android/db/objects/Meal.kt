@@ -5,11 +5,13 @@ import io.realm.RealmModel
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
 import io.realm.annotations.Required
+import java.util.*
 
 @RealmClass
 open class Meal @JvmOverloads constructor(
         @Required var title: String = "",
-        @Required var description: String = "") : RealmModel {
+        @Required var description: String = "",
+        @Required var date: Date = Date()) : RealmModel {
 
     @PrimaryKey
     var id = 0
