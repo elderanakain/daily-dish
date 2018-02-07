@@ -16,7 +16,7 @@ class StartupActivity : AppCompatActivity(), DialogAddMeal.DialogAddMealListener
         mealList.adapter = MealListAdapter(realm)
 
         floatingButton.setOnClickListener {
-            DialogAddMeal().show(supportFragmentManager, "")
+            DialogAddMeal().show(fragmentManager, "")
         }
     }
 
