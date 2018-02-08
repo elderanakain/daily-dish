@@ -43,7 +43,7 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
     }
 
     override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
-        date.editText?.setText(getFormatedDate(year, monthOfYear, dayOfMonth))
+        date.editText?.setText(getFormattedDate(year, monthOfYear, dayOfMonth))
     }
 
     private fun handleForms() {
@@ -70,7 +70,9 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
     private fun createDateForm() {
         date.editText?.setText(getCurrentDate())
         date.editText?.setOnClickListener {
-            DatePickerDialog.newInstance(this, Calendar.getInstance()).show(fragmentManager, "")
+            DatePickerDialog.newInstance(this, Calendar.getInstance()).apply {
+                maxDate = Calendar.getInstance()
+            }.show(fragmentManager, "")
         }
     }
 

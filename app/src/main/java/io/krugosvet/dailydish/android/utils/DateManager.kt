@@ -6,7 +6,7 @@ import java.util.*
 
 fun getCurrentDate(): String = getDateInstance(LONG).format(Calendar.getInstance().time)
 
-fun getFormatedDate(year: Int, monthOfYear: Int, dayOfMonth: Int) =
+fun getFormattedDate(year: Int, monthOfYear: Int, dayOfMonth: Int): String =
         getDateInstance(LONG).format(Calendar.getInstance().also {
             it.set(year, monthOfYear, dayOfMonth)
         }.time)
