@@ -6,12 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
-import io.krugosvet.dailydish.android.utils.BaseDialogFragment
-import io.krugosvet.dailydish.android.utils.BaseTextInputLayout
-import io.krugosvet.dailydish.android.utils.SimpleTextWatcher
-import io.krugosvet.dailydish.android.utils.showKeyboard
+import io.krugosvet.dailydish.android.utils.*
 import kotlinx.android.synthetic.main.dialog_add_meal.*
-import java.text.DateFormat
 import java.util.*
 
 class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
@@ -29,6 +25,7 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
         showKeyboard(title.editText!!)
         handleForms()
 
+
         addMealButton.setOnClickListener {
             if (areFormsValid()) {
                 (activity as DialogAddMealListener)
@@ -37,11 +34,7 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
             }
         }
 
-        date.editText?.setOnClickListener {
-            forms.forEach { it.clearFocus() }
-            addMealButton.requestFocus()
-            DatePickerDialog.newInstance(this, Calendar.getInstance()).show(fragmentManager, "")
-        }
+        createDateForm()
     }
 
     override fun onResume() {
@@ -50,14 +43,11 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
     }
 
     override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
-        date.editText?.setText(DateFormat.getDateInstance(DateFormat.LONG).format(
-                Calendar.getInstance().also {
-                    it.set(year, monthOfYear, dayOfMonth)
-                }.time))
+        date.editText?.setText(getFormatedDate(year, monthOfYear, dayOfMonth))
     }
 
     private fun handleForms() {
-        forms.addAll(listOf(title, description, date))
+        forms.addAll(listOf(title, description))
         forms.forEach {
             it.addTextChangedListener(object : SimpleTextWatcher {
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -76,4 +66,12 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
         }
         return isValid
     }
+
+    private fun createDateForm() {
+        date.editText?.setText(getCurrentDate())
+        date.editText?.setOnClickListener {
+            DatePickerDialog.newInstance(this, Calendar.getInstance()).show(fragmentManager, "")
+        }
+    }
+
 }
