@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">DailyDish</string>
-    <string name="dialog_add_meal_name_field_hint">Meal title</string>
-    <string name="dialog_add_meal_description_field_hint">Meal description</string>
+    <string name="dialog_add_meal_name_field_hint">Title</string>
+    <string name="dialog_add_meal_description_field_hint">Description</string>
+    <string name="dialog_add_meal_date_field_hint">Last date of cooking</string>
     <string name="dialog_add_meal_button_add_text">Add</string>
     <string name="dialog_add_meal_empty_title_error">Please, enter a title</string>
     <string name="dialog_add_meal_empty_description_error">Please, enter a description</string>

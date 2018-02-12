@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import io.krugosvet.dailydish.android.db.objects.Meal
+import io.krugosvet.dailydish.android.utils.getMeals
 import io.realm.Realm
 import io.realm.RealmRecyclerViewAdapter
 import io.realm.kotlin.deleteFromRealm
 
 class MealListAdapter(private val realm: Realm)
-    : RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(realm.where(Meal::class.java).findAll(),true) {
+    : RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(realm.getMeals(),true) {
 
    init {
        setHasStableIds(true)
@@ -25,6 +26,10 @@ class MealListAdapter(private val realm: Realm)
         holder.bind(data?.get(position))
     }
 
+    override fun getItemId(position: Int): Long {
+        return getItem(position)?.id?.toLong() ?: 0
+    }
+
     inner class MealViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val title = view.findViewById<TextView>(R.id.title)
         private val description = view.findViewById<TextView>(R.id.description)
@@ -34,7 +39,9 @@ class MealListAdapter(private val realm: Realm)
             title.text = meal?.title
             description.text = meal?.description
             deleteButton.setOnClickListener {
-                realm.executeTransaction { meal?.deleteFromRealm() }
+                realm.executeTransaction {
+                    meal?.deleteFromRealm()
+                }
             }
         }
     }

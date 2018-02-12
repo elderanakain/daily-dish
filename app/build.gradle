@@ -30,4 +30,5 @@ dependencies {
     implementation 'androidx.core:core-ktx:0.1'
     implementation 'io.realm:android-adapters:2.1.1'
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
+    implementation 'com.wdullaer:materialdatetimepicker:3.5.1'
 }

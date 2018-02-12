@@ -5,13 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-import io.krugosvet.dailydish.android.utils.BaseDialogFragment
-import io.krugosvet.dailydish.android.utils.BaseTextInputLayout
-import io.krugosvet.dailydish.android.utils.SimpleTextWatcher
-import io.krugosvet.dailydish.android.utils.showKeyboard
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
+import io.krugosvet.dailydish.android.utils.*
 import kotlinx.android.synthetic.main.dialog_add_meal.*
+import java.util.*
 
-class DialogAddMeal : BaseDialogFragment() {
+class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
 
     interface DialogAddMealListener {
         fun onAddButtonClick(mealTitle: String, mealDescription: String)
@@ -19,13 +18,13 @@ class DialogAddMeal : BaseDialogFragment() {
 
     private val forms = mutableListOf<BaseTextInputLayout>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
-            = inflater.inflate(R.layout.dialog_add_meal, container)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View = inflater.inflate(R.layout.dialog_add_meal, container)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showKeyboard(title.editText!!)
         handleForms()
+
 
         addMealButton.setOnClickListener {
             if (areFormsValid()) {
@@ -34,11 +33,17 @@ class DialogAddMeal : BaseDialogFragment() {
                 dismiss()
             }
         }
+
+        createDateForm()
     }
 
     override fun onResume() {
         super.onResume()
         dialog.window.setLayout(getDimension(R.dimen.dialog_add_meal_width).toInt(), WRAP_CONTENT)
+    }
+
+    override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
+        date.editText?.setText(getFormattedDate(year, monthOfYear, dayOfMonth))
     }
 
     private fun handleForms() {
@@ -61,4 +66,14 @@ class DialogAddMeal : BaseDialogFragment() {
         }
         return isValid
     }
+
+    private fun createDateForm() {
+        date.editText?.setText(getCurrentDate())
+        date.editText?.setOnClickListener {
+            DatePickerDialog.newInstance(this, Calendar.getInstance()).apply {
+                maxDate = Calendar.getInstance()
+            }.show(fragmentManager, "")
+        }
+    }
+
 }
