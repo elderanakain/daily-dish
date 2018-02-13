@@ -22,8 +22,8 @@ class ViewPagerAdapter<F : Fragment>(manager: FragmentManager) : FragmentStatePa
 
     override fun getCount() = fragmentList.size
 
-    fun addFragment(fragment: F) {
-        fragmentList.add(fragment)
+    fun addFragments(vararg fragment: F) {
+        fragmentList.addAll(fragment)
         notifyDataSetChanged()
     }
 

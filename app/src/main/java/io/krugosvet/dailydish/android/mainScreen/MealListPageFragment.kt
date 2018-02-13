@@ -10,7 +10,9 @@ import io.krugosvet.dailydish.android.utils.RealmFragment
 import io.krugosvet.dailydish.android.utils.ViewPagerFragment
 import kotlinx.android.synthetic.main.fragment_meal_list.*
 
-class MealListFragment : RealmFragment(), ViewPagerFragment {
+private const val PAGE_TITLE = "pageTitle"
+
+class MealListPageFragment : RealmFragment(), ViewPagerFragment {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
             = inflater.inflate(R.layout.fragment_meal_list, container, false)
@@ -20,9 +22,16 @@ class MealListFragment : RealmFragment(), ViewPagerFragment {
         mealList.adapter = MealListAdapter(getRealm())
     }
 
-    override fun getFragmentTitle() = "For today"
+    override fun getFragmentTitle() = arguments?.getString(PAGE_TITLE) ?: ""
 
     companion object {
-        fun newInstance() = MealListFragment()
+        fun newInstances(vararg pageTitles: String) = mutableListOf<MealListPageFragment>().apply {
+            pageTitles.forEach {
+                add(MealListPageFragment().apply {
+                    arguments = Bundle().apply { putString(PAGE_TITLE, it) }
+                })
+            }
+        }.toTypedArray()
     }
 }
+

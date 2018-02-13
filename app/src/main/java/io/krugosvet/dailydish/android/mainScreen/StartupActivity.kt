@@ -35,7 +35,8 @@ class StartupActivity : RealmActivity(), DialogAddMeal.DialogAddMealListener {
     private fun setupViewPager() {
         viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
         viewPager.adapter = viewPagerAdapter
-        viewPagerAdapter.addFragment(MealListFragment.newInstance())
+        viewPagerAdapter.addFragments(*MealListPageFragment.newInstances(
+                getString(R.string.for_today), getString(R.string.earlier)))
         tabs.setupWithViewPager(viewPager, true)
     }
 }
