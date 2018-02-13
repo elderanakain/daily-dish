@@ -23,4 +23,9 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="SubheadTextView" parent="BaseTextView">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/gray_text</item>
+    </style>
+
 </resources>

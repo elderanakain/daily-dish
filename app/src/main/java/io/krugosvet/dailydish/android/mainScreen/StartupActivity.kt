@@ -7,6 +7,7 @@ import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.utils.RealmActivity
 import io.krugosvet.dailydish.android.utils.RealmFragment
 import kotlinx.android.synthetic.main.activity_startup.*
+import java.util.*
 
 class StartupActivity : RealmActivity(), DialogAddMeal.DialogAddMealListener {
 
@@ -28,8 +29,8 @@ class StartupActivity : RealmActivity(), DialogAddMeal.DialogAddMealListener {
         realm.close()
     }
 
-    override fun onAddButtonClick(mealTitle: String, mealDescription: String) {
-        Meal(mealTitle, mealDescription).persist(realm)
+    override fun onAddButtonClick(mealTitle: String, mealDescription: String, parseDate: Date) {
+        Meal(mealTitle, mealDescription, parseDate).persist(realm)
     }
 
     private fun setupViewPager() {

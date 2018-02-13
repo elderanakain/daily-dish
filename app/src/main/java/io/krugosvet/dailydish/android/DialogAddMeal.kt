@@ -13,7 +13,7 @@ import java.util.*
 class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
 
     interface DialogAddMealListener {
-        fun onAddButtonClick(mealTitle: String, mealDescription: String)
+        fun onAddButtonClick(mealTitle: String, mealDescription: String, parseDate: Date)
     }
 
     private val forms = mutableListOf<BaseTextInputLayout>()
@@ -28,8 +28,8 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
 
         addMealButton.setOnClickListener {
             if (areFormsValid()) {
-                (activity as DialogAddMealListener)
-                        .onAddButtonClick(title.getEditTextInput(), description.getEditTextInput())
+                (activity as DialogAddMealListener).onAddButtonClick(title.getEditTextInput(),
+                        description.getEditTextInput(), parseDate(date.getEditTextInput()))
                 dismiss()
             }
         }

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import io.krugosvet.dailydish.android.db.objects.Meal
+import io.krugosvet.dailydish.android.utils.getFormattedDate
 import io.krugosvet.dailydish.android.utils.getMeals
 import io.realm.Realm
 import io.realm.RealmRecyclerViewAdapter
@@ -34,10 +35,12 @@ class MealListAdapter(private val realm: Realm)
         private val title = view.findViewById<TextView>(R.id.title)
         private val description = view.findViewById<TextView>(R.id.description)
         private val deleteButton = view.findViewById<Button>(R.id.delete)
+        private val lastDateOfCooking = view.findViewById<TextView>(R.id.lastDateOfCooking)
 
         fun bind(meal: Meal?) {
             title.text = meal?.title
             description.text = meal?.description
+            lastDateOfCooking.text = getFormattedDate(meal?.date)
             deleteButton.setOnClickListener {
                 realm.executeTransaction {
                     meal?.deleteFromRealm()
