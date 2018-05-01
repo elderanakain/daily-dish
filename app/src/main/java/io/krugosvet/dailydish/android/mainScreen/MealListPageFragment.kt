@@ -6,32 +6,33 @@ import android.view.View
 import android.view.ViewGroup
 import io.krugosvet.dailydish.android.MealListAdapter
 import io.krugosvet.dailydish.android.R
+import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.utils.RealmFragment
 import io.krugosvet.dailydish.android.utils.ViewPagerFragment
+import io.krugosvet.dailydish.android.utils.getMeals
+import io.realm.OrderedRealmCollection
 import kotlinx.android.synthetic.main.fragment_meal_list.*
 
-private const val PAGE_TITLE = "pageTitle"
+open class MealListPageFragment : RealmFragment(), ViewPagerFragment {
 
-class MealListPageFragment : RealmFragment(), ViewPagerFragment {
+    protected val PAGE_TITLE = "pageTitle"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
             = inflater.inflate(R.layout.fragment_meal_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mealList.adapter = MealListAdapter(getRealm())
+        mealList.adapter = MealListAdapter(getRealm(), getAdapterItems())
     }
 
     override fun getFragmentTitle() = arguments?.getString(PAGE_TITLE) ?: ""
 
+    protected open fun getAdapterItems(): OrderedRealmCollection<Meal> = getRealm().getMeals()
+
     companion object {
-        fun newInstances(vararg pageTitles: String) = mutableListOf<MealListPageFragment>().apply {
-            pageTitles.forEach {
-                add(MealListPageFragment().apply {
-                    arguments = Bundle().apply { putString(PAGE_TITLE, it) }
-                })
-            }
-        }.toTypedArray()
+        fun newInstance(pageTitle: String) = MealListPageFragment().apply {
+            arguments = Bundle().apply { putString(PAGE_TITLE, pageTitle) }
+        }
     }
 }
 

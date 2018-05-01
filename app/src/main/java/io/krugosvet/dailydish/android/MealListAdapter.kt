@@ -9,11 +9,11 @@ import android.widget.TextView
 import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.utils.getFormattedDate
 import io.krugosvet.dailydish.android.utils.getMeals
+import io.realm.OrderedRealmCollection
 import io.realm.Realm
 import io.realm.RealmRecyclerViewAdapter
-import io.realm.kotlin.deleteFromRealm
 
-class MealListAdapter(private val realm: Realm)
+open class MealListAdapter(private val realm: Realm, items: OrderedRealmCollection<Meal>)
     : RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(realm.getMeals(),true) {
 
    init {
@@ -42,9 +42,7 @@ class MealListAdapter(private val realm: Realm)
             description.text = meal?.description
             lastDateOfCooking.text = getFormattedDate(meal?.date)
             deleteButton.setOnClickListener {
-                realm.executeTransaction {
-                    meal?.deleteFromRealm()
-                }
+                meal?.delete(realm)
             }
         }
     }
