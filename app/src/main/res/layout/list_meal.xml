@@ -13,21 +13,30 @@
 
         <TextView
             android:id="@+id/title"
+            style="@style/TitleTextView"
             android:paddingTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/innerLayout"
-            tools:text="Lorem ipsum"
-            style="@style/TitleTextView" />
+            tools:text="Lorem ipsum" />
+
+        <TextView
+            android:id="@+id/lastDateOfCooking"
+            style="@style/SubheadTextView"
+            android:fontFamily="@font/roboto_medium"
+            android:paddingTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            tools:text="February 13, 2018" />
 
         <TextView
             android:id="@+id/description"
+            style="@style/BodyTextView"
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel sagittis dolor. Cras vulputate dictum urna id tincidunt. Mauris efficitur ligula orci, eget consequat nulla interdum nec."
-            style="@style/BodyTextView" />
+            app:layout_constraintTop_toBottomOf="@id/lastDateOfCooking"
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel sagittis dolor. Cras vulputate dictum urna id tincidunt. Mauris efficitur ligula orci, eget consequat nulla interdum nec." />
 
     </android.support.constraint.ConstraintLayout>
 

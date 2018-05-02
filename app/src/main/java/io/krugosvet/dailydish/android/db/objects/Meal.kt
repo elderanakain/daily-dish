@@ -6,6 +6,7 @@ import io.realm.RealmModel
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
 import io.realm.annotations.Required
+import io.realm.kotlin.deleteFromRealm
 import java.util.*
 
 @RealmClass
@@ -23,6 +24,12 @@ open class Meal @JvmOverloads constructor(
 
         realm.executeTransaction {
             it.copyToRealmOrUpdate(this)
+        }
+    }
+
+    fun delete(realm: Realm) {
+        realm.executeTransaction {
+            this.deleteFromRealm()
         }
     }
 }
