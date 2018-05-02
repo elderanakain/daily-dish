@@ -9,17 +9,16 @@ import android.widget.TextView
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.utils.getFormattedDate
-import io.krugosvet.dailydish.android.utils.getMeals
 import io.realm.OrderedRealmCollection
 import io.realm.Realm
 import io.realm.RealmRecyclerViewAdapter
 
-open class MealListAdapter(private val realm: Realm, items: OrderedRealmCollection<Meal>)
-    : RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(realm.getMeals(),true) {
+open class MealListAdapter(private val realm: Realm, items: OrderedRealmCollection<Meal>, private val limit: Int = NO_LIMIT)
+    : RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(items, true) {
 
-   init {
-       setHasStableIds(true)
-   }
+    init {
+        setHasStableIds(true)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             MealViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_meal, parent, false))
@@ -30,6 +29,10 @@ open class MealListAdapter(private val realm: Realm, items: OrderedRealmCollecti
 
     override fun getItemId(position: Int): Long {
         return getItem(position)?.id?.toLong() ?: 0
+    }
+
+    override fun getItemCount(): Int {
+        return if (limit == NO_LIMIT || limit > super.getItemCount()) super.getItemCount() else limit
     }
 
     inner class MealViewHolder(view: View) : RecyclerView.ViewHolder(view) {

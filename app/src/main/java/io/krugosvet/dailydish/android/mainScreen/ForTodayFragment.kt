@@ -7,6 +7,8 @@ class ForTodayFragment: MealListPageFragment() {
 
     override fun getAdapterItems() = getRealm().getAscByDateMeals()
 
+    override fun getAdapterItemLimit() = 5
+
     companion object {
         fun newInstance(pageTitle: String) = ForTodayFragment().apply {
             arguments = Bundle().apply { putString(PAGE_TITLE, pageTitle) }

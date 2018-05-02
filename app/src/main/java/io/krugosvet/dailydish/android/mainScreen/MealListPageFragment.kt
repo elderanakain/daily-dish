@@ -12,6 +12,8 @@ import io.krugosvet.dailydish.android.utils.getMeals
 import io.realm.OrderedRealmCollection
 import kotlinx.android.synthetic.main.fragment_meal_list.*
 
+const val NO_LIMIT = -1
+
 open class MealListPageFragment : RealmFragment(), ViewPagerFragment {
 
     protected val PAGE_TITLE = "pageTitle"
@@ -21,12 +23,15 @@ open class MealListPageFragment : RealmFragment(), ViewPagerFragment {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mealList.adapter = MealListAdapter(getRealm(), getAdapterItems())
+
+        mealList.adapter = MealListAdapter(getRealm(), getAdapterItems(), getAdapterItemLimit())
     }
 
     override fun getFragmentTitle() = arguments?.getString(PAGE_TITLE) ?: ""
 
     protected open fun getAdapterItems(): OrderedRealmCollection<Meal> = getRealm().getMeals()
+
+    protected open fun getAdapterItemLimit() = NO_LIMIT
 
     companion object {
         fun newInstance(pageTitle: String) = MealListPageFragment().apply {

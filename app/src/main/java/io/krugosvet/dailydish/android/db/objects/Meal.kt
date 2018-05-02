@@ -28,10 +28,8 @@ open class Meal @JvmOverloads constructor(
     }
 
     fun delete(realm: Realm) {
-        realm.use {
-            it.executeTransaction {
-                this.deleteFromRealm()
-            }
+        realm.executeTransaction {
+            this.deleteFromRealm()
         }
     }
 }

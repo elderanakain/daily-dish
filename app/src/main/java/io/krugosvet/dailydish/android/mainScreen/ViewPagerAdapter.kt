@@ -9,11 +9,9 @@ import java.util.*
 
 class ViewPagerAdapter<F : Fragment>(manager: FragmentManager) : FragmentStatePagerAdapter(manager) {
 
-    val fragmentList = ArrayList<F>()
+    private val fragmentList = ArrayList<F>()
 
-    override fun getItem(position: Int): F {
-        return fragmentList[position]
-    }
+    override fun getItem(position: Int): F = fragmentList[position]
 
     override fun getItemPosition(`object`: Any): Int {
         val position = fragmentList.indexOf(`object`)

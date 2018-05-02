@@ -26,7 +26,6 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
         showKeyboard(title.editText!!)
         handleForms()
 
-
         addMealButton.setOnClickListener {
             if (areFormsValid()) {
                 (activity as DialogAddMealListener).onAddButtonClick(title.getEditTextInput(),
