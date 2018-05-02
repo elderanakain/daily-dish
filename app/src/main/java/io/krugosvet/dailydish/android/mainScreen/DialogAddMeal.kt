@@ -1,4 +1,4 @@
-package io.krugosvet.dailydish.android
+package io.krugosvet.dailydish.android.mainScreen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
+import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.utils.*
 import kotlinx.android.synthetic.main.dialog_add_meal.*
 import java.util.*

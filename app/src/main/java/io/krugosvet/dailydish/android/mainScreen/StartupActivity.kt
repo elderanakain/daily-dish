@@ -1,7 +1,6 @@
 package io.krugosvet.dailydish.android.mainScreen
 
 import android.os.Bundle
-import io.krugosvet.dailydish.android.DialogAddMeal
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.utils.RealmActivity
