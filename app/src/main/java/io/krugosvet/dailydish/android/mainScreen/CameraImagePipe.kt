@@ -1,6 +1,8 @@
 package io.krugosvet.dailydish.android.mainScreen
 
+import java.io.File
+
 interface CameraImagePipe {
 
-    fun openCamera(callback: (str: String) -> Unit)
+    fun openCamera(callback: (file: File?) -> Unit)
 }

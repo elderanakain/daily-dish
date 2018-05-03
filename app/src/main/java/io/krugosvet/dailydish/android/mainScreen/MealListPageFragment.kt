@@ -6,13 +6,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.krugosvet.dailydish.android.BuildConfig
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.utils.*
@@ -20,10 +20,6 @@ import io.realm.OrderedRealmCollection
 import kotlinx.android.synthetic.main.fragment_meal_list.*
 import java.io.File
 import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.*
-
-
 
 
 const val NO_LIMIT = -1
@@ -52,9 +48,9 @@ open class MealListPageFragment : RealmFragment(), ViewPagerFragment, CameraImag
         }
     }
 
-    var callback: (str: String) -> Unit = {}
+    var callback: (file: File?) -> Unit = {}
 
-    override fun openCamera(callback: (str: String) -> Unit) {
+    override fun openCamera(callback: (file: File?) -> Unit) {
         this.callback = callback
         if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -77,19 +73,18 @@ open class MealListPageFragment : RealmFragment(), ViewPagerFragment, CameraImag
         if (context != null) {
             val pictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             if (pictureIntent.resolveActivity(activity?.packageManager) != null) {
-                // Create the File where the photo should go
                 var photoFile: File? = null
                 try {
-                    photoFile = createImageFile();
+                    mCurrentPhoto = createImageFile(context!!)
+                    photoFile = mCurrentPhoto
                 } catch (ex: IOException) {
                 }
                 // Continue only if the File was successfully created
                 if (photoFile != null) {
                     val photoURI: Uri = FileProvider.getUriForFile(context!!,
-                            "io.krugosvet.dailydish.fileprovider",
-                            photoFile)
-                    pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                    startActivityForResult(pictureIntent, REQUEST_CAPTURE_IMAGE);
+                            BuildConfig.APPLICATION_ID + ".fileprovider", photoFile)
+                    pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(pictureIntent, REQUEST_CAPTURE_IMAGE)
                 }
             }
         }
@@ -97,27 +92,10 @@ open class MealListPageFragment : RealmFragment(), ViewPagerFragment, CameraImag
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_CAPTURE_IMAGE && resultCode == RESULT_OK) {
-            callback.invoke(mCurrentPhotoPath)
+            callback.invoke(mCurrentPhoto)
         }
     }
 
-    var mCurrentPhotoPath: String = ""
-
-    @Throws(IOException::class)
-    private fun createImageFile(): File {
-        // Create an image file name
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val imageFileName = "JPEG_" + timeStamp + "_"
-        val storageDir = context!!.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        val image = File.createTempFile(
-                imageFileName, /* prefix */
-                ".jpg", /* suffix */
-                storageDir      /* directory */
-        )
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.absolutePath
-        return image
-    }
+    var mCurrentPhoto: File? = null
 }
 

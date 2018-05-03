@@ -13,7 +13,8 @@ import java.util.*
 open class Meal @JvmOverloads constructor(
         @Required var title: String = "",
         @Required var description: String = "",
-        @Required var date: Date = Date()) : RealmModel {
+        @Required var date: Date = Date(),
+        var mainImage: ByteArray = byteArrayOf()) : RealmModel {
 
     @PrimaryKey
     var id = 0

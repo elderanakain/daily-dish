@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="@color/meal_image_placeholder"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:src="@drawable/food_clock_bw_800px" />
+        android:src="@drawable/food_clock_bw_800px"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/innerLayout"

@@ -9,10 +9,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.centerCropTransform
-import com.bumptech.glide.request.RequestOptions.fitCenterTransform
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.utils.getFormattedDate
+import io.krugosvet.dailydish.android.utils.readBytesFromFile
 import io.realm.OrderedRealmCollection
 import io.realm.Realm
 import io.realm.RealmRecyclerViewAdapter
@@ -55,11 +55,17 @@ open class MealListAdapter(private val realm: Realm, items: OrderedRealmCollecti
                 meal?.delete(realm)
             }
 
-            Glide.with(mealImage).applyDefaultRequestOptions(fitCenterTransform()).load(R.drawable.food_clock_bw_800px).into(mealImage)
+            val mainImage = meal?.mainImage ?: byteArrayOf()
+            Glide.with(mealImage)
+                    .applyDefaultRequestOptions(centerCropTransform())
+                    .load(if (mainImage.isEmpty()) R.drawable.food_clock_bw_800px else mainImage)
+                    .into(mealImage)
+
             mealImage.setOnClickListener {
-                cameraImagePipe.openCamera({
-                    Glide.with(mealImage).applyDefaultRequestOptions(centerCropTransform()).load(it).into(mealImage)
-                    mealImage.background = null
+                cameraImagePipe.openCamera({ file ->
+                    realm.executeTransaction { meal?.mainImage = readBytesFromFile(file) }
+                    notifyItemChanged(layoutPosition)
+                    file?.delete()
                 })
             }
         }
