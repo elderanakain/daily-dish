@@ -9,4 +9,5 @@
     <color name="gray_text">#757575	</color>
     <color name="list_divider">#1F000000</color>
     <color name="button">#DEFF4081</color>
+    <color name="meal_image_placeholder">#deececec</color>
 </resources>

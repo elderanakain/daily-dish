@@ -5,11 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/meal_image"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:padding="10dp"
+        android:background="@color/meal_image_placeholder"
+        android:scaleType="fitCenter"
+        android:src="@drawable/food_clock_bw_800px"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/innerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/meal_image">
 
         <TextView
             android:id="@+id/title"
