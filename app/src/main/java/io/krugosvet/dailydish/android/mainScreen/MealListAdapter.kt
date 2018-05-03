@@ -5,7 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions.centerCropTransform
+import com.bumptech.glide.request.RequestOptions.fitCenterTransform
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.utils.getFormattedDate
@@ -13,7 +17,8 @@ import io.realm.OrderedRealmCollection
 import io.realm.Realm
 import io.realm.RealmRecyclerViewAdapter
 
-open class MealListAdapter(private val realm: Realm, items: OrderedRealmCollection<Meal>, private val limit: Int = NO_LIMIT)
+open class MealListAdapter(private val realm: Realm, items: OrderedRealmCollection<Meal>,
+                           private val limit: Int = NO_LIMIT, private val cameraImagePipe: CameraImagePipe)
     : RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(items, true) {
 
     init {
@@ -39,7 +44,8 @@ open class MealListAdapter(private val realm: Realm, items: OrderedRealmCollecti
         private val title = view.findViewById<TextView>(R.id.title)
         private val description = view.findViewById<TextView>(R.id.description)
         private val deleteButton = view.findViewById<Button>(R.id.delete)
-        private val lastDateOfCooking = view.findViewById<TextView>(R.id.lastDateOfCooking)
+        private val lastDateOfCooking = view.findViewById<TextView>(R.id.last_date_of_cooking)
+        private val mealImage = view.findViewById<ImageView>(R.id.meal_image)
 
         fun bind(meal: Meal?) {
             title.text = meal?.title
@@ -47,6 +53,14 @@ open class MealListAdapter(private val realm: Realm, items: OrderedRealmCollecti
             lastDateOfCooking.text = getFormattedDate(meal?.date)
             deleteButton.setOnClickListener {
                 meal?.delete(realm)
+            }
+
+            Glide.with(mealImage).applyDefaultRequestOptions(fitCenterTransform()).load(R.drawable.food_clock_bw_800px).into(mealImage)
+            mealImage.setOnClickListener {
+                cameraImagePipe.openCamera({
+                    Glide.with(mealImage).applyDefaultRequestOptions(centerCropTransform()).load(it).into(mealImage)
+                    mealImage.background = null
+                })
             }
         }
     }
