@@ -4,5 +4,5 @@ import java.io.File
 
 interface CameraImagePipe {
 
-    fun openCamera(callback: (file: File?) -> Unit)
+    fun openImageProviderChooser(onPhotoReceiveCallback: (file: File?) -> Unit)
 }

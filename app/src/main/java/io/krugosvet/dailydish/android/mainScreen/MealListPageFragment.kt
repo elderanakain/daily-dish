@@ -2,6 +2,7 @@ package io.krugosvet.dailydish.android.mainScreen
 
 import android.Manifest
 import android.app.Activity.RESULT_OK
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -50,16 +51,6 @@ open class MealListPageFragment : RealmFragment(), ViewPagerFragment, CameraImag
 
     var callback: (file: File?) -> Unit = {}
 
-    override fun openCamera(callback: (file: File?) -> Unit) {
-        this.callback = callback
-        if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED) {
-            startCameraActivity()
-        } else {
-            requestPermissions(arrayOf(Manifest.permission.CAMERA), REQUEST_PERMISSION_CAMERA)
-        }
-    }
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_PERMISSION_CAMERA) {
@@ -97,5 +88,26 @@ open class MealListPageFragment : RealmFragment(), ViewPagerFragment, CameraImag
     }
 
     var mCurrentPhoto: File? = null
+
+    override fun openImageProviderChooser(onPhotoReceiveCallback: (file: File?) -> Unit) {
+        AlertDialog.Builder(activity).setTitle(R.string.pick_image_provider)
+                .setItems(getImageProviderNames(), { dialog, which ->
+                    when(ImageProvider.values()[which]) {
+                        ImageProvider.CAMERA -> openCamera(onPhotoReceiveCallback)
+                        ImageProvider.GALLERY -> {}
+                    }
+                    dialog.dismiss()
+                }).create().show()
+    }
+
+    private fun openCamera(callback: (file: File?) -> Unit) {
+        this.callback = callback
+        if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+            startCameraActivity()
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), REQUEST_PERMISSION_CAMERA)
+        }
+    }
 }
 

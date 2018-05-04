@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="image_provider_array">
+        <item name="camera">Camera</item>
+        <item name="gallery">Gallery</item>
+    </string-array>
+</resources>
