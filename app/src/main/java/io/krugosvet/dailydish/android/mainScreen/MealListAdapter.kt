@@ -8,14 +8,14 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions.centerCropTransform
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.utils.getFormattedDate
-import io.krugosvet.dailydish.android.utils.readBytesFromFile
+import io.krugosvet.dailydish.android.utils.withNoCache
 import io.realm.OrderedRealmCollection
 import io.realm.Realm
 import io.realm.RealmRecyclerViewAdapter
+
 
 open class MealListAdapter(private val realm: Realm, items: OrderedRealmCollection<Meal>,
                            private val limit: Int = NO_LIMIT, private val cameraImagePipe: CameraImagePipe)
@@ -56,14 +56,13 @@ open class MealListAdapter(private val realm: Realm, items: OrderedRealmCollecti
             }
 
             val mainImage = meal?.mainImage ?: byteArrayOf()
-            Glide.with(mealImage)
-                    .applyDefaultRequestOptions(centerCropTransform())
+            Glide.with(mealImage).applyDefaultRequestOptions(withNoCache().centerCrop())
                     .load(if (mainImage.isEmpty()) R.drawable.food_clock_bw_800px else mainImage)
                     .into(mealImage)
 
             mealImage.setOnClickListener {
-                cameraImagePipe.openImageProviderChooser{ file ->
-                    realm.executeTransaction { meal?.mainImage = readBytesFromFile(file) }
+                cameraImagePipe.openImageProviderChooser { file ->
+                    meal?.changeMainImage(realm, file)
                     notifyItemChanged(layoutPosition)
                     file?.delete()
                 }

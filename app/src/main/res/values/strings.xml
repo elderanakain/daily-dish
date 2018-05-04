@@ -12,4 +12,5 @@
     <string name="for_today">For today</string>
     <string name="earlier">Earlier</string>
     <string name="pick_image_provider">Take picture from</string>
+    <string name="intent_select_image_from_gallery">Select Image</string>
 </resources>
