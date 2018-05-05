@@ -34,6 +34,10 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
             }
         }
 
+        addMealImage.setOnClickListener {
+
+        }
+
         createDateForm()
     }
 
@@ -75,5 +79,4 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
             }.show(fragmentManager, "")
         }
     }
-
 }
