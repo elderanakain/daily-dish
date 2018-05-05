@@ -1,6 +1,12 @@
 package io.krugosvet.dailydish.android.mainScreen
 
 enum class ImageProvider(val providerName: String) {
-    CAMERA("Camera"), GALLERY("Gallery") }
+    CAMERA("Take a picture"), GALLERY("Pick from a gallery") }
 
 fun getImageProviderNames() = ImageProvider.values().map { it.providerName }.toTypedArray()
+
+enum class ImageProviderMainAction(val actionName: String) {
+    UPDATE("Update picture"), REMOVE("Remove picture")
+}
+
+fun getImageProviderMainActionNames() = ImageProviderMainAction.values().map { it.actionName }.toTypedArray()

@@ -47,14 +47,14 @@ open class MealListPageFragment : RealmFragment(), ViewPagerFragment, CameraImag
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_PERMISSION_CAMERA) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startCamera(this, {mCurrentPhoto = it})
+                startCamera(this, { mCurrentPhoto = it })
             }
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if ( resultCode == RESULT_OK) {
-            when(requestCode) {
+        if (resultCode == RESULT_OK) {
+            when (requestCode) {
                 REQUEST_CAPTURE_IMAGE -> callback.invoke(mCurrentPhoto)
                 REQUEST_PICK_GALLERY_IMAGE -> {
                     val tempFile = createImageFile(context!!)
@@ -67,7 +67,7 @@ open class MealListPageFragment : RealmFragment(), ViewPagerFragment, CameraImag
                         }
                     }
 
-                    if(data != null) callback.invoke(tempFile)
+                    if (data != null) callback.invoke(tempFile)
                 }
             }
         }
@@ -75,16 +75,32 @@ open class MealListPageFragment : RealmFragment(), ViewPagerFragment, CameraImag
 
     var mCurrentPhoto: File? = null
 
-    override fun openImageProviderChooser(onPhotoReceiveCallback: (file: File?) -> Unit) {
+    override fun openMealMainImageUpdateDialog(onPhotoReceiveCallback: (File?) -> Unit,
+                                               onPhotoDelete: () -> Unit, mainImageIsEmpty: Boolean) {
+        if (mainImageIsEmpty) {
+            openImageProviderChooser(onPhotoReceiveCallback)
+        } else {
+            AlertDialog.Builder(activity).setItems(getImageProviderMainActionNames(), { dialog, which ->
+                when (ImageProviderMainAction.values()[which]) {
+                    ImageProviderMainAction.UPDATE -> openImageProviderChooser(onPhotoReceiveCallback)
+                    ImageProviderMainAction.REMOVE -> onPhotoDelete.invoke()
+                }
+                dialog.dismiss()
+            }).setNegativeButton(getString(R.string.dialog_cancel_button), { dialog, _ -> dialog.dismiss() })
+                    .create().show()
+        }
+    }
+
+    private fun openImageProviderChooser(onPhotoReceiveCallback: (file: File?) -> Unit) {
         this.callback = onPhotoReceiveCallback
-        AlertDialog.Builder(activity).setTitle(R.string.pick_image_provider)
-                .setItems(getImageProviderNames(), { dialog, which ->
-                    when(ImageProvider.values()[which]) {
-                        ImageProvider.CAMERA -> openCamera(this, {mCurrentPhoto = it})
-                        ImageProvider.GALLERY -> openGallery(this)
-                    }
-                    dialog.dismiss()
-                }).create().show()
+        AlertDialog.Builder(activity).setItems(getImageProviderNames(), { dialog, which ->
+            when (ImageProvider.values()[which]) {
+                ImageProvider.CAMERA -> openCamera(this, { mCurrentPhoto = it })
+                ImageProvider.GALLERY -> openGallery(this)
+            }
+            dialog.dismiss()
+        }).setNegativeButton(getString(R.string.dialog_cancel_button), { dialog, _ -> dialog.dismiss() })
+                .create().show()
     }
 }
 

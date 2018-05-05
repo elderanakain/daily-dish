@@ -4,5 +4,6 @@ import java.io.File
 
 interface CameraImagePipe {
 
-    fun openImageProviderChooser(onPhotoReceiveCallback: (file: File?) -> Unit)
+    fun openMealMainImageUpdateDialog(onPhotoReceiveCallback: (File?) -> Unit,
+                                      onPhotoDelete: () -> Unit, mainImageIsEmpty: Boolean)
 }

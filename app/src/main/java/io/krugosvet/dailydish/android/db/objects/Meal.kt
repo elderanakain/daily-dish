@@ -41,4 +41,10 @@ open class Meal @JvmOverloads constructor(
             this.mainImage = readBytesFromFile(file)
         }
     }
+
+    fun removeMainImage(realm: Realm) {
+        realm.executeTransaction {
+            this.mainImage = byteArrayOf()
+        }
+    }
 }

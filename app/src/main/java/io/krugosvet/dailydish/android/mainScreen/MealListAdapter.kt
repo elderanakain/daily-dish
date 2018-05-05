@@ -61,11 +61,11 @@ open class MealListAdapter(private val realm: Realm, items: OrderedRealmCollecti
                     .into(mealImage)
 
             mealImage.setOnClickListener {
-                cameraImagePipe.openImageProviderChooser { file ->
+                cameraImagePipe.openMealMainImageUpdateDialog({ file ->
                     meal?.changeMainImage(realm, file)
                     notifyItemChanged(layoutPosition)
                     file?.delete()
-                }
+                }, { meal?.removeMainImage(realm) }, meal?.mainImage?.isEmpty() ?: true)
             }
         }
     }
