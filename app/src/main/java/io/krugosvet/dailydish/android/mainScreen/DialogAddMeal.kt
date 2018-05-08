@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.utils.*
+import io.krugosvet.dailydish.android.utils.intent.CameraImagePipe
 import kotlinx.android.synthetic.main.dialog_add_meal.*
 import java.io.File
 import java.util.*

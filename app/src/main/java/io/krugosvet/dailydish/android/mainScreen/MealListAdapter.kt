@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.utils.getFormattedDate
+import io.krugosvet.dailydish.android.utils.intent.CameraImagePipe
 import io.krugosvet.dailydish.android.utils.withNoCache
 import io.realm.OrderedRealmCollection
 import io.realm.Realm
