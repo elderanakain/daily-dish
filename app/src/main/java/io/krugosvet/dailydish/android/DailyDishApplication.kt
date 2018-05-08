@@ -9,6 +9,6 @@ class DailyDishApplication: Application() {
     override fun onCreate() {
         super.onCreate()
         Realm.init(this)
-        AppID.getInstance().initialize(this, resources.getString(R.string.authTenantId), AppID.REGION_UK);
+        AppID.getInstance().initialize(this, resources.getString(R.string.authTenantId), AppID.REGION_UK)
     }
 }

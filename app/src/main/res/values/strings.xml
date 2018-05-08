@@ -13,4 +13,5 @@
     <string name="earlier">Earlier</string>
     <string name="intent_select_image_from_gallery">Select Image</string>
     <string name="dialog_cancel_button">Cancel</string>
+    <string name="login_action_bar">Login</string>
 </resources>

@@ -38,7 +38,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
 
     implementation ('com.github.ibm-cloud-security:appid-clientsdk-android:3.0.1') {
-        exclude group: 'com.android.support'
         exclude group: 'org.jetbrains'
     }
 }
