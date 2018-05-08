@@ -5,19 +5,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import com.bumptech.glide.Glide
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.utils.*
+import io.krugosvet.dailydish.android.utils.image.withNoCache
+import io.krugosvet.dailydish.android.utils.intent.CameraImagePipe
 import kotlinx.android.synthetic.main.dialog_add_meal.*
+import java.io.File
 import java.util.*
 
 class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
 
     interface DialogAddMealListener {
-        fun onAddButtonClick(mealTitle: String, mealDescription: String, parseDate: Date)
+        fun onAddButtonClick(mealTitle: String, mealDescription: String, parseDate: Date, mainImage: File?)
     }
 
     private val forms = mutableListOf<BaseTextInputLayout>()
+    private var mainImage: File? = null
+
+    lateinit var cameraImagePipe: CameraImagePipe
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View = inflater.inflate(R.layout.dialog_add_meal, container)
 
@@ -29,9 +36,23 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
         addMealButton.setOnClickListener {
             if (areFormsValid()) {
                 (activity as DialogAddMealListener).onAddButtonClick(title.getEditTextInput(),
-                        description.getEditTextInput(), parseDate(date.getEditTextInput()))
+                        description.getEditTextInput(), parseDate(date.getEditTextInput()), mainImage)
                 dismiss()
             }
+        }
+
+        addMealImage.setOnClickListener {
+            cameraImagePipe.openMealMainImageUpdateDialog({ file ->
+                mainImage = file
+                Glide.with(activity).applyDefaultRequestOptions(
+                        withNoCache().centerInside())
+                        .load(file).into(addMealImage)
+            }, {
+                mainImage = null
+                Glide.with(activity).applyDefaultRequestOptions(
+                        withNoCache().centerInside())
+                        .load(R.drawable.ic_insert_photo_black_48dp).into(addMealImage)
+            }, mainImage == null)
         }
 
         createDateForm()
@@ -44,6 +65,11 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
 
     override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
         date.editText?.setText(getFormattedDate(year, monthOfYear, dayOfMonth))
+    }
+
+    fun addCameraImagePipe(cameraImagePipe: CameraImagePipe): DialogAddMeal {
+        this.cameraImagePipe = cameraImagePipe
+        return this
     }
 
     private fun handleForms() {
@@ -75,5 +101,4 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
             }.show(fragmentManager, "")
         }
     }
-
 }

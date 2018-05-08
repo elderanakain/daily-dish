@@ -5,11 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/meal_image"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/meal_image_placeholder"
+        android:src="@drawable/food_clock_bw_800px"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/innerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/meal_image">
 
         <TextView
             android:id="@+id/title"
@@ -21,7 +30,7 @@
             tools:text="Lorem ipsum" />
 
         <TextView
-            android:id="@+id/lastDateOfCooking"
+            android:id="@+id/last_date_of_cooking"
             style="@style/SubheadTextView"
             android:fontFamily="@font/roboto_medium"
             android:paddingTop="12dp"
@@ -35,7 +44,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lastDateOfCooking"
+            app:layout_constraintTop_toBottomOf="@id/last_date_of_cooking"
             tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel sagittis dolor. Cras vulputate dictum urna id tincidunt. Mauris efficitur ligula orci, eget consequat nulla interdum nec." />
 
     </android.support.constraint.ConstraintLayout>

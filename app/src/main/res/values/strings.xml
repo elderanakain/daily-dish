@@ -11,4 +11,6 @@
     <string name="add_meal_dialog_title">Add a new meal</string>
     <string name="for_today">For today</string>
     <string name="earlier">Earlier</string>
+    <string name="intent_select_image_from_gallery">Select Image</string>
+    <string name="dialog_cancel_button">Cancel</string>
 </resources>
