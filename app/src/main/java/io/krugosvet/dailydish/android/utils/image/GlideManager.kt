@@ -1,4 +1,4 @@
-package io.krugosvet.dailydish.android.utils
+package io.krugosvet.dailydish.android.utils.image
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
