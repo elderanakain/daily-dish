@@ -12,30 +12,31 @@ const val APPID_USER_ID = "appid_user_id"
 class TokensPersistenceManager(private var context: Context, private var appIDAuthorizationManager: AppIDAuthorizationManager) {
 
     enum class StoredTokenState {
-        EMPTY, ANONYMOUS, IDENTIFIED
+        ANONYMOUS, IDENTIFIED
     }
 
     private val sharedPreferences = context.getSharedPreferences(APPID_TOKENS_PREF, Context.MODE_PRIVATE)
+
+    var tokenState: StoredTokenState = if (isRefreshTokenExists()) StoredTokenState.IDENTIFIED else StoredTokenState.ANONYMOUS
 
     fun getStoredAccessToken() = sharedPreferences.getString(APPID_ACCESS_TOKEN, "")
     fun getStoredRefreshToken() = sharedPreferences.getString(APPID_REFRESH_TOKEN, "")
     fun isRefreshTokenExists() = !getStoredRefreshToken().isEmpty()
     fun getStoredUserName() = sharedPreferences.getString(APPID_USER_NAME, "")
     fun getStoredUserID() = sharedPreferences.getString(APPID_USER_ID, "")
-    fun clearStoredTokens() = !sharedPreferences.edit().clear().commit()
+    fun clearStoredTokens() {
+        !sharedPreferences.edit().clear().commit()
+        tokenState = StoredTokenState.ANONYMOUS
+    }
 
     fun persistTokensOnDevice() {
         val identityToken = appIDAuthorizationManager.identityToken
-        var refreshTokenString = ""
-        val refreshToken = appIDAuthorizationManager.refreshToken
-        if (refreshToken != null) {
-            refreshTokenString = refreshToken.raw
-        }
 
         sharedPreferences.edit()
                 .putString(APPID_ACCESS_TOKEN, appIDAuthorizationManager.accessToken?.raw)
                 .putString(APPID_USER_NAME, identityToken.name)
                 .putString(APPID_USER_ID, identityToken.subject)
-                .putString(APPID_REFRESH_TOKEN, refreshTokenString).apply()
+                .putString(APPID_REFRESH_TOKEN, appIDAuthorizationManager.refreshToken.raw).apply()
+        tokenState = StoredTokenState.IDENTIFIED
     }
 }
