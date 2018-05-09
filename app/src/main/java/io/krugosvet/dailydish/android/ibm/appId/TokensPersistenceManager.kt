@@ -17,28 +17,23 @@ class TokensPersistenceManager(private var context: Context, private var appIDAu
 
     private val sharedPreferences = context.getSharedPreferences(APPID_TOKENS_PREF, Context.MODE_PRIVATE)
 
-    fun storedAccessToken() = sharedPreferences.getString(APPID_ACCESS_TOKEN, null)
-    fun storedRefreshToken() = sharedPreferences.getString(APPID_REFRESH_TOKEN, null)
-    fun isStoredTokenExists() = !sharedPreferences.all.isEmpty()
-    fun storedUserName() = sharedPreferences.getString(APPID_USER_NAME, null)
-    fun storedUserID() = sharedPreferences.getString(APPID_USER_ID, null)
-    fun getStoreTokenState() = if (!isStoredTokenExists()) StoredTokenState.EMPTY else StoredTokenState.IDENTIFIED
+    fun getStoredAccessToken() = sharedPreferences.getString(APPID_ACCESS_TOKEN, "")
+    fun getStoredRefreshToken() = sharedPreferences.getString(APPID_REFRESH_TOKEN, "")
+    fun isRefreshTokenExists() = !getStoredRefreshToken().isEmpty()
+    fun getStoredUserName() = sharedPreferences.getString(APPID_USER_NAME, "")
+    fun getStoredUserID() = sharedPreferences.getString(APPID_USER_ID, "")
     fun clearStoredTokens() = !sharedPreferences.edit().clear().commit()
 
     fun persistTokensOnDevice() {
-        val sharedPreferences = context.getSharedPreferences(APPID_TOKENS_PREF, Context.MODE_PRIVATE)
-        val accessToken = appIDAuthorizationManager.accessToken
         val identityToken = appIDAuthorizationManager.identityToken
-
         var refreshTokenString = ""
         val refreshToken = appIDAuthorizationManager.refreshToken
         if (refreshToken != null) {
             refreshTokenString = refreshToken.raw
         }
 
-        val storedAccessToken = accessToken?.raw
         sharedPreferences.edit()
-                .putString(APPID_ACCESS_TOKEN, storedAccessToken)
+                .putString(APPID_ACCESS_TOKEN, appIDAuthorizationManager.accessToken?.raw)
                 .putString(APPID_USER_NAME, identityToken.name)
                 .putString(APPID_USER_ID, identityToken.subject)
                 .putString(APPID_REFRESH_TOKEN, refreshTokenString).apply()
