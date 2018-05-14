@@ -16,7 +16,8 @@ open class Meal @JvmOverloads constructor(
         @Required var title: String = "",
         @Required var description: String = "",
         @Required var date: Date = Date(),
-        var mainImage: ByteArray = byteArrayOf()) : RealmModel {
+        var mainImage: ByteArray = byteArrayOf(),
+        @Required var userId: String = "") : RealmModel {
 
     @PrimaryKey
     var id = 0

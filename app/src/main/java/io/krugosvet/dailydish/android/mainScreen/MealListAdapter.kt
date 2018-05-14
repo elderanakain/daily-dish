@@ -17,14 +17,20 @@ import io.realm.OrderedRealmCollection
 import io.realm.Realm
 import io.realm.RealmRecyclerViewAdapter
 
-
 open class MealListAdapter(private val realm: Realm, items: OrderedRealmCollection<Meal>,
-                           private val limit: Int = NO_LIMIT, private val cameraImagePipe: CameraImagePipe)
+                           private val limit: Int = NO_LIMIT,
+                           private val cameraImagePipe: CameraImagePipe
+                           //protected val filter: (data: OrderedRealmCollection<Meal>) -> RealmQuery<Meal>
+)
     : RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(items, true) {
 
     init {
         setHasStableIds(true)
     }
+
+//    fun publishData() {
+//        if (data != null) updateData(filter.invoke(data!!).findAll())
+//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             MealViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_meal, parent, false))

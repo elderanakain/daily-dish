@@ -2,7 +2,7 @@ package io.krugosvet.dailydish.android.utils.intent
 
 import android.content.Intent
 import android.content.pm.PackageManager
-import io.krugosvet.dailydish.android.utils.BaseActivity
+import io.krugosvet.dailydish.android.utils.baseUi.BaseActivity
 import java.io.File
 
 abstract class ImageProviderActivity : BaseActivity(), CameraImagePipe {

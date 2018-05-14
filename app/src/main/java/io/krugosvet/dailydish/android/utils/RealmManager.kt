@@ -7,5 +7,6 @@ import io.realm.Sort
 
 fun Realm.getMeals(): RealmResults<Meal> = this.where(Meal::class.java).findAll().sort("id")
 
-fun Realm.getAscByDateMeals(): RealmResults<Meal> =
-        this.where(Meal::class.java).sort("date", Sort.ASCENDING).findAll()
+fun Realm.getAscByDateMeals(userId: String): RealmResults<Meal> =
+        this.where(Meal::class.java).equalTo("userId", userId)
+                .sort("date", Sort.ASCENDING).findAll()

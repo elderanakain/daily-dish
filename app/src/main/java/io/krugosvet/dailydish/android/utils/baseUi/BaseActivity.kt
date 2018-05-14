@@ -1,4 +1,4 @@
-package io.krugosvet.dailydish.android.utils
+package io.krugosvet.dailydish.android.utils.baseUi
 
 import android.os.Bundle
 import android.view.Menu
@@ -12,25 +12,25 @@ import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.ibm.appId.SimpleAuthorizationListener
 import io.krugosvet.dailydish.android.ibm.appId.TokensPersistenceManager
 import io.krugosvet.dailydish.android.ibm.appId.TokensPersistenceManager.StoredTokenState
+import io.krugosvet.dailydish.android.utils.RealmActivity
 
 abstract class BaseActivity : RealmActivity() {
 
     private val appID = AppID.getInstance()
     private lateinit var accountName: MenuItem
-    private lateinit var tokensPersistenceManager: TokensPersistenceManager
+    protected  lateinit var tokensPersistenceManager: TokensPersistenceManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tokensPersistenceManager = TokensPersistenceManager(this, AppIDAuthorizationManager(appID))
-
-        if (tokensPersistenceManager.tokenState == StoredTokenState.IDENTIFIED) {
-            signInExistingUser()
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.action_bar, menu)
         this.accountName = menu.findItem(R.id.account_name)
+        if (tokensPersistenceManager.tokenState == StoredTokenState.IDENTIFIED) {
+            signInExistingUser()
+        }
         return true
     }
 
@@ -42,23 +42,12 @@ abstract class BaseActivity : RealmActivity() {
     } else super.onOptionsItemSelected(item)
 
     private fun launchSingIn() {
-        appID.loginWidget.launch(this, object : SimpleAuthorizationListener() {
-            override fun onAuthorizationSuccess(accessToken: AccessToken?, identityToken: IdentityToken?, refreshToken: RefreshToken?) {
-                tokensPersistenceManager.persistTokensOnDevice()
-                updateAccountName()
-            }
-        })
+        appID.loginWidget.launch(this, onAuthorizationSuccess())
     }
 
     private fun signInExistingUser() {
         appID.signinWithRefreshToken(this, tokensPersistenceManager.getStoredRefreshToken(),
-                object : SimpleAuthorizationListener() {
-                    override fun onAuthorizationSuccess(accessToken: AccessToken?, identityToken: IdentityToken?, refreshToken: RefreshToken?) {
-                        super.onAuthorizationSuccess(accessToken, identityToken, refreshToken)
-                        tokensPersistenceManager.persistTokensOnDevice()
-                        updateAccountName()
-                    }
-                })
+                onAuthorizationSuccess())
     }
 
     private fun updateAccountName() {
@@ -68,5 +57,13 @@ abstract class BaseActivity : RealmActivity() {
     private fun signOut() {
         tokensPersistenceManager.clearStoredTokens()
         updateAccountName()
+    }
+
+    private fun onAuthorizationSuccess(): SimpleAuthorizationListener = object : SimpleAuthorizationListener() {
+        override fun onAuthorizationSuccess(accessToken: AccessToken?, identityToken: IdentityToken?, refreshToken: RefreshToken?) {
+            super.onAuthorizationSuccess(accessToken, identityToken, refreshToken)
+            tokensPersistenceManager.persistTokensOnDevice()
+            updateAccountName()
+        }
     }
 }

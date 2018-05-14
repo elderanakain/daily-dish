@@ -5,7 +5,7 @@ import io.krugosvet.dailydish.android.utils.getAscByDateMeals
 
 class ForTodayFragment: MealListPageFragment() {
 
-    override fun getAdapterItems() = getRealm().getAscByDateMeals()
+    override fun adapterItems() = getRealm().getAscByDateMeals(tokensPersistenceManager.getStoredUserID())
 
     override fun getAdapterItemLimit() = 5
 

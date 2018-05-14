@@ -9,7 +9,7 @@ const val APPID_TOKENS_PREF = "appid_tokens"
 const val APPID_USER_NAME = "appid_user_name"
 const val APPID_USER_ID = "appid_user_id"
 
-class TokensPersistenceManager(private var context: Context, private var appIDAuthorizationManager: AppIDAuthorizationManager) {
+class TokensPersistenceManager constructor(context: Context, private var appIDAuthorizationManager: AppIDAuthorizationManager) {
 
     enum class StoredTokenState {
         ANONYMOUS, IDENTIFIED
@@ -20,10 +20,10 @@ class TokensPersistenceManager(private var context: Context, private var appIDAu
     var tokenState: StoredTokenState = if (isRefreshTokenExists()) StoredTokenState.IDENTIFIED else StoredTokenState.ANONYMOUS
 
     fun getStoredAccessToken() = sharedPreferences.getString(APPID_ACCESS_TOKEN, "")
-    fun getStoredRefreshToken() = sharedPreferences.getString(APPID_REFRESH_TOKEN, "")
-    fun isRefreshTokenExists() = !getStoredRefreshToken().isEmpty()
-    fun getStoredUserName() = sharedPreferences.getString(APPID_USER_NAME, "")
-    fun getStoredUserID() = sharedPreferences.getString(APPID_USER_ID, "")
+    fun getStoredRefreshToken(): String = sharedPreferences.getString(APPID_REFRESH_TOKEN, "")
+    private fun isRefreshTokenExists() = !getStoredRefreshToken().isEmpty()
+    fun getStoredUserName(): String = sharedPreferences.getString(APPID_USER_NAME, "")
+    fun getStoredUserID(): String = sharedPreferences.getString(APPID_USER_ID, "")
     fun clearStoredTokens() {
         !sharedPreferences.edit().clear().commit()
         tokenState = StoredTokenState.ANONYMOUS

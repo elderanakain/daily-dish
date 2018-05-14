@@ -1,4 +1,4 @@
-package io.krugosvet.dailydish.android.utils
+package io.krugosvet.dailydish.android.utils.baseUi
 
 import android.support.annotation.DimenRes
 import android.app.DialogFragment

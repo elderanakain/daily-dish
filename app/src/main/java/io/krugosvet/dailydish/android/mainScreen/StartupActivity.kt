@@ -1,6 +1,7 @@
 package io.krugosvet.dailydish.android.mainScreen
 
 import android.os.Bundle
+import dagger.android.AndroidInjection
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.utils.RealmFragment
@@ -17,6 +18,7 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startup)
+        AndroidInjection.inject(this)
 
         setupViewPager()
 
@@ -31,7 +33,7 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
     }
 
     override fun onAddButtonClick(mealTitle: String, mealDescription: String, parseDate: Date, mainImage: File?) {
-        Meal(mealTitle, mealDescription, parseDate, readBytesFromFile(mainImage)).persist(realm)
+        Meal(mealTitle, mealDescription, parseDate, readBytesFromFile(mainImage), tokensPersistenceManager.getStoredUserID()).persist(realm)
     }
 
     private fun setupViewPager() {
