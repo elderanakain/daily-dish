@@ -20,7 +20,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <io.krugosvet.dailydish.android.utils.BaseTextInputLayout
+        <io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -37,9 +37,9 @@
                 android:inputType="text|textCapSentences"
                 android:lines="1" />
 
-        </io.krugosvet.dailydish.android.utils.BaseTextInputLayout>
+        </io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout>
 
-        <io.krugosvet.dailydish.android.utils.BaseTextInputLayout
+        <io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout
             android:id="@+id/description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -56,9 +56,9 @@
                 android:inputType="text|textCapSentences|textAutoCorrect|textMultiLine"
                 android:maxLines="10" />
 
-        </io.krugosvet.dailydish.android.utils.BaseTextInputLayout>
+        </io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout>
 
-        <io.krugosvet.dailydish.android.utils.BaseTextInputLayout
+        <io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout
             android:id="@+id/date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
                 android:minWidth="129dp"
                 tools:text="May 2, 2018" />
 
-        </io.krugosvet.dailydish.android.utils.BaseTextInputLayout>
+        </io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout>
 
         <ImageButton
             android:id="@+id/addMealImage"

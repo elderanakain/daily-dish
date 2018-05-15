@@ -1,4 +1,4 @@
-package io.krugosvet.dailydish.android.utils
+package io.krugosvet.dailydish.android.utils.baseUi
 
 import android.content.Context
 import android.support.design.widget.TextInputLayout

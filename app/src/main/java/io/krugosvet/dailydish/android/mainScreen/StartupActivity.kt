@@ -3,7 +3,7 @@ package io.krugosvet.dailydish.android.mainScreen
 import android.os.Bundle
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.Meal
-import io.krugosvet.dailydish.android.utils.RealmFragment
+import io.krugosvet.dailydish.android.utils.baseUi.BaseFragment
 import io.krugosvet.dailydish.android.utils.intent.ImageProviderActivity
 import io.krugosvet.dailydish.android.utils.readBytesFromFile
 import kotlinx.android.synthetic.main.activity_startup.*
@@ -12,7 +12,7 @@ import java.util.*
 
 class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealListener {
 
-    private lateinit var viewPagerAdapter: ViewPagerAdapter<RealmFragment>
+    private lateinit var viewPagerAdapter: ViewPagerAdapter<BaseFragment>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +31,7 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
     }
 
     override fun onAddButtonClick(mealTitle: String, mealDescription: String, parseDate: Date, mainImage: File?) {
-        Meal(mealTitle, mealDescription, parseDate, readBytesFromFile(mainImage)).persist(realm)
+        Meal(mealTitle, mealDescription, parseDate, readBytesFromFile(mainImage), authTokenManager.userId()).persist(realm)
     }
 
     private fun setupViewPager() {

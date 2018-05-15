@@ -1,5 +1,6 @@
 package io.krugosvet.dailydish.android.mainScreen
 
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -13,17 +14,22 @@ import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.utils.getFormattedDate
 import io.krugosvet.dailydish.android.utils.image.withNoCache
 import io.krugosvet.dailydish.android.utils.intent.CameraImagePipe
-import io.realm.OrderedRealmCollection
+import io.reactivex.Observable
 import io.realm.Realm
+import io.realm.RealmQuery
 import io.realm.RealmRecyclerViewAdapter
 
-
-open class MealListAdapter(private val realm: Realm, items: OrderedRealmCollection<Meal>,
-                           private val limit: Int = NO_LIMIT, private val cameraImagePipe: CameraImagePipe)
-    : RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(items, true) {
+open class MealListAdapter(private val realm: Realm,
+                           private val cameraImagePipe: CameraImagePipe,
+                           private val query: () -> RealmQuery<Meal>,
+                           accountStateChangeReceiver: Observable<Intent>)
+    : RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(query.invoke().findAll(), true) {
 
     init {
         setHasStableIds(true)
+        accountStateChangeReceiver.subscribe {
+            updateData(query.invoke().findAll())
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -35,10 +41,6 @@ open class MealListAdapter(private val realm: Realm, items: OrderedRealmCollecti
 
     override fun getItemId(position: Int): Long {
         return getItem(position)?.id?.toLong() ?: 0
-    }
-
-    override fun getItemCount(): Int {
-        return if (limit == NO_LIMIT || limit > super.getItemCount()) super.getItemCount() else limit
     }
 
     inner class MealViewHolder(view: View) : RecyclerView.ViewHolder(view) {
