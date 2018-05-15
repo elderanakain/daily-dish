@@ -1,28 +1,40 @@
 package io.krugosvet.dailydish.android.utils.baseUi
 
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.ibm.bluemix.appid.android.api.AppID
-import com.ibm.bluemix.appid.android.api.AppIDAuthorizationManager
 import com.ibm.bluemix.appid.android.api.tokens.AccessToken
 import com.ibm.bluemix.appid.android.api.tokens.IdentityToken
 import com.ibm.bluemix.appid.android.api.tokens.RefreshToken
+import dagger.android.AndroidInjection
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.ibm.appId.SimpleAuthorizationListener
 import io.krugosvet.dailydish.android.ibm.appId.TokensPersistenceManager
 import io.krugosvet.dailydish.android.ibm.appId.TokensPersistenceManager.StoredTokenState
-import io.krugosvet.dailydish.android.utils.RealmActivity
+import io.realm.Realm
+import javax.inject.Inject
 
-abstract class BaseActivity : RealmActivity() {
+abstract class BaseActivity : AppCompatActivity() {
 
-    private val appID = AppID.getInstance()
+    @Inject
+    protected lateinit var appID: AppID
+    @Inject
+    protected lateinit var tokensPersistenceManager: TokensPersistenceManager
+    @Inject
+    protected lateinit var realm: Realm
+
     private lateinit var accountName: MenuItem
-    protected  lateinit var tokensPersistenceManager: TokensPersistenceManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        tokensPersistenceManager = TokensPersistenceManager(this, AppIDAuthorizationManager(appID))
+        AndroidInjection.inject(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

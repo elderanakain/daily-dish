@@ -1,20 +1,29 @@
 package io.krugosvet.dailydish.android.utils.baseUi
 
-import android.os.Bundle
-import android.view.MenuItem
+import android.content.Context
+import android.support.v4.app.Fragment
 import com.ibm.bluemix.appid.android.api.AppID
-import com.ibm.bluemix.appid.android.api.AppIDAuthorizationManager
+import dagger.android.support.AndroidSupportInjection
 import io.krugosvet.dailydish.android.ibm.appId.TokensPersistenceManager
-import io.krugosvet.dailydish.android.utils.RealmFragment
+import io.realm.Realm
+import javax.inject.Inject
 
-abstract class BaseFragment: RealmFragment() {
+abstract class BaseFragment : Fragment() {
 
-    private val appID = AppID.getInstance()
-    private lateinit var accountName: MenuItem
+    @Inject
+    protected lateinit var realm: Realm
+    @Inject
+    protected lateinit var appID: AppID
+    @Inject
     protected lateinit var tokensPersistenceManager: TokensPersistenceManager
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        tokensPersistenceManager = TokensPersistenceManager(context!!, AppIDAuthorizationManager(appID))
+    override fun onAttach(context: Context?) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
     }
 }

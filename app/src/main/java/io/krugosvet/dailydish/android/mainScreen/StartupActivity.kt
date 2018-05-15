@@ -1,10 +1,9 @@
 package io.krugosvet.dailydish.android.mainScreen
 
 import android.os.Bundle
-import dagger.android.AndroidInjection
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.Meal
-import io.krugosvet.dailydish.android.utils.RealmFragment
+import io.krugosvet.dailydish.android.utils.baseUi.BaseFragment
 import io.krugosvet.dailydish.android.utils.intent.ImageProviderActivity
 import io.krugosvet.dailydish.android.utils.readBytesFromFile
 import kotlinx.android.synthetic.main.activity_startup.*
@@ -13,12 +12,11 @@ import java.util.*
 
 class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealListener {
 
-    private lateinit var viewPagerAdapter: ViewPagerAdapter<RealmFragment>
+    private lateinit var viewPagerAdapter: ViewPagerAdapter<BaseFragment>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startup)
-        AndroidInjection.inject(this)
 
         setupViewPager()
 

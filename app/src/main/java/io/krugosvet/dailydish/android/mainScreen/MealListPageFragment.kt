@@ -23,13 +23,13 @@ open class MealListPageFragment : BaseFragment(), ViewPagerFragment {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mealList.adapter = MealListAdapter(getRealm(), adapterItems(), getAdapterItemLimit(),
+        mealList.adapter = MealListAdapter(realm, adapterItems(), getAdapterItemLimit(),
                 activity as ImageProviderActivity)
     }
 
     override fun getFragmentTitle() = arguments?.getString(PAGE_TITLE) ?: ""
 
-    protected open fun adapterItems(): OrderedRealmCollection<Meal> = getRealm().getMeals()
+    protected open fun adapterItems(): OrderedRealmCollection<Meal> = realm.getMeals()
 
     protected open fun getAdapterItemLimit() = NO_LIMIT
 
