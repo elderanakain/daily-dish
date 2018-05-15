@@ -9,7 +9,7 @@ const val APPID_TOKENS_PREF = "appid_tokens"
 const val APPID_USER_NAME = "appid_user_name"
 const val APPID_USER_ID = "appid_user_id"
 
-class TokensPersistenceManager constructor(context: Context, private var appIDAuthorizationManager: AppIDAuthorizationManager) {
+class AuthTokenManager constructor(context: Context, private var appIDAuthorizationManager: AppIDAuthorizationManager) {
 
     enum class StoredTokenState {
         ANONYMOUS, IDENTIFIED

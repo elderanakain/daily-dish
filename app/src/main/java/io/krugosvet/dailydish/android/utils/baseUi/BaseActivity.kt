@@ -11,8 +11,8 @@ import com.ibm.bluemix.appid.android.api.tokens.RefreshToken
 import dagger.android.AndroidInjection
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.ibm.appId.SimpleAuthorizationListener
-import io.krugosvet.dailydish.android.ibm.appId.TokensPersistenceManager
-import io.krugosvet.dailydish.android.ibm.appId.TokensPersistenceManager.StoredTokenState
+import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager
+import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager.StoredTokenState
 import io.realm.Realm
 import javax.inject.Inject
 
@@ -21,7 +21,7 @@ abstract class BaseActivity : AppCompatActivity() {
     @Inject
     protected lateinit var appID: AppID
     @Inject
-    protected lateinit var tokensPersistenceManager: TokensPersistenceManager
+    protected lateinit var authTokenManager: AuthTokenManager
     @Inject
     protected lateinit var realm: Realm
 
@@ -40,14 +40,14 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.action_bar, menu)
         this.accountName = menu.findItem(R.id.account_name)
-        if (tokensPersistenceManager.tokenState == StoredTokenState.IDENTIFIED) {
+        if (authTokenManager.tokenState == StoredTokenState.IDENTIFIED) {
             signInExistingUser()
         }
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = if (item.itemId == R.id.action_login) {
-        if (tokensPersistenceManager.tokenState == StoredTokenState.ANONYMOUS) {
+        if (authTokenManager.tokenState == StoredTokenState.ANONYMOUS) {
             launchSingIn()
         } else signOut()
         true
@@ -58,23 +58,23 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     private fun signInExistingUser() {
-        appID.signinWithRefreshToken(this, tokensPersistenceManager.getStoredRefreshToken(),
+        appID.signinWithRefreshToken(this, authTokenManager.getStoredRefreshToken(),
                 onAuthorizationSuccess())
     }
 
     private fun updateAccountName() {
-        runOnUiThread { accountName.title = tokensPersistenceManager.getStoredUserName() }
+        runOnUiThread { accountName.title = authTokenManager.getStoredUserName() }
     }
 
     private fun signOut() {
-        tokensPersistenceManager.clearStoredTokens()
+        authTokenManager.clearStoredTokens()
         updateAccountName()
     }
 
     private fun onAuthorizationSuccess(): SimpleAuthorizationListener = object : SimpleAuthorizationListener() {
         override fun onAuthorizationSuccess(accessToken: AccessToken?, identityToken: IdentityToken?, refreshToken: RefreshToken?) {
             super.onAuthorizationSuccess(accessToken, identityToken, refreshToken)
-            tokensPersistenceManager.persistTokensOnDevice()
+            authTokenManager.persistTokensOnDevice()
             updateAccountName()
         }
     }

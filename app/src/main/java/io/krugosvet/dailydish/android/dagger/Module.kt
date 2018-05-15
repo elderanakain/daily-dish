@@ -13,7 +13,7 @@ import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
 import dagger.android.support.FragmentKey
 import dagger.multibindings.IntoMap
-import io.krugosvet.dailydish.android.ibm.appId.TokensPersistenceManager
+import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager
 import io.krugosvet.dailydish.android.mainScreen.ForTodayFragment
 import io.krugosvet.dailydish.android.mainScreen.MealListPageFragment
 import io.krugosvet.dailydish.android.mainScreen.StartupActivity
@@ -37,7 +37,7 @@ internal class BaseActivityModule(private val context: Context) {
     }
 
     @Provides
-    fun providesTokenPersistenceManager() = TokensPersistenceManager(context, AppIDAuthorizationManager(AppID.getInstance()))
+    fun providesTokenPersistenceManager() = AuthTokenManager(context, AppIDAuthorizationManager(AppID.getInstance()))
 
     @Provides
     fun providesAppId() = AppID.getInstance()
