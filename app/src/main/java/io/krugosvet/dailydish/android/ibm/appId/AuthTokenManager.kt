@@ -1,5 +1,6 @@
 package io.krugosvet.dailydish.android.ibm.appId
 
+import android.annotation.SuppressLint
 import android.content.Context
 import com.ibm.bluemix.appid.android.api.AppIDAuthorizationManager
 
@@ -24,11 +25,13 @@ class AuthTokenManager constructor(context: Context, private var appIDAuthorizat
     private fun isRefreshTokenExists() = !getStoredRefreshToken().isEmpty()
     fun getStoredUserName(): String = sharedPreferences.getString(APPID_USER_NAME, "")
     fun userId(): String = sharedPreferences.getString(APPID_USER_ID, "")
+
     fun clearStoredTokens() {
         !sharedPreferences.edit().clear().commit()
         tokenState = StoredTokenState.ANONYMOUS
     }
 
+    @SuppressLint("ApplySharedPref")
     fun persistTokensOnDevice() {
         val identityToken = appIDAuthorizationManager.identityToken
 
@@ -36,7 +39,7 @@ class AuthTokenManager constructor(context: Context, private var appIDAuthorizat
                 .putString(APPID_ACCESS_TOKEN, appIDAuthorizationManager.accessToken?.raw)
                 .putString(APPID_USER_NAME, identityToken.name)
                 .putString(APPID_USER_ID, identityToken.subject)
-                .putString(APPID_REFRESH_TOKEN, appIDAuthorizationManager.refreshToken.raw).apply()
+                .putString(APPID_REFRESH_TOKEN, appIDAuthorizationManager.refreshToken.raw).commit()
         tokenState = StoredTokenState.IDENTIFIED
     }
 }

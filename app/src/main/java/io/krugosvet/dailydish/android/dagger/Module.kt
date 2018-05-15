@@ -2,7 +2,9 @@ package io.krugosvet.dailydish.android.dagger
 
 import android.app.Activity
 import android.content.Context
+import android.content.IntentFilter
 import android.support.v4.app.Fragment
+import com.github.karczews.rxbroadcastreceiver.RxBroadcastReceivers
 import com.ibm.bluemix.appid.android.api.AppID
 import com.ibm.bluemix.appid.android.api.AppIDAuthorizationManager
 import dagger.Binds
@@ -19,6 +21,7 @@ import io.krugosvet.dailydish.android.mainScreen.MealListPageFragment
 import io.krugosvet.dailydish.android.mainScreen.StartupActivity
 import io.krugosvet.dailydish.android.utils.baseUi.BaseActivity
 import io.krugosvet.dailydish.android.utils.baseUi.BaseFragment
+import io.krugosvet.dailydish.android.utils.intent.ACCOUNT_STATE_CHANGE
 import io.realm.Realm
 
 @Module(subcomponents = [(BaseActivitySubcomponent::class)], includes = [BaseActivityModule.Declarations::class])
@@ -44,6 +47,9 @@ internal class BaseActivityModule(private val context: Context) {
 
     @Provides
     fun providesRealm(): Realm = Realm.getDefaultInstance()
+
+    @Provides
+    fun providesAccountStateChangeReceiver() = RxBroadcastReceivers.fromIntentFilter(context, IntentFilter(ACCOUNT_STATE_CHANGE))
 }
 
 @Module(subcomponents = [BaseFragmentSubcomponent::class], includes = [BaseFragmentModule.Declarations::class])
