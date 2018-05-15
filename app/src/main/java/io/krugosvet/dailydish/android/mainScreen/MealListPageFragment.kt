@@ -5,15 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.krugosvet.dailydish.android.R
-import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.utils.ViewPagerFragment
 import io.krugosvet.dailydish.android.utils.baseUi.BaseFragment
-import io.krugosvet.dailydish.android.utils.getMeals
+import io.krugosvet.dailydish.android.utils.getAscByDateMeals
 import io.krugosvet.dailydish.android.utils.intent.ImageProviderActivity
-import io.realm.OrderedRealmCollection
 import kotlinx.android.synthetic.main.fragment_meal_list.*
 
-const val NO_LIMIT = -1
 const val PAGE_TITLE = "pageTitle"
 
 open class MealListPageFragment : BaseFragment(), ViewPagerFragment {
@@ -23,15 +20,11 @@ open class MealListPageFragment : BaseFragment(), ViewPagerFragment {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mealList.adapter = MealListAdapter(realm, adapterItems(), getAdapterItemLimit(),
-                activity as ImageProviderActivity)
+        mealList.adapter = MealListAdapter(realm, activity as ImageProviderActivity,
+                realm.getAscByDateMeals(authTokenManager.userId()))
     }
 
     override fun getFragmentTitle() = arguments?.getString(PAGE_TITLE) ?: ""
-
-    protected open fun adapterItems(): OrderedRealmCollection<Meal> = realm.getMeals()
-
-    protected open fun getAdapterItemLimit() = NO_LIMIT
 
     companion object {
         fun newInstance(pageTitle: String) = MealListPageFragment().apply {

@@ -31,7 +31,7 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
     }
 
     override fun onAddButtonClick(mealTitle: String, mealDescription: String, parseDate: Date, mainImage: File?) {
-        Meal(mealTitle, mealDescription, parseDate, readBytesFromFile(mainImage), authTokenManager.getStoredUserID()).persist(realm)
+        Meal(mealTitle, mealDescription, parseDate, readBytesFromFile(mainImage), authTokenManager.userId()).persist(realm)
     }
 
     private fun setupViewPager() {

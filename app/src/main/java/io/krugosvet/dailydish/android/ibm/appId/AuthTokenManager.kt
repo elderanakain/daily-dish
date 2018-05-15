@@ -23,7 +23,7 @@ class AuthTokenManager constructor(context: Context, private var appIDAuthorizat
     fun getStoredRefreshToken(): String = sharedPreferences.getString(APPID_REFRESH_TOKEN, "")
     private fun isRefreshTokenExists() = !getStoredRefreshToken().isEmpty()
     fun getStoredUserName(): String = sharedPreferences.getString(APPID_USER_NAME, "")
-    fun getStoredUserID(): String = sharedPreferences.getString(APPID_USER_ID, "")
+    fun userId(): String = sharedPreferences.getString(APPID_USER_ID, "")
     fun clearStoredTokens() {
         !sharedPreferences.edit().clear().commit()
         tokenState = StoredTokenState.ANONYMOUS

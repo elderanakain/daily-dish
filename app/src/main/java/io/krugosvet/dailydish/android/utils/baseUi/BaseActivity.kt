@@ -10,9 +10,9 @@ import com.ibm.bluemix.appid.android.api.tokens.IdentityToken
 import com.ibm.bluemix.appid.android.api.tokens.RefreshToken
 import dagger.android.AndroidInjection
 import io.krugosvet.dailydish.android.R
-import io.krugosvet.dailydish.android.ibm.appId.SimpleAuthorizationListener
 import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager
 import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager.StoredTokenState
+import io.krugosvet.dailydish.android.ibm.appId.SimpleAuthorizationListener
 import io.realm.Realm
 import javax.inject.Inject
 
@@ -53,18 +53,13 @@ abstract class BaseActivity : AppCompatActivity() {
         true
     } else super.onOptionsItemSelected(item)
 
-    private fun launchSingIn() {
-        appID.loginWidget.launch(this, onAuthorizationSuccess())
-    }
+    private fun launchSingIn() = appID.loginWidget.launch(this, onAuthorizationSuccess())
 
-    private fun signInExistingUser() {
-        appID.signinWithRefreshToken(this, authTokenManager.getStoredRefreshToken(),
-                onAuthorizationSuccess())
-    }
+    private fun signInExistingUser() = appID.signinWithRefreshToken(this,
+            authTokenManager.getStoredRefreshToken(), onAuthorizationSuccess())
 
-    private fun updateAccountName() {
-        runOnUiThread { accountName.title = authTokenManager.getStoredUserName() }
-    }
+    private fun updateAccountName() =
+            runOnUiThread { accountName.title = authTokenManager.getStoredUserName() }
 
     private fun signOut() {
         authTokenManager.clearStoredTokens()
