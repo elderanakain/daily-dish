@@ -14,6 +14,7 @@ import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager
 import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager.StoredTokenState
 import io.krugosvet.dailydish.android.ibm.appId.SimpleAuthorizationListener
+import io.krugosvet.dailydish.android.network.MealServicePipe
 import io.krugosvet.dailydish.android.utils.intent.ACCOUNT_STATE_CHANGE
 import io.realm.Realm
 import javax.inject.Inject
@@ -27,12 +28,15 @@ abstract class BaseActivity : AppCompatActivity() {
     protected lateinit var authTokenManager: AuthTokenManager
     @Inject
     protected lateinit var realm: Realm
+    @Inject
+    protected lateinit var mealServicePipe: MealServicePipe
 
     private lateinit var accountName: MenuItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidInjection.inject(this)
+        mealServicePipe.getMeals {  }
     }
 
     override fun onDestroy() {

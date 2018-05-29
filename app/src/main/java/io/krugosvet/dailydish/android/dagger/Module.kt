@@ -3,6 +3,7 @@ package io.krugosvet.dailydish.android.dagger
 import android.app.Activity
 import android.content.Context
 import android.content.IntentFilter
+import android.support.annotation.NonNull
 import android.support.v4.app.Fragment
 import com.github.karczews.rxbroadcastreceiver.RxBroadcastReceivers
 import com.ibm.bluemix.appid.android.api.AppID
@@ -19,13 +20,24 @@ import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager
 import io.krugosvet.dailydish.android.mainScreen.ForTodayFragment
 import io.krugosvet.dailydish.android.mainScreen.MealListPageFragment
 import io.krugosvet.dailydish.android.mainScreen.StartupActivity
+import io.krugosvet.dailydish.android.network.BASE_URL
+import io.krugosvet.dailydish.android.network.MealService
+import io.krugosvet.dailydish.android.network.MealServicePipe
 import io.krugosvet.dailydish.android.utils.baseUi.BaseActivity
 import io.krugosvet.dailydish.android.utils.baseUi.BaseFragment
 import io.krugosvet.dailydish.android.utils.intent.ACCOUNT_STATE_CHANGE
+import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
-@Module(subcomponents = [(BaseActivitySubcomponent::class)], includes = [BaseActivityModule.Declarations::class])
-internal class BaseActivityModule(private val context: Context) {
+
+@Module(subcomponents = [(BaseActivitySubcomponent::class)],
+        includes = [BaseActivityModule.Declarations::class, AccountModule::class, NetworkModule::class])
+internal class BaseActivityModule {
 
     @Module
     internal interface Declarations {
@@ -39,20 +51,18 @@ internal class BaseActivityModule(private val context: Context) {
         fun contributeStartupActivity(): StartupActivity
     }
 
-    @Provides
-    fun providesTokenPersistenceManager() = AuthTokenManager(context, AppIDAuthorizationManager(AppID.getInstance()))
-
+    @Singleton
+    @NonNull
     @Provides
     fun providesAppId() = AppID.getInstance()
 
+    @Singleton
+    @NonNull
     @Provides
     fun providesRealm(): Realm = Realm.getDefaultInstance()
-
-    @Provides
-    fun providesAccountStateChangeReceiver() = RxBroadcastReceivers.fromIntentFilter(context, IntentFilter(ACCOUNT_STATE_CHANGE))
 }
 
-@Module(subcomponents = [BaseFragmentSubcomponent::class], includes = [BaseFragmentModule.Declarations::class])
+@Module(subcomponents = [BaseFragmentSubcomponent::class], includes = [BaseFragmentModule.Declarations::class, NetworkModule::class])
 internal class BaseFragmentModule {
 
     @Module
@@ -69,4 +79,36 @@ internal class BaseFragmentModule {
         @ContributesAndroidInjector
         fun contributeMealListPageFragment(): MealListPageFragment
     }
+}
+
+@Module
+internal class NetworkModule(private val appContext: Context) {
+
+    @Singleton
+    @NonNull
+    @Provides
+    fun provideDailyDishService(): MealService = Retrofit.Builder().baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .callFactory(OkHttpClient.Builder().build())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
+            .build().create(MealService::class.java)
+
+    @Singleton
+    @NonNull
+    @Provides
+    fun provideMealServicePipe(): MealServicePipe = MealServicePipe(appContext)
+}
+
+@Module
+internal class AccountModule(private val appContext: Context) {
+
+    @Singleton
+    @NonNull
+    @Provides
+    fun providesAuthTokenManager() = AuthTokenManager(appContext, AppIDAuthorizationManager(AppID.getInstance()))
+
+    @Singleton
+    @NonNull
+    @Provides
+    fun providesAccountStateChangeReceiver() = RxBroadcastReceivers.fromIntentFilter(appContext, IntentFilter(ACCOUNT_STATE_CHANGE))
 }

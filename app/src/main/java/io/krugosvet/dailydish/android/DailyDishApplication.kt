@@ -10,12 +10,11 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import dagger.android.support.HasSupportFragmentInjector
 import io.fabric.sdk.android.Fabric
-import io.krugosvet.dailydish.android.dagger.BaseActivityModule
-import io.krugosvet.dailydish.android.dagger.DaggerDailyDishApplicationComponent
+import io.krugosvet.dailydish.android.dagger.*
 import io.realm.Realm
 import javax.inject.Inject
 
-class DailyDishApplication: Application(), HasActivityInjector, HasSupportFragmentInjector {
+class DailyDishApplication : Application(), HasActivityInjector, HasSupportFragmentInjector {
 
     @Inject
     lateinit var dispatchingActivityInjector: DispatchingAndroidInjector<Activity>
@@ -25,8 +24,12 @@ class DailyDishApplication: Application(), HasActivityInjector, HasSupportFragme
     override fun onCreate() {
         super.onCreate()
         DaggerDailyDishApplicationComponent.builder()
-                .baseActivityModule(BaseActivityModule(this))
+                .baseActivityModule(BaseActivityModule())
+                .accountModule(getAccountModule())
+                .networkModule(getNetworkModule())
                 .build().inject(this)
+        DaggerMealServicePipeComponent.builder().accountModule(getAccountModule()).networkModule(getNetworkModule()).build()
+
         Realm.init(this)
         Fabric.with(this, Crashlytics())
         AppID.getInstance().initialize(this, resources.getString(R.string.authTenantId), AppID.REGION_UK)
@@ -35,4 +38,8 @@ class DailyDishApplication: Application(), HasActivityInjector, HasSupportFragme
     override fun activityInjector(): AndroidInjector<Activity>? = dispatchingActivityInjector
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingFragmentInjector
+
+    private fun getAccountModule() = AccountModule(this)
+
+    private fun getNetworkModule() = NetworkModule(this)
 }
