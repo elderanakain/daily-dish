@@ -5,7 +5,6 @@ import dagger.Subcomponent
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import io.krugosvet.dailydish.android.DailyDishApplication
-import io.krugosvet.dailydish.android.network.MealServicePipe
 import io.krugosvet.dailydish.android.utils.baseUi.BaseActivity
 import io.krugosvet.dailydish.android.utils.baseUi.BaseFragment
 import javax.inject.Singleton
@@ -28,7 +27,7 @@ interface BaseFragmentSubcomponent : AndroidInjector<BaseFragment> {
     abstract class Builder : AndroidInjector.Builder<BaseFragment>()
 }
 
-@Component(modules = [NetworkModule::class, AccountModule::class])
-interface MealServicePipeComponent {
-    fun inject(mealServicePipe: MealServicePipe)
-}
+//@Component(modules = [NetworkModule::class, AccountModule::class])
+//interface MealServicePipeComponent {
+//    fun inject(mealServicePipe: MealServicePipe)
+//}

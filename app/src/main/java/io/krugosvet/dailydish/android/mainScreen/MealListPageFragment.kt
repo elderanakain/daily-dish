@@ -11,6 +11,7 @@ import io.krugosvet.dailydish.android.utils.baseUi.BaseFragment
 import io.krugosvet.dailydish.android.utils.getAscByDateMeals
 import io.krugosvet.dailydish.android.utils.intent.ImageProviderActivity
 import io.reactivex.Observable
+import kotlinx.android.synthetic.main.fragment_meal_list.*
 import javax.inject.Inject
 
 const val PAGE_TITLE = "pageTitle"

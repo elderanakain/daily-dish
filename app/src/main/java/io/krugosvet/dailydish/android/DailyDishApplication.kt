@@ -10,7 +10,10 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import dagger.android.support.HasSupportFragmentInjector
 import io.fabric.sdk.android.Fabric
-import io.krugosvet.dailydish.android.dagger.*
+import io.krugosvet.dailydish.android.dagger.AccountModule
+import io.krugosvet.dailydish.android.dagger.BaseActivityModule
+import io.krugosvet.dailydish.android.dagger.DaggerDailyDishApplicationComponent
+import io.krugosvet.dailydish.android.dagger.NetworkModule
 import io.realm.Realm
 import javax.inject.Inject
 
@@ -28,7 +31,7 @@ class DailyDishApplication : Application(), HasActivityInjector, HasSupportFragm
                 .accountModule(getAccountModule())
                 .networkModule(getNetworkModule())
                 .build().inject(this)
-        DaggerMealServicePipeComponent.builder().accountModule(getAccountModule()).networkModule(getNetworkModule()).build()
+        //DaggerMealServicePipeComponent.builder().accountModule(getAccountModule()).networkModule(getNetworkModule()).build()
 
         Realm.init(this)
         Fabric.with(this, Crashlytics())
@@ -39,7 +42,7 @@ class DailyDishApplication : Application(), HasActivityInjector, HasSupportFragm
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingFragmentInjector
 
-    private fun getAccountModule() = AccountModule(this)
+    private fun getAccountModule() = AccountModule(applicationContext)
 
-    private fun getNetworkModule() = NetworkModule(this)
+    private fun getNetworkModule() = NetworkModule(applicationContext)
 }

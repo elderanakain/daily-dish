@@ -24,6 +24,7 @@ import io.krugosvet.dailydish.android.mainScreen.StartupActivity
 import io.krugosvet.dailydish.android.network.BASE_URL
 import io.krugosvet.dailydish.android.network.MealService
 import io.krugosvet.dailydish.android.network.MealServicePipe
+import io.krugosvet.dailydish.android.network.MealServicePipeImpl
 import io.krugosvet.dailydish.android.utils.baseUi.BaseActivity
 import io.krugosvet.dailydish.android.utils.baseUi.BaseFragment
 import io.krugosvet.dailydish.android.utils.intent.ACCOUNT_STATE_CHANGE
@@ -35,10 +36,9 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-
 @Module(subcomponents = [(BaseActivitySubcomponent::class)],
         includes = [BaseActivityModule.Declarations::class, AccountModule::class, NetworkModule::class])
-internal class BaseActivityModule {
+class BaseActivityModule {
 
     @Module
     internal interface Declarations {
@@ -64,7 +64,7 @@ internal class BaseActivityModule {
 }
 
 @Module(subcomponents = [BaseFragmentSubcomponent::class], includes = [BaseFragmentModule.Declarations::class, NetworkModule::class])
-internal class BaseFragmentModule {
+class BaseFragmentModule {
 
     @Module
     internal interface Declarations {
@@ -83,7 +83,7 @@ internal class BaseFragmentModule {
 }
 
 @Module
-internal class NetworkModule(private val appContext: Context) {
+class NetworkModule(private val appContext: Context) {
 
     @Singleton
     @NonNull
@@ -97,11 +97,11 @@ internal class NetworkModule(private val appContext: Context) {
     @Singleton
     @NonNull
     @Provides
-    fun provideMealServicePipe(): MealServicePipe = MealServicePipe(appContext)
+    fun provideMealServicePipe(): MealServicePipe = MealServicePipeImpl(appContext)
 }
 
 @Module
-internal class AccountModule(private val appContext: Context) {
+class AccountModule(private val appContext: Context) {
 
     @Singleton
     @NonNull

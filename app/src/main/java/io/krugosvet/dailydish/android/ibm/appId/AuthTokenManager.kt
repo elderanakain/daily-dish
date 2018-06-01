@@ -27,9 +27,9 @@ interface AuthTokenManager {
 internal class AuthTokenManagerImpl constructor(context: Context, private var appIDAuthorizationManager: AppIDAuthorizationManager)
     : AuthTokenManager {
 
-    override var accountState: AccountState = if (isRefreshTokenExists()) AccountState.IDENTIFIED else AccountState.ANONYMOUS
-
     private val sharedPreferences = context.getSharedPreferences(APPID_TOKENS_PREF, Context.MODE_PRIVATE)
+
+    override var accountState: AccountState = if (isRefreshTokenExists()) AccountState.IDENTIFIED else AccountState.ANONYMOUS
 
     override fun refreshToken(): String = sharedPreferences.getString(APPID_REFRESH_TOKEN, "")
 
