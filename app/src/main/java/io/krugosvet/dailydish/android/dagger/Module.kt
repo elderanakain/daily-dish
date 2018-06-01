@@ -17,6 +17,7 @@ import dagger.android.ContributesAndroidInjector
 import dagger.android.support.FragmentKey
 import dagger.multibindings.IntoMap
 import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager
+import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManagerImpl
 import io.krugosvet.dailydish.android.mainScreen.ForTodayFragment
 import io.krugosvet.dailydish.android.mainScreen.MealListPageFragment
 import io.krugosvet.dailydish.android.mainScreen.StartupActivity
@@ -105,7 +106,8 @@ internal class AccountModule(private val appContext: Context) {
     @Singleton
     @NonNull
     @Provides
-    fun providesAuthTokenManager() = AuthTokenManager(appContext, AppIDAuthorizationManager(AppID.getInstance()))
+    fun providesAuthTokenManager(): AuthTokenManager =
+            AuthTokenManagerImpl(appContext, AppIDAuthorizationManager(AppID.getInstance()))
 
     @Singleton
     @NonNull

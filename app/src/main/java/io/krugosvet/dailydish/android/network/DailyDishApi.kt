@@ -5,6 +5,7 @@ import android.widget.Toast
 import io.krugosvet.dailydish.android.dagger.DaggerMealServicePipeComponent
 import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager
+import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManagerImpl
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
