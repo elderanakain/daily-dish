@@ -4,7 +4,6 @@ import android.app.Application
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
 import io.krugosvet.dailydish.android.dagger.*
-import io.realm.Realm
 
 class DailyDishApplication : Application() {
 
@@ -14,7 +13,6 @@ class DailyDishApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Realm.init(this)
         Fabric.with(this, Crashlytics())
         appComponent = buildComponent()
     }

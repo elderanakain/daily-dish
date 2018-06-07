@@ -35,7 +35,10 @@ class AppModule(private val appContext: Context) {
     @Provides
     @NonNull
     @Singleton
-    fun provideRealm(): Realm = Realm.getDefaultInstance()
+    fun provideRealm(): Realm {
+        Realm.init(appContext)
+        return Realm.getDefaultInstance()
+    }
 }
 
 @Module
