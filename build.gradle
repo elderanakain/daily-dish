@@ -1,8 +1,9 @@
 buildscript {
     project.ext.kotlin_version = '1.2.41'
-    project.ext.realm_version = '5.1.0'
+    project.ext.realm_version = '5.2.0'
     project.ext.support_version = '27.1.1'
     project.ext.dagger_version = '2.16'
+    project.ext.retrofit_version = '2.4.0'
     repositories {
         google()
         jcenter()
