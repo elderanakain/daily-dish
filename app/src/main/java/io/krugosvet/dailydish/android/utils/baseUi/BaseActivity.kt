@@ -9,7 +9,7 @@ import com.ibm.bluemix.appid.android.api.AppID
 import com.ibm.bluemix.appid.android.api.tokens.AccessToken
 import com.ibm.bluemix.appid.android.api.tokens.IdentityToken
 import com.ibm.bluemix.appid.android.api.tokens.RefreshToken
-import dagger.android.AndroidInjection
+import io.krugosvet.dailydish.android.DailyDishApplication
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.ibm.appId.AccountState
 import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager
@@ -35,7 +35,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AndroidInjection.inject(this)
+        DailyDishApplication.appComponent.inject(this)
         mealServicePipe.getMeals {  }
     }
 

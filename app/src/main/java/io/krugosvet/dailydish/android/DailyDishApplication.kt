@@ -1,48 +1,26 @@
 package io.krugosvet.dailydish.android
 
-import android.app.Activity
 import android.app.Application
-import android.support.v4.app.Fragment
 import com.crashlytics.android.Crashlytics
-import com.ibm.bluemix.appid.android.api.AppID
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
-import dagger.android.support.HasSupportFragmentInjector
 import io.fabric.sdk.android.Fabric
-import io.krugosvet.dailydish.android.dagger.AccountModule
-import io.krugosvet.dailydish.android.dagger.BaseActivityModule
-import io.krugosvet.dailydish.android.dagger.DaggerDailyDishApplicationComponent
-import io.krugosvet.dailydish.android.dagger.NetworkModule
+import io.krugosvet.dailydish.android.dagger.*
 import io.realm.Realm
-import javax.inject.Inject
 
-class DailyDishApplication : Application(), HasActivityInjector, HasSupportFragmentInjector {
+class DailyDishApplication : Application() {
 
-    @Inject
-    lateinit var dispatchingActivityInjector: DispatchingAndroidInjector<Activity>
-    @Inject
-    lateinit var dispatchingFragmentInjector: DispatchingAndroidInjector<Fragment>
+    companion object {
+        lateinit var appComponent: AppComponent
+    }
 
     override fun onCreate() {
         super.onCreate()
-        DaggerDailyDishApplicationComponent.builder()
-                .baseActivityModule(BaseActivityModule())
-                .accountModule(getAccountModule())
-                .networkModule(getNetworkModule())
-                .build().inject(this)
-        //DaggerMealServicePipeComponent.builder().accountModule(getAccountModule()).networkModule(getNetworkModule()).build()
-
         Realm.init(this)
         Fabric.with(this, Crashlytics())
-        AppID.getInstance().initialize(this, resources.getString(R.string.authTenantId), AppID.REGION_UK)
+        appComponent = buildComponent()
     }
 
-    override fun activityInjector(): AndroidInjector<Activity>? = dispatchingActivityInjector
-
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingFragmentInjector
-
-    private fun getAccountModule() = AccountModule(applicationContext)
-
-    private fun getNetworkModule() = NetworkModule(applicationContext)
+    private fun buildComponent() = DaggerAppComponent.builder()
+            .appModule(AppModule(this))
+            .accountModule(AccountModule())
+            .networkModule(NetworkModule()).build()
 }
