@@ -4,6 +4,9 @@ import android.app.Application
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
 import io.krugosvet.dailydish.android.dagger.*
+import io.krugosvet.dailydish.android.dagger.module.AccountModule
+import io.krugosvet.dailydish.android.dagger.module.AppModule
+import io.krugosvet.dailydish.android.dagger.module.NetworkModule
 
 class DailyDishApplication : Application() {
 
