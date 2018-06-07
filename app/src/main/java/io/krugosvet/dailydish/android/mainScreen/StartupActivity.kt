@@ -1,6 +1,7 @@
 package io.krugosvet.dailydish.android.mainScreen
 
 import android.os.Bundle
+import io.krugosvet.dailydish.android.DailyDishApplication
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.utils.baseUi.BaseFragment
@@ -17,6 +18,7 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startup)
+        DailyDishApplication.appComponent.inject(this)
 
         setupViewPager()
 

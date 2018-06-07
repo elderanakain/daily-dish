@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.krugosvet.dailydish.android.DailyDishApplication
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.utils.ViewPagerFragment
 import io.krugosvet.dailydish.android.utils.baseUi.BaseFragment
@@ -31,6 +32,10 @@ open class MealListPageFragment : BaseFragment(), ViewPagerFragment {
     }
 
     override fun getFragmentTitle() = arguments?.getString(PAGE_TITLE) ?: ""
+
+    override fun initInjection() {
+        DailyDishApplication.appComponent.inject(this)
+    }
 
     companion object {
         fun newInstance(pageTitle: String) = MealListPageFragment().apply {

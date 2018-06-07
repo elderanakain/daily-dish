@@ -10,29 +10,40 @@ const val APPID_TOKENS_PREF = "appid_tokens"
 const val APPID_USER_NAME = "appid_user_name"
 const val APPID_USER_ID = "appid_user_id"
 
-class AuthTokenManager constructor(context: Context, private var appIDAuthorizationManager: AppIDAuthorizationManager) {
+enum class AccountState {
+    ANONYMOUS, IDENTIFIED
+}
 
-    enum class StoredTokenState {
-        ANONYMOUS, IDENTIFIED
-    }
+interface AuthTokenManager {
+    var accountState: AccountState
+
+    fun persistTokens()
+    fun refreshToken(): String
+    fun userName(): String
+    fun userId(): String
+    fun clearTokens()
+}
+
+internal class AuthTokenManagerImpl constructor(context: Context, private var appIDAuthorizationManager: AppIDAuthorizationManager)
+    : AuthTokenManager {
 
     private val sharedPreferences = context.getSharedPreferences(APPID_TOKENS_PREF, Context.MODE_PRIVATE)
 
-    var tokenState: StoredTokenState = if (isRefreshTokenExists()) StoredTokenState.IDENTIFIED else StoredTokenState.ANONYMOUS
+    override var accountState: AccountState = if (isRefreshTokenExists()) AccountState.IDENTIFIED else AccountState.ANONYMOUS
 
-    fun getStoredAccessToken() = sharedPreferences.getString(APPID_ACCESS_TOKEN, "")
-    fun getStoredRefreshToken(): String = sharedPreferences.getString(APPID_REFRESH_TOKEN, "")
-    private fun isRefreshTokenExists() = !getStoredRefreshToken().isEmpty()
-    fun getStoredUserName(): String = sharedPreferences.getString(APPID_USER_NAME, "")
-    fun userId(): String = sharedPreferences.getString(APPID_USER_ID, "")
+    override fun refreshToken(): String = sharedPreferences.getString(APPID_REFRESH_TOKEN, "")
 
-    fun clearStoredTokens() {
+    override fun userName(): String = sharedPreferences.getString(APPID_USER_NAME, "")
+
+    override fun userId(): String = sharedPreferences.getString(APPID_USER_ID, "")
+
+    override fun clearTokens() {
         !sharedPreferences.edit().clear().commit()
-        tokenState = StoredTokenState.ANONYMOUS
+        accountState = AccountState.ANONYMOUS
     }
 
     @SuppressLint("ApplySharedPref")
-    fun persistTokensOnDevice() {
+    override fun persistTokens() {
         val identityToken = appIDAuthorizationManager.identityToken
 
         sharedPreferences.edit()
@@ -40,6 +51,8 @@ class AuthTokenManager constructor(context: Context, private var appIDAuthorizat
                 .putString(APPID_USER_NAME, identityToken.name)
                 .putString(APPID_USER_ID, identityToken.subject)
                 .putString(APPID_REFRESH_TOKEN, appIDAuthorizationManager.refreshToken.raw).commit()
-        tokenState = StoredTokenState.IDENTIFIED
+        accountState = AccountState.IDENTIFIED
     }
+
+    private fun isRefreshTokenExists() = !refreshToken().isEmpty()
 }
