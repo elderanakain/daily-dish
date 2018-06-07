@@ -3,7 +3,8 @@ package io.krugosvet.dailydish.android
 import android.app.Application
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
-import io.krugosvet.dailydish.android.dagger.*
+import io.krugosvet.dailydish.android.dagger.AppComponent
+import io.krugosvet.dailydish.android.dagger.DaggerAppComponent
 import io.krugosvet.dailydish.android.dagger.module.AccountModule
 import io.krugosvet.dailydish.android.dagger.module.AppModule
 import io.krugosvet.dailydish.android.dagger.module.NetworkModule
