@@ -10,7 +10,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableSingleObserver
 import retrofit2.http.*
 
-const val BASE_URL = "https://ssme-20180514184900630.eu-gb.mybluemix.net/"
 const val MEAL_ENDPOINT = "meal.php"
 
 interface MealService {

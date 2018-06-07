@@ -4,8 +4,8 @@ import android.content.Context
 import android.support.annotation.NonNull
 import dagger.Module
 import dagger.Provides
+import io.krugosvet.dailydish.android.BuildConfig
 import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager
-import io.krugosvet.dailydish.android.network.BASE_URL
 import io.krugosvet.dailydish.android.network.MealService
 import io.krugosvet.dailydish.android.network.MealServicePipe
 import io.krugosvet.dailydish.android.network.MealServicePipeImpl
@@ -23,7 +23,8 @@ class NetworkModule {
     @Singleton
     @NonNull
     @Provides
-    fun provideDailyDishService(okHttpClient: OkHttpClient): MealService = Retrofit.Builder().baseUrl(BASE_URL)
+    fun provideDailyDishService(okHttpClient: OkHttpClient): MealService = Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .callFactory(okHttpClient)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))

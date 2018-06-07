@@ -5,6 +5,8 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
 apply plugin: 'io.fabric'
 
+apply from: 'gradle/signing.gradle'
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -16,10 +18,24 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = ['appIdRedirectScheme': android.defaultConfig.applicationId]
     }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", 'BASE_URL', '"https://ssme-20180514184900630.eu-gb.mybluemix.net"'
+            resValue "string", "app_name", "DailyDish"
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+            buildConfigField "String", 'BASE_URL', '"https://simple-toolchain-20180529150027814.eu-gb.mybluemix.net"'
+            resValue "string", "app_name", "DailyDish Debug"
+        }
+        beta {
+            initWith debug
+            applicationIdSuffix ".beta"
+            resValue "string", "app_name", "DailyDish Beta"
         }
     }
 
@@ -41,24 +57,19 @@ dependencies {
     implementation 'androidx.core:core-ktx:0.3'
     implementation 'com.github.bumptech.glide:glide:4.7.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
-
     implementation('com.github.ibm-cloud-security:appid-clientsdk-android:3.0.1') {
         exclude group: 'org.jetbrains'
     }
-
     implementation "com.google.dagger:dagger:$dagger_version"
     implementation "com.google.dagger:dagger-android:$dagger_version"
     implementation "com.google.dagger:dagger-android-support:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
-
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
-
     implementation 'com.github.karczews:rx2-broadcast-receiver:1.0.4'
-
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
-        transitive = true;
+        transitive = true
     }
 
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

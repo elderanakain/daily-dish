@@ -1,0 +1,6 @@
+android {
+    if (project.hasProperty("daily-dish.signing")
+            && new File(project.property("daily-dish.signing") + ".gradle").exists()) {
+        apply from: project.property("daily-dish.signing") + ".gradle"
+    }
+}
