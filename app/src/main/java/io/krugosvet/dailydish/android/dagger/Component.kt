@@ -13,8 +13,3 @@ interface AppComponent {
     fun inject(activity: StartupActivity)
     fun inject(fragment: MealListPageFragment)
 }
-
-//@Component(modules = [NetworkModule::class, AccountModule::class])
-//interface MealServicePipeComponent {
-//    fun inject(mealServicePipe: MealServicePipe)
-//}
