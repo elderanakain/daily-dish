@@ -1,13 +1,14 @@
 package io.krugosvet.dailydish.android.mainScreen
 
 import android.os.Bundle
+import android.view.View
 import io.krugosvet.dailydish.android.DailyDishApplication
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.utils.baseUi.BaseFragment
 import io.krugosvet.dailydish.android.utils.intent.ImageProviderActivity
 import io.krugosvet.dailydish.android.utils.readBytesFromFile
-import kotlinx.android.synthetic.main.activity_startup.*
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.util.*
 
@@ -17,13 +18,22 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_startup)
+        setContentView(R.layout.activity_main)
         DailyDishApplication.appComponent.inject(this)
 
         setupViewPager()
 
         floatingButton.setOnClickListener {
             DialogAddMeal().addCameraImagePipe(this).show(fragmentManager, "")
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        progressBar.visibility = View.VISIBLE
+        mealServicePipe.getMeals { meals ->
+            realm.executeTransaction { it.insertOrUpdate(meals) }
+            progressBar.visibility = View.INVISIBLE
         }
     }
 

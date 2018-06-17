@@ -2,6 +2,8 @@ package io.krugosvet.dailydish.android
 
 import android.app.Application
 import com.crashlytics.android.Crashlytics
+import com.facebook.stetho.Stetho
+import com.uphyca.stetho_realm.RealmInspectorModulesProvider
 import io.fabric.sdk.android.Fabric
 import io.krugosvet.dailydish.android.dagger.AppComponent
 import io.krugosvet.dailydish.android.dagger.DaggerAppComponent
@@ -22,6 +24,13 @@ class DailyDishApplication : Application() {
                 .debuggable(BuildConfig.DEBUG)
                 .build())
         appComponent = buildComponent()
+
+        if (BuildConfig.DEBUG) {
+            Stetho.initialize(Stetho.newInitializerBuilder(this)
+                    .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                    .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
+                    .build())
+        }
     }
 
     private fun buildComponent() = DaggerAppComponent.builder()

@@ -2,7 +2,6 @@ package io.krugosvet.dailydish.android.mainScreen
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,13 +28,8 @@ open class MealListPageFragment : BaseFragment(), ViewPagerFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mealList.adapter = MealListAdapter(realm, activity as ImageProviderActivity,
-                { realm.getAscByDateMeals(authTokenManager.userId()) }, accountStateChangeReceiver)
-
-        mealServicePipe.getMeals {
-            it.forEach {
-                Log.d("test", it.toString())
-            }
-        }
+                { realm.getAscByDateMeals(authTokenManager.userId()) },
+                accountStateChangeReceiver)
     }
 
     override fun getFragmentTitle() = arguments?.getString(PAGE_TITLE) ?: ""

@@ -11,13 +11,14 @@ import io.realm.annotations.Required
 import io.realm.kotlin.deleteFromRealm
 import java.io.File
 import java.util.*
+import javax.annotation.Nullable
 
 @RealmClass
 open class Meal @JvmOverloads constructor(
         @Required @SerializedName("title") var title: String = "",
         @Required @SerializedName("description") var description: String = "",
         @Required @SerializedName("date") var date: Date = Date(),
-        @SerializedName("main_image") var mainImage: ByteArray = byteArrayOf(),
+        @Nullable @SerializedName("main_image") var mainImage: ByteArray? = null,
         @Required @SerializedName("user_id") var userId: String = "") : RealmModel {
 
     @PrimaryKey
