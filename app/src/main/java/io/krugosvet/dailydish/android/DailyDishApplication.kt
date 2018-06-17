@@ -17,7 +17,10 @@ class DailyDishApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Fabric.with(this, Crashlytics())
+        Fabric.with(Fabric.Builder(this)
+                .kits(Crashlytics())
+                .debuggable(BuildConfig.DEBUG)
+                .build())
         appComponent = buildComponent()
     }
 
