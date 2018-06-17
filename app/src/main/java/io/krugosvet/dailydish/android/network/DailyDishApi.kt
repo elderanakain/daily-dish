@@ -17,6 +17,9 @@ interface MealService {
     @GET(MEAL_ENDPOINT)
     fun getMeals(@Query("userId") user: String): Single<List<Meal>>
 
+    @GET(MEAL_ENDPOINT)
+    fun getMeals(): Single<List<Meal>>
+
     @FormUrlEncoded
     @POST(MEAL_ENDPOINT)
     fun sendMeal(@Body meal: Meal): Completable
@@ -30,15 +33,22 @@ class MealServicePipeImpl(private val appContext: Context, private val mealServi
                           private val authTokenManager: AuthTokenManager) : MealServicePipe {
 
     override fun getMeals(onSuccess: (meals: List<Meal>) -> Unit) {
-        mealService.getMeals(authTokenManager.userId()).observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<List<Meal>>() {
-                    override fun onSuccess(meals: List<Meal>) {
-                        onSuccess.invoke(meals)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        Toast.makeText(appContext, e.message, Toast.LENGTH_LONG).show()
-                    }
-                })
+        getMealObserver(authTokenManager.userId())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(getSingleObserver(onSuccess))
     }
+
+    private fun getMealObserver(userId: String) =
+            if (userId.isEmpty()) mealService.getMeals() else mealService.getMeals(userId)
+
+    private fun getSingleObserver(onSuccess: (meals: List<Meal>) -> Unit) =
+            object : DisposableSingleObserver<List<Meal>>() {
+                override fun onSuccess(meals: List<Meal>) {
+                    onSuccess.invoke(meals)
+                }
+
+                override fun onError(e: Throwable) {
+                    Toast.makeText(appContext, e.message, Toast.LENGTH_LONG).show()
+                }
+            }
 }
