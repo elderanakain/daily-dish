@@ -25,12 +25,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", 'BASE_URL', '"https://ssme-20180514184900630.eu-gb.mybluemix.net"'
             resValue "string", "app_name", "DailyDish"
+            signingConfig signingConfigs.release
         }
         debug {
             applicationIdSuffix ".debug"
             debuggable true
             buildConfigField "String", 'BASE_URL', '"https://simple-toolchain-20180529150027814.eu-gb.mybluemix.net"'
             resValue "string", "app_name", "DailyDish Debug"
+            signingConfig signingConfigs.debug
         }
         beta {
             initWith debug
