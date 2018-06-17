@@ -96,7 +96,7 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
     }
 
     private fun createDateForm() {
-        date.editText?.setText(getCurrentDate())
+        date.editText?.setText(getCurrentDateString())
         date.editText?.setOnClickListener {
             DatePickerDialog.newInstance(this, Calendar.getInstance()).apply {
                 maxDate = Calendar.getInstance()

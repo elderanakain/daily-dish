@@ -36,7 +36,6 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         DailyDishApplication.appComponent.inject(this)
-        mealServicePipe.getMeals {  }
     }
 
     override fun onDestroy() {
