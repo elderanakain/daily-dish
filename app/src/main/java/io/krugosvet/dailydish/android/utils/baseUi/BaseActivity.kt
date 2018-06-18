@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.ibm.bluemix.appid.android.api.AppID
+import com.ibm.bluemix.appid.android.api.AuthorizationException
 import com.ibm.bluemix.appid.android.api.tokens.AccessToken
 import com.ibm.bluemix.appid.android.api.tokens.IdentityToken
 import com.ibm.bluemix.appid.android.api.tokens.RefreshToken
@@ -70,6 +71,14 @@ abstract class BaseActivity : AppCompatActivity() {
             super.onAuthorizationSuccess(accessToken, identityToken, refreshToken)
             authTokenManager.persistTokens()
             onAccountStateChanged()
+        }
+
+        override fun onAuthorizationFailure(exception: AuthorizationException?) {
+            super.onAuthorizationFailure(exception)
+        }
+
+        override fun onAuthorizationCanceled() {
+            super.onAuthorizationCanceled()
         }
     }
 
