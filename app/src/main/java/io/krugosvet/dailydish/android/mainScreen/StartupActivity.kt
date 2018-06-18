@@ -1,6 +1,8 @@
 package io.krugosvet.dailydish.android.mainScreen
 
 import android.os.Bundle
+import android.support.annotation.StringRes
+import android.support.design.widget.Snackbar
 import android.view.View
 import io.krugosvet.dailydish.android.DailyDishApplication
 import io.krugosvet.dailydish.android.R
@@ -8,6 +10,8 @@ import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.utils.baseUi.BaseFragment
 import io.krugosvet.dailydish.android.utils.intent.ImageProviderActivity
 import io.krugosvet.dailydish.android.utils.readBytesFromFile
+import io.reactivex.MaybeObserver
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.util.*
@@ -30,11 +34,30 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
 
     override fun onResume() {
         super.onResume()
-        progressBar.visibility = View.VISIBLE
-        mealServicePipe.getMeals { meals ->
-            realm.executeTransaction { it.insertOrUpdate(meals) }
-            progressBar.visibility = View.INVISIBLE
-        }
+        mealServicePipe.getMeals().subscribe(object : MaybeObserver<List<Meal>> {
+            override fun onSubscribe(d: Disposable) {
+                progressBar.visibility = View.VISIBLE
+            }
+
+            override fun onSuccess(meals: List<Meal>) {
+                realm.executeTransaction { it.insertOrUpdate(meals) }
+                onFinnish(R.string.network_success_message)
+            }
+
+            override fun onComplete() {
+                onFinnish(R.string.network_success_message)
+            }
+
+            override fun onError(e: Throwable) {
+                onFinnish(R.string.network_error_message)
+            }
+
+            private fun onFinnish(@StringRes stringId: Int) {
+                progressBar.visibility = View.INVISIBLE
+                Snackbar.make(parentCoordinatorLayout, getString(stringId),
+                        Snackbar.LENGTH_LONG).show()
+            }
+        })
     }
 
     override fun onDestroy() {

@@ -1,6 +1,5 @@
 package io.krugosvet.dailydish.android.dagger.module
 
-import android.content.Context
 import android.support.annotation.NonNull
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -20,6 +19,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 import javax.inject.Singleton
 
+
+
 @Module
 class NetworkModule {
 
@@ -28,17 +29,16 @@ class NetworkModule {
     @Provides
     fun provideDailyDishService(okHttpClient: OkHttpClient): MealService = Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
-            .addConverterFactory(getGsonInstance())
+            .addConverterFactory(getGson())
             .callFactory(okHttpClient)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
+            .addCallAdapterFactory(getRxJavaFactory())
             .build().create(MealService::class.java)
 
     @Singleton
     @NonNull
     @Provides
-    fun provideMealServicePipe(context: Context, mealService: MealService,
-                               authTokenManager: AuthTokenManager): MealServicePipe =
-            MealServicePipeImpl(context, mealService, authTokenManager)
+    fun provideMealServicePipe(mealService: MealService, authTokenManager: AuthTokenManager):
+            MealServicePipe = MealServicePipeImpl(mealService, authTokenManager)
 
     @Singleton
     @NonNull
@@ -47,6 +47,8 @@ class NetworkModule {
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
 
-    private fun getGsonInstance() = GsonConverterFactory.create(
+    private fun getGson() = GsonConverterFactory.create(
             GsonBuilder().registerTypeAdapter(Date::class.java, DateDeserializer()).create())
+
+    private fun getRxJavaFactory() = RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io())
 }

@@ -15,4 +15,6 @@
     <string name="login_action_bar_icon">Login</string>
     <!--suppress CheckTagEmptyBody -->
     <string name="login_action_bar_name"></string>
+    <string name="network_success_message">Synchronized with the server</string>
+    <string name="network_error_message">Error while synchronizing with the server</string>
 </resources>
