@@ -64,10 +64,9 @@ open class MealListAdapter(private val realm: Realm,
                     .into(mealImage)
 
             mealImage.setOnClickListener {
-                cameraImagePipe.openMealMainImageUpdateDialog({ file ->
-                    meal?.changeMainImage(realm, file)
+                cameraImagePipe.openMealMainImageUpdateDialog({ image ->
+                    meal?.changeMainImage(realm, image)
                     notifyItemChanged(layoutPosition)
-                    file?.delete()
                 }, { meal?.removeMainImage(realm) }, meal?.mainImage?.isEmpty() ?: true)
             }
         }

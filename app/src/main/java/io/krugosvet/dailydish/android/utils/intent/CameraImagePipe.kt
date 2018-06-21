@@ -1,9 +1,9 @@
 package io.krugosvet.dailydish.android.utils.intent
 
-import java.io.File
+import android.graphics.Bitmap
 
 interface CameraImagePipe {
 
-    fun openMealMainImageUpdateDialog(onPhotoReceiveCallback: (File?) -> Unit,
+    fun openMealMainImageUpdateDialog(onPhotoReceiveCallback: (Bitmap) -> Unit,
                                       onPhotoDelete: () -> Unit, mainImageIsEmpty: Boolean)
 }

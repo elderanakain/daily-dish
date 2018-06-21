@@ -10,6 +10,7 @@ import io.krugosvet.dailydish.android.dagger.DaggerAppComponent
 import io.krugosvet.dailydish.android.dagger.module.AccountModule
 import io.krugosvet.dailydish.android.dagger.module.AppModule
 import io.krugosvet.dailydish.android.dagger.module.NetworkModule
+import io.realm.Realm
 
 class DailyDishApplication : Application() {
 
@@ -23,6 +24,7 @@ class DailyDishApplication : Application() {
                 .kits(Crashlytics())
                 .debuggable(BuildConfig.DEBUG)
                 .build())
+        Realm.init(this)
         appComponent = buildComponent()
 
         if (BuildConfig.DEBUG) {

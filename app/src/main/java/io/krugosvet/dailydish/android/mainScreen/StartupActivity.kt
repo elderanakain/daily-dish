@@ -1,5 +1,6 @@
 package io.krugosvet.dailydish.android.mainScreen
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
@@ -8,12 +9,11 @@ import io.krugosvet.dailydish.android.DailyDishApplication
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.utils.baseUi.BaseFragment
+import io.krugosvet.dailydish.android.utils.bytesFromBitmap
 import io.krugosvet.dailydish.android.utils.intent.ImageProviderActivity
-import io.krugosvet.dailydish.android.utils.readBytesFromFile
 import io.reactivex.MaybeObserver
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.File
 import java.util.*
 
 class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealListener {
@@ -30,10 +30,7 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
         floatingButton.setOnClickListener {
             DialogAddMeal().addCameraImagePipe(this).show(fragmentManager, "")
         }
-    }
 
-    override fun onResume() {
-        super.onResume()
         mealServicePipe.getMeals().subscribe(object : MaybeObserver<List<Meal>> {
             override fun onSubscribe(d: Disposable) {
                 progressBar.visibility = View.VISIBLE
@@ -65,8 +62,10 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
         realm.close()
     }
 
-    override fun onAddButtonClick(mealTitle: String, mealDescription: String, parseDate: Date, mainImage: File?) {
-        Meal(mealTitle, mealDescription, parseDate, readBytesFromFile(mainImage), authTokenManager.userId()).persist(realm)
+    override fun onAddButtonClick(mealTitle: String, mealDescription: String, parseDate: Date, mainImage: Bitmap?) {
+        bytesFromBitmap(mainImage).subscribe { image ->
+            Meal(mealTitle, mealDescription, parseDate, image, authTokenManager.userId()).persist(realm)
+        }
     }
 
     private fun setupViewPager() {

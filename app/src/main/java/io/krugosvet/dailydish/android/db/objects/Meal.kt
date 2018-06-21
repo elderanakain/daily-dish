@@ -1,15 +1,15 @@
 package io.krugosvet.dailydish.android.db.objects
 
+import android.graphics.Bitmap
 import com.google.gson.annotations.SerializedName
+import io.krugosvet.dailydish.android.utils.bytesFromBitmap
 import io.krugosvet.dailydish.android.utils.getMeals
-import io.krugosvet.dailydish.android.utils.readBytesFromFile
 import io.realm.Realm
 import io.realm.RealmModel
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
 import io.realm.annotations.Required
 import io.realm.kotlin.deleteFromRealm
-import java.io.File
 import java.util.*
 import javax.annotation.Nullable
 
@@ -39,9 +39,11 @@ open class Meal @JvmOverloads constructor(
         }
     }
 
-    fun changeMainImage(realm: Realm, file: File?) {
-        realm.executeTransaction {
-            this.mainImage = readBytesFromFile(file)
+    fun changeMainImage(realm: Realm, bitmap: Bitmap) {
+        bytesFromBitmap(bitmap).subscribe { byteArray ->
+            realm.executeTransaction {
+                this.mainImage = byteArray
+            }
         }
     }
 

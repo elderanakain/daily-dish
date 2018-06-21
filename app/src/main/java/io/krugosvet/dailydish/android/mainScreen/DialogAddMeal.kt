@@ -1,5 +1,6 @@
 package io.krugosvet.dailydish.android.mainScreen
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,19 +15,18 @@ import io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout
 import io.krugosvet.dailydish.android.utils.image.withNoCache
 import io.krugosvet.dailydish.android.utils.intent.CameraImagePipe
 import kotlinx.android.synthetic.main.dialog_add_meal.*
-import java.io.File
 import java.util.*
 
 class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
 
     interface DialogAddMealListener {
-        fun onAddButtonClick(mealTitle: String, mealDescription: String, parseDate: Date, mainImage: File?)
+        fun onAddButtonClick(mealTitle: String, mealDescription: String, parseDate: Date, mainImage: Bitmap?)
     }
 
     private val forms = mutableListOf<BaseTextInputLayout>()
-    private var mainImage: File? = null
+    private var mainImage: Bitmap? = null
 
-    lateinit var cameraImagePipe: CameraImagePipe
+    private lateinit var cameraImagePipe: CameraImagePipe
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View = inflater.inflate(R.layout.dialog_add_meal, container)
 

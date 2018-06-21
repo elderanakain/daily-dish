@@ -1,6 +1,6 @@
 package io.krugosvet.dailydish.android.mainScreen
 
-enum class ImageProviderSource(val providerName: String) {
+enum class ImageProviderSource(val providerName: String){
     CAMERA("Take a picture"), GALLERY("Pick from a gallery") }
 
 fun getImageProviderNames() = ImageProviderSource.values().map { it.providerName }.toTypedArray()
