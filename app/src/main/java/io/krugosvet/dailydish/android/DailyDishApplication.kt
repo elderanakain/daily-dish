@@ -20,10 +20,7 @@ class DailyDishApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Fabric.with(Fabric.Builder(this)
-                .kits(Crashlytics())
-                .debuggable(BuildConfig.DEBUG)
-                .build())
+        Fabric.with(Fabric.Builder(this).kits(Crashlytics()).build())
         Realm.init(this)
         appComponent = buildComponent()
 

@@ -1,7 +1,9 @@
 package io.krugosvet.dailydish.android.db.objects
 
 import android.graphics.Bitmap
+import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
+import io.krugosvet.dailydish.android.network.json.MainImageSerializer
 import io.krugosvet.dailydish.android.utils.bytesFromBitmap
 import io.krugosvet.dailydish.android.utils.getMeals
 import io.realm.Realm
@@ -18,7 +20,7 @@ open class Meal @JvmOverloads constructor(
         @Required @SerializedName("title") var title: String = "",
         @Required @SerializedName("description") var description: String = "",
         @Required @SerializedName("date") var date: Date = Date(),
-        @Nullable @SerializedName("main_image") var mainImage: ByteArray? = null,
+        @Nullable @JsonAdapter(MainImageSerializer::class) @SerializedName("main_image") var mainImage: ByteArray? = null,
         @Required @SerializedName("user_id") var userId: String = "") : RealmModel {
 
     @PrimaryKey

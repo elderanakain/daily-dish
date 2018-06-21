@@ -59,7 +59,7 @@
         </io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout>
 
         <io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout
-            android:id="@+id/date"
+            android:id="@+id/dateEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
@@ -88,7 +88,7 @@
             android:adjustViewBounds="true"
             android:src="@drawable/ic_insert_photo_black_48dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/date" />
+            app:layout_constraintTop_toTopOf="@id/dateEditText" />
 
     </android.support.constraint.ConstraintLayout>
 
