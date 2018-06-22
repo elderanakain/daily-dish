@@ -11,7 +11,6 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Function
 import java.io.File
 
-
 fun withNoCache() = RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)
         .skipMemoryCache(true).signature(ObjectKey(System.currentTimeMillis()))
 

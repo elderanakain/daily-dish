@@ -2,19 +2,15 @@ package io.krugosvet.dailydish.android.mainScreen
 
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.support.annotation.StringRes
-import android.support.design.widget.Snackbar
-import android.view.View
 import io.krugosvet.dailydish.android.DailyDishApplication
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.Meal
+import io.krugosvet.dailydish.android.network.BaseNetworkObserver
 import io.krugosvet.dailydish.android.network.json.MealId
 import io.krugosvet.dailydish.android.utils.baseUi.BaseFragment
+import io.krugosvet.dailydish.android.utils.baseUi.showLongSnackbar
 import io.krugosvet.dailydish.android.utils.bytesFromBitmap
 import io.krugosvet.dailydish.android.utils.intent.ImageProviderActivity
-import io.reactivex.MaybeObserver
-import io.reactivex.SingleObserver
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
@@ -30,13 +26,13 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
         setupViewPager()
 
         floatingButton.setOnClickListener {
-            DialogAddMeal().addCameraImagePipe(this).show(fragmentManager, "")
+            if (isInternetConnection()) {
+                DialogAddMeal().addCameraImagePipe(this).show(fragmentManager, "")
+            } else showLongSnackbar(this, R.string.network_no_internet_connection)
         }
 
-        mealServicePipe.getMeals().subscribe(object : MaybeObserver<List<Meal>> {
-            override fun onSubscribe(d: Disposable) {
-                progressBar.visibility = View.VISIBLE
-            }
+        mealServicePipe.getMeals().subscribe(object : BaseNetworkObserver<List<Meal>>(this) {
+            override val onErrorMessage: Int = R.string.network_error_message
 
             override fun onSuccess(meals: List<Meal>) {
                 realm.executeTransaction { it.insertOrUpdate(meals) }
@@ -46,47 +42,19 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
             override fun onComplete() {
                 onFinish(R.string.network_success_message)
             }
-
-            override fun onError(e: Throwable) {
-                onFinish(R.string.network_error_message)
-            }
-
-            private fun onFinish(@StringRes stringId: Int) {
-                progressBar.visibility = View.INVISIBLE
-                Snackbar.make(parentCoordinatorLayout, getString(stringId),
-                        Snackbar.LENGTH_LONG).show()
-            }
         })
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        realm.close()
     }
 
     override fun onAddButtonClick(mealTitle: String, mealDescription: String, parseDate: Date, mainImage: Bitmap?) {
         bytesFromBitmap(mainImage).subscribe { image ->
             val meal = Meal(mealTitle, mealDescription, parseDate, image, authTokenManager.userId())
+            mealServicePipe.sendMeal(meal).subscribe(object : BaseNetworkObserver<MealId>(this) {
 
-            mealServicePipe.sendMeal(meal).subscribe(object : SingleObserver<MealId> {
+                override val onErrorMessage: Int = R.string.network_post_meal_error
+
                 override fun onSuccess(mealId: MealId) {
                     onFinish(R.string.network_post_meal_success)
                     meal.persist(realm, mealId.id)
-                }
-
-                override fun onSubscribe(d: Disposable) {
-                    progressBar.visibility = View.VISIBLE
-                }
-
-                override fun onError(e: Throwable) {
-                    e.printStackTrace()
-                    onFinish(R.string.network_post_meal_error)
-                }
-
-                private fun onFinish(@StringRes stringId: Int) {
-                    progressBar.visibility = View.INVISIBLE
-                    Snackbar.make(parentCoordinatorLayout, getString(stringId),
-                            Snackbar.LENGTH_LONG).show()
                 }
             })
         }
