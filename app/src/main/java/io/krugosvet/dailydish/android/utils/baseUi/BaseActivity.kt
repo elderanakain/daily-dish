@@ -23,7 +23,6 @@ import io.krugosvet.dailydish.android.utils.intent.ACCOUNT_STATE_CHANGE
 import io.realm.Realm
 import javax.inject.Inject
 
-
 abstract class BaseActivity : AppCompatActivity() {
 
     @Inject

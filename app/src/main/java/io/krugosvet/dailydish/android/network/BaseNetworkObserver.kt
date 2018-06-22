@@ -16,6 +16,7 @@ abstract class BaseNetworkObserver<T>(private val baseActivity: BaseActivity) : 
         SingleObserver<T> {
 
     protected abstract val onErrorMessage: Int
+    protected abstract val onSuccessMessage: Int
 
     private val progressBar = baseActivity.getProgressBar()
 
@@ -24,6 +25,7 @@ abstract class BaseNetworkObserver<T>(private val baseActivity: BaseActivity) : 
         progressBar?.visibility = View.VISIBLE
     }
 
+    @OverridingMethodsMustInvokeSuper
     override fun onError(e: Throwable) {
         if (BuildConfig.DEBUG) e.printStackTrace()
 
@@ -32,9 +34,18 @@ abstract class BaseNetworkObserver<T>(private val baseActivity: BaseActivity) : 
         } else onFinish(onErrorMessage)
     }
 
-    override fun onComplete() {}
+    @OverridingMethodsMustInvokeSuper
+    override fun onComplete() {
+        onFinish(onSuccessMessage)
+    }
 
-    protected open fun onFinish(@StringRes messageId: Int) {
+    @OverridingMethodsMustInvokeSuper
+    override fun onSuccess(result: T) {
+        onFinish(onSuccessMessage)
+    }
+
+    @OverridingMethodsMustInvokeSuper
+    protected fun onFinish(@StringRes messageId: Int) {
         progressBar?.visibility = View.INVISIBLE
         showLongSnackbar(baseActivity, messageId)
     }
