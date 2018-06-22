@@ -11,7 +11,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.Meal
-import io.krugosvet.dailydish.android.utils.getFormattedDate
+import io.krugosvet.dailydish.android.utils.getLongFormattedDate
 import io.krugosvet.dailydish.android.utils.image.withNoCache
 import io.krugosvet.dailydish.android.utils.intent.CameraImagePipe
 import io.reactivex.Observable
@@ -53,7 +53,7 @@ open class MealListAdapter(private val realm: Realm,
         fun bind(meal: Meal?) {
             title.text = meal?.title
             description.text = meal?.description
-            lastDateOfCooking.text = getFormattedDate(meal?.date)
+            lastDateOfCooking.text = getLongFormattedDate(meal?.date)
             deleteButton.setOnClickListener {
                 meal?.delete(realm)
             }
@@ -64,10 +64,9 @@ open class MealListAdapter(private val realm: Realm,
                     .into(mealImage)
 
             mealImage.setOnClickListener {
-                cameraImagePipe.openMealMainImageUpdateDialog({ file ->
-                    meal?.changeMainImage(realm, file)
+                cameraImagePipe.openMealMainImageUpdateDialog({ image ->
+                    meal?.changeMainImage(realm, image)
                     notifyItemChanged(layoutPosition)
-                    file?.delete()
                 }, { meal?.removeMainImage(realm) }, meal?.mainImage?.isEmpty() ?: true)
             }
         }

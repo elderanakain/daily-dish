@@ -15,4 +15,9 @@
     <string name="login_action_bar_icon">Login</string>
     <!--suppress CheckTagEmptyBody -->
     <string name="login_action_bar_name"></string>
+    <string name="network_success_message">Synchronized with the server</string>
+    <string name="network_error_message">Error while synchronizing with the server</string>
+    <string name="network_post_meal_error">Error while adding the meal to the server</string>
+    <string name="network_post_meal_success">The meal is added to the server</string>
+    <string name="network_no_internet_connection">No internet connection</string>
 </resources>

@@ -1,44 +1,47 @@
 package io.krugosvet.dailydish.android.network
 
-import android.content.Context
-import android.widget.Toast
 import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager
-import io.reactivex.Completable
+import io.krugosvet.dailydish.android.network.json.MealId
+import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.observers.DisposableSingleObserver
-import retrofit2.http.*
+import io.reactivex.schedulers.Schedulers
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Query
 
 const val MEAL_ENDPOINT = "meal.php"
+const val USER_ID_QUERY = "userId"
 
 interface MealService {
 
     @GET(MEAL_ENDPOINT)
-    fun getMeals(@Query("userId") user: String): Single<List<Meal>>
+    fun getMeals(@Query(USER_ID_QUERY) user: String): Maybe<List<Meal>>
 
-    @FormUrlEncoded
+    @GET(MEAL_ENDPOINT)
+    fun getMeals(): Maybe<List<Meal>>
+
     @POST(MEAL_ENDPOINT)
-    fun sendMeal(@Body meal: Meal): Completable
+    fun sendMeal(@Body meal: Meal): Single<MealId>
 }
 
 interface MealServicePipe {
-    fun getMeals(onSuccess: (meals: List<Meal>) -> Unit)
+    fun getMeals(): Maybe<List<Meal>>
+
+    fun sendMeal(meal: Meal): Single<MealId>
 }
 
-class MealServicePipeImpl(private val appContext: Context, private val mealService: MealService,
+class MealServicePipeImpl(private val mealService: MealService,
                           private val authTokenManager: AuthTokenManager) : MealServicePipe {
 
-    override fun getMeals(onSuccess: (meals: List<Meal>) -> Unit) {
-        mealService.getMeals(authTokenManager.userId()).observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<List<Meal>>() {
-                    override fun onSuccess(meals: List<Meal>) {
-                        onSuccess.invoke(meals)
-                    }
+    override fun getMeals(): Maybe<List<Meal>> = getMealObserver(authTokenManager.userId())
+            .observeOn(AndroidSchedulers.mainThread())
 
-                    override fun onError(e: Throwable) {
-                        Toast.makeText(appContext, e.message, Toast.LENGTH_LONG).show()
-                    }
-                })
-    }
+    override fun sendMeal(meal: Meal): Single<MealId> = mealService.sendMeal(meal)
+            .observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+
+    private fun getMealObserver(userId: String) =
+            if (userId.isEmpty()) mealService.getMeals() else mealService.getMeals(userId)
 }

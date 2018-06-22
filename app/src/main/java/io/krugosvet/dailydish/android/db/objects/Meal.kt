@@ -1,31 +1,36 @@
 package io.krugosvet.dailydish.android.db.objects
 
-import io.krugosvet.dailydish.android.utils.getMeals
-import io.krugosvet.dailydish.android.utils.readBytesFromFile
+import android.graphics.Bitmap
+import com.google.gson.annotations.JsonAdapter
+import com.google.gson.annotations.SerializedName
+import io.krugosvet.dailydish.android.network.json.MainImageSerializer
+import io.krugosvet.dailydish.android.utils.bytesFromBitmap
 import io.realm.Realm
 import io.realm.RealmModel
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
 import io.realm.annotations.Required
 import io.realm.kotlin.deleteFromRealm
-import java.io.File
 import java.util.*
+import javax.annotation.Nullable
 
 @RealmClass
 open class Meal @JvmOverloads constructor(
-        @Required var title: String = "",
-        @Required var description: String = "",
-        @Required var date: Date = Date(),
-        var mainImage: ByteArray = byteArrayOf(),
-        @Required var userId: String = "") : RealmModel {
+        @Required @SerializedName("title") var title: String = "",
+        @Required @SerializedName("description") var description: String = "",
+        @Required @SerializedName("date") var date: Date = Date(),
+        @Nullable @JsonAdapter(MainImageSerializer::class) @SerializedName("main_image") var mainImage: ByteArray? = null,
+        @Required @SerializedName("user_id") var userId: String = "") : RealmModel {
 
     @PrimaryKey
     var id = 0
 
-    fun persist(realm: Realm) {
-        val meals = realm.getMeals()
-        id = if (meals.isEmpty()) 0 else meals.last()!!.id + 1
+    fun persist(realm: Realm, id: Int) {
+        //TODO Uncomment for locally auto generated id
+        //val meals = realm.getMeals()
+        //id = if (meals.isEmpty()) 0 else meals.last()!!.id + 1
 
+        this.id = id
         realm.executeTransaction {
             it.copyToRealmOrUpdate(this)
         }
@@ -37,9 +42,11 @@ open class Meal @JvmOverloads constructor(
         }
     }
 
-    fun changeMainImage(realm: Realm, file: File?) {
-        realm.executeTransaction {
-            this.mainImage = readBytesFromFile(file)
+    fun changeMainImage(realm: Realm, bitmap: Bitmap) {
+        bytesFromBitmap(bitmap).subscribe { byteArray ->
+            realm.executeTransaction {
+                this.mainImage = byteArray
+            }
         }
     }
 

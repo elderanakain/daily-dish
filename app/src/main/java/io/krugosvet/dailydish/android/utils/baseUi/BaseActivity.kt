@@ -1,10 +1,14 @@
 package io.krugosvet.dailydish.android.utils.baseUi
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ProgressBar
 import com.ibm.bluemix.appid.android.api.AppID
 import com.ibm.bluemix.appid.android.api.tokens.AccessToken
 import com.ibm.bluemix.appid.android.api.tokens.IdentityToken
@@ -36,7 +40,6 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         DailyDishApplication.appComponent.inject(this)
-        mealServicePipe.getMeals {  }
     }
 
     override fun onDestroy() {
@@ -55,6 +58,16 @@ abstract class BaseActivity : AppCompatActivity() {
         if (authTokenManager.accountState == AccountState.ANONYMOUS) launchSingIn() else signOut()
         true
     } else super.onOptionsItemSelected(item)
+
+    fun isInternetConnection(): Boolean {
+        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return cm.activeNetworkInfo?.isConnectedOrConnecting ?: false
+    }
+
+    fun getProgressBar() = findViewById<ProgressBar?>(R.id.progressBar)
+
+    fun getParentCoordinatorLayout() =
+            findViewById<View?>(R.id.parentCoordinatorLayout)
 
     private fun launchSingIn() = appID.loginWidget.launch(this, onAuthorizationSuccess())
 

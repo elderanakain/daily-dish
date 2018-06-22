@@ -1,5 +1,6 @@
 package io.krugosvet.dailydish.android.mainScreen
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,21 +15,24 @@ import io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout
 import io.krugosvet.dailydish.android.utils.image.withNoCache
 import io.krugosvet.dailydish.android.utils.intent.CameraImagePipe
 import kotlinx.android.synthetic.main.dialog_add_meal.*
-import java.io.File
 import java.util.*
 
 class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
 
     interface DialogAddMealListener {
-        fun onAddButtonClick(mealTitle: String, mealDescription: String, parseDate: Date, mainImage: File?)
+        fun onAddButtonClick(mealTitle: String, mealDescription: String, parseDate: Date,
+                             mainImage: Bitmap?)
     }
 
     private val forms = mutableListOf<BaseTextInputLayout>()
-    private var mainImage: File? = null
+    private var mainImage: Bitmap? = null
+    private var date: Date = getCurrentDate()
 
-    lateinit var cameraImagePipe: CameraImagePipe
+    private lateinit var cameraImagePipe: CameraImagePipe
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View = inflater.inflate(R.layout.dialog_add_meal, container)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View =
+            inflater.inflate(R.layout.dialog_add_meal, container)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,22 +42,26 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
         addMealButton.setOnClickListener {
             if (areFormsValid()) {
                 (activity as DialogAddMealListener).onAddButtonClick(title.getEditTextInput(),
-                        description.getEditTextInput(), parseDate(date.getEditTextInput()), mainImage)
+                        description.getEditTextInput(), date, mainImage)
                 dismiss()
             }
         }
 
         addMealImage.setOnClickListener {
             cameraImagePipe.openMealMainImageUpdateDialog({ file ->
-                mainImage = file
-                Glide.with(activity).applyDefaultRequestOptions(
-                        withNoCache().centerInside())
-                        .load(file).into(addMealImage)
+                if (isAdded) {
+                    mainImage = file
+                    Glide.with(activity).applyDefaultRequestOptions(
+                            withNoCache().centerInside())
+                            .load(file).into(addMealImage)
+                }
             }, {
-                mainImage = null
-                Glide.with(activity).applyDefaultRequestOptions(
-                        withNoCache().centerInside())
-                        .load(R.drawable.ic_insert_photo_black_48dp).into(addMealImage)
+                if (isAdded) {
+                    mainImage = null
+                    Glide.with(activity).applyDefaultRequestOptions(
+                            withNoCache().centerInside())
+                            .load(R.drawable.ic_insert_photo_black_48dp).into(addMealImage)
+                }
             }, mainImage == null)
         }
 
@@ -66,7 +74,8 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
     }
 
     override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
-        date.editText?.setText(getFormattedDate(year, monthOfYear, dayOfMonth))
+        date = defaultFormatDate(year, monthOfYear + 1, dayOfMonth)
+        dateEditText.editText?.setText(getLongFormattedDate(date))
     }
 
     fun addCameraImagePipe(cameraImagePipe: CameraImagePipe): DialogAddMeal {
@@ -96,8 +105,8 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
     }
 
     private fun createDateForm() {
-        date.editText?.setText(getCurrentDate())
-        date.editText?.setOnClickListener {
+        dateEditText.editText?.setText(getLongFormattedDate(date))
+        dateEditText.editText?.setOnClickListener {
             DatePickerDialog.newInstance(this, Calendar.getInstance()).apply {
                 maxDate = Calendar.getInstance()
             }.show(fragmentManager, "")

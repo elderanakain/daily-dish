@@ -1,6 +1,6 @@
 buildscript {
-    project.ext.kotlin_version = '1.2.41'
-    project.ext.realm_version = '5.2.0'
+    project.ext.kotlin_version = '1.2.50'
+    project.ext.realm_version = '5.3.0'
     project.ext.support_version = '27.1.1'
     project.ext.dagger_version = '2.16'
     project.ext.retrofit_version = '2.4.0'
@@ -25,6 +25,7 @@ allprojects {
         maven { url 'https://jitpack.io' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         maven { url 'https://maven.fabric.io/public' }
+        maven { url 'https://github.com/WickeDev/stetho-realm/raw/master/maven-repo' }
     }
 }
 

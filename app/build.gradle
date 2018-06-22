@@ -16,7 +16,6 @@ android {
         versionCode 1
         versionName "0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders = ['appIdRedirectScheme': android.defaultConfig.applicationId]
     }
 
     buildTypes {
@@ -26,18 +25,25 @@ android {
             buildConfigField "String", 'BASE_URL', '"https://ssme-20180514184900630.eu-gb.mybluemix.net"'
             resValue "string", "app_name", "DailyDish"
             signingConfig signingConfigs.release
+            manifestPlaceholders = ['appIdRedirectScheme': android.defaultConfig.applicationId + applicationIdSuffix]
         }
+
         debug {
             applicationIdSuffix ".debug"
             debuggable true
-            buildConfigField "String", 'BASE_URL', '"https://simple-toolchain-20180529150027814.eu-gb.mybluemix.net"'
+            buildConfigField "String", 'BASE_URL', '"https://ssme-20180514184900630.eu-gb.mybluemix.net"'
             resValue "string", "app_name", "DailyDish Debug"
             signingConfig signingConfigs.debug
+            manifestPlaceholders = ['appIdRedirectScheme': android.defaultConfig.applicationId + applicationIdSuffix]
         }
+
         beta {
-            initWith debug
             applicationIdSuffix ".beta"
+            debuggable true
+            buildConfigField "String", 'BASE_URL', '"https://ssme-20180514184900630.eu-gb.mybluemix.net"'
             resValue "string", "app_name", "DailyDish Beta"
+            signingConfig signingConfigs.debug
+            manifestPlaceholders = ['appIdRedirectScheme': android.defaultConfig.applicationId + applicationIdSuffix]
         }
     }
 
@@ -72,7 +78,7 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
     implementation 'com.github.karczews:rx2-broadcast-receiver:1.0.4'
-    implementation('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
         transitive = true
     }
 
@@ -81,4 +87,9 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.5.0'
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+    implementation 'com.uphyca:stetho_realm:2.2.2'
+
+    implementation 'com.mlsdev.rximagepicker:library:2.0.2'
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.v4.app.Fragment
 import com.ibm.bluemix.appid.android.api.AppID
 import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager
+import io.krugosvet.dailydish.android.network.MealServicePipe
 import io.realm.Realm
 import javax.inject.Inject
 
@@ -15,6 +16,8 @@ abstract class BaseFragment : Fragment() {
     protected lateinit var appID: AppID
     @Inject
     protected lateinit var authTokenManager: AuthTokenManager
+    @Inject
+    protected lateinit var mealServicePipe: MealServicePipe
 
     protected abstract fun initInjection()
 

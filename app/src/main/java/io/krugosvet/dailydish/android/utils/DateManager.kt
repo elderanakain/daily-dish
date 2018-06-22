@@ -2,22 +2,53 @@ package io.krugosvet.dailydish.android.utils
 
 import java.text.DateFormat.LONG
 import java.text.DateFormat.getDateInstance
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
-import java.util.Calendar.*
-import java.util.concurrent.TimeUnit
 
-fun getCurrentDate(): String = getDateInstance(LONG).format(getInstance().time)
+const val DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
 
-fun getFormattedDate(year: Int, monthOfYear: Int, dayOfMonth: Int): String =
-        getDateInstance(LONG).format(getInstance().also {
-            it.set(year, monthOfYear, dayOfMonth)
-        }.time)
+fun getCurrentDate(): Date = Calendar.getInstance().time
 
-fun getFormattedDate(date: Date?): String = getDateInstance(LONG).format(date)
+fun getLongFormattedDate(date: Date?): String = getDateInstance(LONG).format(date)
 
-fun parseDate(date: String): Date = getDateInstance(LONG).parse(date).apply {
-    val calendar = getInstance()
-    this.time += (TimeUnit.HOURS.toMillis(calendar.get(HOUR_OF_DAY).toLong())
-            + TimeUnit.MINUTES.toMillis(calendar.get(MINUTE).toLong())
-            + TimeUnit.SECONDS.toMillis(calendar.get(SECOND).toLong()))
+/**
+ * @param date takes string in "yyyy-MM-dd HH:mm:ss" format
+ * @return parsed date
+ */
+fun defaultFormatDate(date: String): Date =
+        try {
+            getSimpleDefaultDateFormat().parse(date)
+        } catch (e: ParseException) {
+            getCurrentDate()
+        }
+
+/**
+ * @param year to parse
+ * @param month of the year to parse
+ * @param day of the month to parse
+ * @return parse date with current time in "yyyy-MM-dd HH:mm:ss" format
+ */
+fun defaultFormatDate(year: Int, month: Int, day: Int): Date =
+        getSimpleDefaultDateFormat().parse("$year-$month-$day ${currentFormattedTime()}")
+
+/**
+ * @return SimpleDateFormat with default locale and default timezone in "yyyy-MM-dd HH:mm:ss" format
+ */
+private fun getSimpleDefaultDateFormat(): SimpleDateFormat {
+    val formatter = SimpleDateFormat(DEFAULT_DATE_FORMAT, Locale.getDefault())
+    formatter.timeZone = TimeZone.getDefault()
+    return formatter
 }
+
+/**
+ * @return current time in "HH:mm:ss" format
+ */
+private fun currentFormattedTime(): String {
+    val c = Calendar.getInstance()
+    return "${c.hours()}:${c.minutes()}:${c.seconds()}"
+}
+
+private fun Calendar.hours() = this.get(Calendar.HOUR_OF_DAY)
+private fun Calendar.minutes() = this.get(Calendar.MINUTE)
+private fun Calendar.seconds() = this.get(Calendar.SECOND)
