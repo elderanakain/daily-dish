@@ -1,10 +1,10 @@
 package io.krugosvet.dailydish.android.network
 
-import android.util.Base64
 import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager
-import io.reactivex.Completable
+import io.krugosvet.dailydish.android.network.json.MealId
 import io.reactivex.Maybe
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import retrofit2.http.Body
@@ -24,13 +24,13 @@ interface MealService {
     fun getMeals(): Maybe<List<Meal>>
 
     @POST(MEAL_ENDPOINT)
-    fun sendMeal(@Body meal: Meal): Completable
+    fun sendMeal(@Body meal: Meal): Single<MealId>
 }
 
 interface MealServicePipe {
     fun getMeals(): Maybe<List<Meal>>
 
-    fun sendMeal(meal: Meal): Completable
+    fun sendMeal(meal: Meal): Single<MealId>
 }
 
 class MealServicePipeImpl(private val mealService: MealService,
@@ -39,11 +39,8 @@ class MealServicePipeImpl(private val mealService: MealService,
     override fun getMeals(): Maybe<List<Meal>> = getMealObserver(authTokenManager.userId())
             .observeOn(AndroidSchedulers.mainThread())
 
-    override fun sendMeal(meal: Meal): Completable {
-
-        return mealService.sendMeal(meal)
-                .observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
-    }
+    override fun sendMeal(meal: Meal): Single<MealId> = mealService.sendMeal(meal)
+            .observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
 
     private fun getMealObserver(userId: String) =
             if (userId.isEmpty()) mealService.getMeals() else mealService.getMeals(userId)

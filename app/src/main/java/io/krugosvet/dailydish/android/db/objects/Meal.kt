@@ -5,7 +5,6 @@ import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
 import io.krugosvet.dailydish.android.network.json.MainImageSerializer
 import io.krugosvet.dailydish.android.utils.bytesFromBitmap
-import io.krugosvet.dailydish.android.utils.getMeals
 import io.realm.Realm
 import io.realm.RealmModel
 import io.realm.annotations.PrimaryKey
@@ -26,10 +25,12 @@ open class Meal @JvmOverloads constructor(
     @PrimaryKey
     var id = 0
 
-    fun persist(realm: Realm) {
-        val meals = realm.getMeals()
-        id = if (meals.isEmpty()) 0 else meals.last()!!.id + 1
+    fun persist(realm: Realm, id: Int) {
+        //TODO Uncomment for locally auto generated id
+        //val meals = realm.getMeals()
+        //id = if (meals.isEmpty()) 0 else meals.last()!!.id + 1
 
+        this.id = id
         realm.executeTransaction {
             it.copyToRealmOrUpdate(this)
         }

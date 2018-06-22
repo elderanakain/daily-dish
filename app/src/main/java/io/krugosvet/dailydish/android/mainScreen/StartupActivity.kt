@@ -8,11 +8,12 @@ import android.view.View
 import io.krugosvet.dailydish.android.DailyDishApplication
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.Meal
+import io.krugosvet.dailydish.android.network.json.MealId
 import io.krugosvet.dailydish.android.utils.baseUi.BaseFragment
 import io.krugosvet.dailydish.android.utils.bytesFromBitmap
 import io.krugosvet.dailydish.android.utils.intent.ImageProviderActivity
-import io.reactivex.CompletableObserver
 import io.reactivex.MaybeObserver
+import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -67,10 +68,10 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
         bytesFromBitmap(mainImage).subscribe { image ->
             val meal = Meal(mealTitle, mealDescription, parseDate, image, authTokenManager.userId())
 
-            mealServicePipe.sendMeal(meal).subscribe(object : CompletableObserver {
-                override fun onComplete() {
+            mealServicePipe.sendMeal(meal).subscribe(object : SingleObserver<MealId> {
+                override fun onSuccess(mealId: MealId) {
                     onFinish(R.string.network_post_meal_success)
-                    meal.persist(realm)
+                    meal.persist(realm, mealId.id)
                 }
 
                 override fun onSubscribe(d: Disposable) {
