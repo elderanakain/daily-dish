@@ -9,8 +9,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import io.krugosvet.dailydish.android.DailyDishApplication
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.Meal
+import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager
 import io.krugosvet.dailydish.android.utils.getLongFormattedDate
 import io.krugosvet.dailydish.android.utils.image.withNoCache
 import io.krugosvet.dailydish.android.utils.intent.CameraImagePipe
@@ -18,19 +20,26 @@ import io.reactivex.Observable
 import io.realm.Realm
 import io.realm.RealmQuery
 import io.realm.RealmRecyclerViewAdapter
+import javax.inject.Inject
 
 interface MealListAdapterPipe {
     fun deleteMeal(meal: Meal)
 }
 
-open class MealListAdapter(private val realm: Realm,
-                           private val cameraImagePipe: CameraImagePipe,
-                           private val query: () -> RealmQuery<Meal>,
-                           accountStateChangeReceiver: Observable<Intent>,
-                           private val mealListAdapterPipe: MealListAdapterPipe)
+@Suppress("ProtectedInFinal")
+class MealListAdapter(private val realm: Realm,
+                      private val cameraImagePipe: CameraImagePipe,
+                      private val query: () -> RealmQuery<Meal>,
+                      private val mealListAdapterPipe: MealListAdapterPipe)
     : RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(query.invoke().findAll(), true) {
 
+    @Inject
+    protected lateinit var authTokenManager: AuthTokenManager
+    @Inject
+    protected lateinit var accountStateChangeReceiver: Observable<Intent>
+
     init {
+        DailyDishApplication.appComponent.inject(this)
         setHasStableIds(true)
         accountStateChangeReceiver.subscribe {
             updateData(query.invoke().findAll())
@@ -41,7 +50,8 @@ open class MealListAdapter(private val realm: Realm,
             MealViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_meal, parent, false))
 
     override fun onBindViewHolder(holder: MealViewHolder, position: Int) {
-        holder.bind(data?.get(position))
+        val meal = data?.get(position)
+        if (meal != null) holder.bind(meal)
     }
 
     override fun getItemId(position: Int): Long {
@@ -55,25 +65,31 @@ open class MealListAdapter(private val realm: Realm,
         private val lastDateOfCooking = view.findViewById<TextView>(R.id.last_date_of_cooking)
         private val mealImage = view.findViewById<ImageView>(R.id.meal_image)
 
-        fun bind(meal: Meal?) {
-            title.text = meal?.title
-            description.text = meal?.description
-            lastDateOfCooking.text = getLongFormattedDate(meal?.date)
-            deleteButton.setOnClickListener {
-                if (meal != null) mealListAdapterPipe.deleteMeal(meal)
-            }
+        fun bind(meal: Meal) {
+            title.text = meal.title
+            description.text = meal.description
+            lastDateOfCooking.text = getLongFormattedDate(meal.date)
 
-            val mainImage = meal?.mainImage ?: byteArrayOf()
+            bindDeleteButton(meal)
+
+            val mainImage = meal.mainImage ?: byteArrayOf()
             Glide.with(mealImage).applyDefaultRequestOptions(withNoCache().centerCrop())
                     .load(if (mainImage.isEmpty()) R.drawable.food_clock_bw_800px else mainImage)
                     .into(mealImage)
 
             mealImage.setOnClickListener {
                 cameraImagePipe.openMealMainImageUpdateDialog({ image ->
-                    meal?.changeMainImage(realm, image)
+                    meal.changeMainImage(realm, image)
                     notifyItemChanged(layoutPosition)
-                }, { meal?.removeMainImage(realm) }, meal?.mainImage?.isEmpty() ?: true)
+                }, { meal.removeMainImage(realm) }, meal.mainImage?.isEmpty() ?: true)
             }
+        }
+
+        private fun bindDeleteButton(meal: Meal) {
+            if (authTokenManager.isUserIdentified()) {
+                deleteButton.visibility = View.VISIBLE
+                deleteButton.setOnClickListener { mealListAdapterPipe.deleteMeal(meal) }
+            } else deleteButton.visibility = View.GONE
         }
     }
 }

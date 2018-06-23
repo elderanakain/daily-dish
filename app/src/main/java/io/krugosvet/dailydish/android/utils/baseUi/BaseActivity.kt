@@ -34,6 +34,7 @@ abstract class BaseActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickList
     protected lateinit var realm: Realm
     @Inject
     protected lateinit var mealServicePipe: MealServicePipe
+
     private lateinit var accountName: MenuItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
