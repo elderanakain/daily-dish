@@ -44,4 +44,3 @@ open class MealListPageFragment : BaseFragment(), ViewPagerFragment{
         }
     }
 }
-
