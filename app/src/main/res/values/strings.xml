@@ -15,12 +15,15 @@
     <string name="login_action_bar_icon">Login</string>
     <!--suppress CheckTagEmptyBody -->
     <string name="login_action_bar_name"></string>
-    <string name="network_get_meals_success">Synchronized with the server</string>
-    <string name="network_get_meals_error">Error while synchronizing with the server</string>
+    <string name="network_get_meals_success">Synced with the server</string>
+    <string name="network_get_meals_error">Error while syncing with the server</string>
     <string name="network_post_meal_error">Error while adding the meal to the server</string>
     <string name="network_post_meal_success">The meal is added to the server</string>
     <string name="network_no_internet_connection">No internet connection</string>
     <string name="network_delete_meal_error">Server error while deleting the meal</string>
     <string name="network_delete_meal_success">The meal is deleted</string>
     <string name="not_auth_add_meal_error">Please, log in to add a new meal</string>
+    <string name="sign_out">Sign out</string>
+    <string name="sign_up">Sign up</string>
+    <string name="sign_in">Sign in</string>
 </resources>
