@@ -29,7 +29,7 @@ open class MealListPageFragment : BaseFragment(), ViewPagerFragment{
         super.onViewCreated(view, savedInstanceState)
         mealList.adapter = MealListAdapter(realm, activity as ImageProviderActivity,
                 { realm.getAscByDateMeals(authTokenManager.userId()) },
-                accountStateChangeReceiver, (activity as StartupActivity))
+                accountStateChangeReceiver, (activity as MealListAdapterPipe))
     }
 
     override fun getFragmentTitle() = arguments?.getString(PAGE_TITLE) ?: ""

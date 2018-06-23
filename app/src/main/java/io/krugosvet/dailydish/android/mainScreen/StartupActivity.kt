@@ -31,7 +31,7 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
             } else showLongSnackbar(this, R.string.network_no_internet_connection)
         }
 
-        mealServicePipe.getMeals().subscribe(object : BaseNetworkObserver<List<Meal>>(this) {
+        mealServicePipe.getMeals().subscribe(object : BaseNetworkObserver<List<Meal>>(this@StartupActivity) {
             override val onSuccessMessage = R.string.network_get_meals_success
             override val onErrorMessage: Int = R.string.network_get_meals_error
 
@@ -45,13 +45,12 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
     override fun onAddButtonClick(mealTitle: String, mealDescription: String, parseDate: Date, mainImage: Bitmap?) {
         bytesFromBitmap(mainImage).subscribe { image ->
             val meal = Meal(mealTitle, mealDescription, parseDate, image, authTokenManager.userId())
-            mealServicePipe.sendMeal(meal).subscribe(object : BaseNetworkObserver<MealId>(this) {
+            mealServicePipe.sendMeal(meal).subscribe(object : BaseNetworkObserver<MealId>(this@StartupActivity) {
                 override val onSuccessMessage = R.string.network_post_meal_success
                 override val onErrorMessage: Int = R.string.network_post_meal_error
 
                 override fun onSuccess(result: MealId) {
                     super.onSuccess(result)
-                    onFinish(R.string.network_post_meal_success)
                     meal.persist(realm, result.id)
                 }
             })
@@ -60,7 +59,7 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
 
     override fun deleteMeal(meal: Meal) {
         mealServicePipe.deleteMeal(meal).subscribe(
-                object : BaseNetworkObserver<Void>(this) {
+                object : BaseNetworkObserver<Void>(this@StartupActivity) {
                     override val onErrorMessage = R.string.network_delete_meal_error
                     override val onSuccessMessage = R.string.network_delete_meal_success
 

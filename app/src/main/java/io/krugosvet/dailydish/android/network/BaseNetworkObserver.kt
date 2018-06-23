@@ -15,6 +15,10 @@ import javax.annotation.OverridingMethodsMustInvokeSuper
 abstract class BaseNetworkObserver<T>(private val baseActivity: BaseActivity) : MaybeObserver<T>,
         SingleObserver<T> {
 
+    companion object {
+        var activeRequests: Int = 0
+    }
+
     protected abstract val onErrorMessage: Int
     protected abstract val onSuccessMessage: Int
 
@@ -22,7 +26,8 @@ abstract class BaseNetworkObserver<T>(private val baseActivity: BaseActivity) : 
 
     @OverridingMethodsMustInvokeSuper
     override fun onSubscribe(d: Disposable) {
-        progressBar?.visibility = View.VISIBLE
+        activeRequests++
+        toggleProgressBarVisibility()
     }
 
     @OverridingMethodsMustInvokeSuper
@@ -44,9 +49,13 @@ abstract class BaseNetworkObserver<T>(private val baseActivity: BaseActivity) : 
         onFinish(onSuccessMessage)
     }
 
-    @OverridingMethodsMustInvokeSuper
-    protected fun onFinish(@StringRes messageId: Int) {
-        progressBar?.visibility = View.INVISIBLE
+    private fun onFinish(@StringRes messageId: Int) {
         showLongSnackbar(baseActivity, messageId)
+        if (activeRequests != 0) activeRequests--
+        toggleProgressBarVisibility()
+    }
+
+    private fun toggleProgressBarVisibility() {
+        progressBar?.visibility = if (activeRequests > 0) View.VISIBLE else View.INVISIBLE
     }
 }
