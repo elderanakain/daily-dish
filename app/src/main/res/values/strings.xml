@@ -22,4 +22,5 @@
     <string name="network_no_internet_connection">No internet connection</string>
     <string name="network_delete_meal_error">Server error while deleting the meal</string>
     <string name="network_delete_meal_success">The meal is deleted</string>
+    <string name="not_auth_add_meal_error">Please, log in to add a new meal</string>
 </resources>

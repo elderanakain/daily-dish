@@ -26,9 +26,11 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
         setupViewPager()
 
         floatingButton.setOnClickListener {
-            if (isInternetConnection()) {
-                DialogAddMeal().addCameraImagePipe(this).show(fragmentManager, "")
-            } else showLongSnackbar(this, R.string.network_no_internet_connection)
+            when {
+                !authTokenManager.isUserIdentified() -> showLongSnackbar(this, R.string.not_auth_add_meal_error)
+                !isInternetConnection() -> showLongSnackbar(this, R.string.network_no_internet_connection)
+                else -> DialogAddMeal().addCameraImagePipe(this).show(fragmentManager, "")
+            }
         }
 
         mealServicePipe.getMeals().subscribe(object : BaseNetworkObserver<List<Meal>>(this@StartupActivity) {
