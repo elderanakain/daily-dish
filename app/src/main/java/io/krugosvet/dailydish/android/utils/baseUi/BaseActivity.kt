@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.PopupMenu
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -23,7 +24,7 @@ import io.krugosvet.dailydish.android.utils.intent.ACCOUNT_STATE_CHANGE
 import io.realm.Realm
 import javax.inject.Inject
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
     @Inject
     protected lateinit var appID: AppID
@@ -33,7 +34,6 @@ abstract class BaseActivity : AppCompatActivity() {
     protected lateinit var realm: Realm
     @Inject
     protected lateinit var mealServicePipe: MealServicePipe
-
     private lateinit var accountName: MenuItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,9 +54,16 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = if (item.itemId == R.id.action_login) {
-        if (authTokenManager.accountState == AccountState.ANONYMOUS) launchSingIn() else signOut()
+        showAuthMenuPopup(findViewById(item.itemId))
         true
     } else super.onOptionsItemSelected(item)
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean = when (item?.itemId) {
+        R.id.authMenuSignIn -> authorizeUser(true)
+        R.id.authMenuSignUp -> authorizeUser(false)
+        R.id.authMenuSignOut -> signOut()
+        else -> false
+    }
 
     fun isInternetConnection(): Boolean {
         val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -65,17 +72,29 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun getProgressBar() = findViewById<ProgressBar?>(R.id.progressBar)
 
-    fun getParentCoordinatorLayout() =
-            findViewById<View?>(R.id.parentCoordinatorLayout)
+    fun getParentCoordinatorLayout() = findViewById<View?>(R.id.parentCoordinatorLayout)
 
-    private fun launchSingIn() = appID.loginWidget.launch(this, onAuthorizationSuccess())
+    protected fun noInternetConnectionError() {
+        showLongSnackbar(this, R.string.network_no_internet_connection)
+    }
 
-    private fun signInExistingUser() = appID.signinWithRefreshToken(this,
-            authTokenManager.refreshToken(), onAuthorizationSuccess())
+    private fun authorizeUser(toSignIn: Boolean): Boolean = when {
+        isInternetConnection() -> {
+            if (toSignIn) appID.loginWidget.launch(this, onAuthorizationSuccess())
+            else appID.loginWidget.launchSignUp(this, onAuthorizationSuccess()); true
+        }
+        else -> {
+            noInternetConnectionError(); false
+        }
+    }
 
-    private fun signOut() {
+    private fun signInExistingUser() =
+            appID.signinWithRefreshToken(this, authTokenManager.refreshToken(), onAuthorizationSuccess())
+
+    private fun signOut(): Boolean {
         authTokenManager.clearTokens()
         onAccountStateChanged()
+        return true
     }
 
     private fun onAuthorizationSuccess(): SimpleAuthorizationListener = object : SimpleAuthorizationListener() {
@@ -89,5 +108,12 @@ abstract class BaseActivity : AppCompatActivity() {
     private fun onAccountStateChanged() {
         runOnUiThread { accountName.title = authTokenManager.userName() }
         sendBroadcast(Intent(ACCOUNT_STATE_CHANGE))
+    }
+
+    private fun showAuthMenuPopup(view: View) {
+        val popup = PopupMenu(this, view)
+        popup.menuInflater.inflate(if (authTokenManager.isUserIdentified()) R.menu.auth_action_bar else R.menu.not_auth_action_bar, popup.menu)
+        popup.setOnMenuItemClickListener(this)
+        popup.show()
     }
 }
