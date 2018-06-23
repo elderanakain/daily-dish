@@ -19,17 +19,13 @@ const val PAGE_TITLE = "pageTitle"
 
 open class MealListPageFragment : BaseFragment(), ViewPagerFragment{
 
-    @Inject
-    protected lateinit var accountStateChangeReceiver: Observable<Intent>
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
             inflater.inflate(R.layout.fragment_meal_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mealList.adapter = MealListAdapter(realm, activity as ImageProviderActivity,
-                { realm.getAscByDateMeals(authTokenManager.userId()) },
-                accountStateChangeReceiver, (activity as MealListAdapterPipe))
+                { realm.getAscByDateMeals(authTokenManager.userId()) }, (activity as MealListAdapterPipe))
     }
 
     override fun getFragmentTitle() = arguments?.getString(PAGE_TITLE) ?: ""
