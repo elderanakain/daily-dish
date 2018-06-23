@@ -8,8 +8,8 @@
     <string name="dialog_add_meal_empty_form_error">Please, enter a %s</string>
     <string name="meal_card_delete_button">Delete</string>
     <string name="add_meal_dialog_title">Add a new meal</string>
-    <string name="for_today">For today</string>
-    <string name="earlier">Earlier</string>
+    <string name="for_today">What to cook today</string>
+    <string name="earlier">Earlier cooked</string>
     <string name="intent_select_image_from_gallery">Select Image</string>
     <string name="dialog_cancel_button">Cancel</string>
     <string name="login_action_bar_icon">Login</string>
