@@ -22,6 +22,7 @@ interface AuthTokenManager {
     fun userName(): String
     fun userId(): String
     fun clearTokens()
+    fun isUserIdentified(): Boolean
 }
 
 internal class AuthTokenManagerImpl constructor(context: Context, private var appIDAuthorizationManager: AppIDAuthorizationManager)
@@ -53,6 +54,8 @@ internal class AuthTokenManagerImpl constructor(context: Context, private var ap
                 .putString(APPID_REFRESH_TOKEN, appIDAuthorizationManager.refreshToken.raw).commit()
         accountState = AccountState.IDENTIFIED
     }
+
+    override fun isUserIdentified() = accountState == AccountState.IDENTIFIED
 
     private fun isRefreshTokenExists() = !refreshToken().isEmpty()
 }
