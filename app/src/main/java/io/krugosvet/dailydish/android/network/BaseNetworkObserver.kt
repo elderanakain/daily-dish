@@ -15,15 +15,22 @@ import javax.annotation.OverridingMethodsMustInvokeSuper
 abstract class BaseNetworkObserver<T>(private val baseActivity: BaseActivity) : MaybeObserver<T>,
         SingleObserver<T> {
 
+    companion object {
+        var activeRequests: Int = 0
+    }
+
     protected abstract val onErrorMessage: Int
+    protected abstract val onSuccessMessage: Int
 
     private val progressBar = baseActivity.getProgressBar()
 
     @OverridingMethodsMustInvokeSuper
     override fun onSubscribe(d: Disposable) {
-        progressBar?.visibility = View.VISIBLE
+        activeRequests++
+        toggleProgressBarVisibility()
     }
 
+    @OverridingMethodsMustInvokeSuper
     override fun onError(e: Throwable) {
         if (BuildConfig.DEBUG) e.printStackTrace()
 
@@ -32,10 +39,23 @@ abstract class BaseNetworkObserver<T>(private val baseActivity: BaseActivity) : 
         } else onFinish(onErrorMessage)
     }
 
-    override fun onComplete() {}
+    @OverridingMethodsMustInvokeSuper
+    override fun onComplete() {
+        onFinish(onSuccessMessage)
+    }
 
-    protected open fun onFinish(@StringRes messageId: Int) {
-        progressBar?.visibility = View.INVISIBLE
+    @OverridingMethodsMustInvokeSuper
+    override fun onSuccess(result: T) {
+        onFinish(onSuccessMessage)
+    }
+
+    private fun onFinish(@StringRes messageId: Int) {
         showLongSnackbar(baseActivity, messageId)
+        if (activeRequests != 0) activeRequests--
+        toggleProgressBarVisibility()
+    }
+
+    private fun toggleProgressBarVisibility() {
+        progressBar?.visibility = if (activeRequests > 0) View.VISIBLE else View.INVISIBLE
     }
 }

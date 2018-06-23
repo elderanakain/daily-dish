@@ -19,10 +19,15 @@ import io.realm.Realm
 import io.realm.RealmQuery
 import io.realm.RealmRecyclerViewAdapter
 
+interface MealListAdapterPipe {
+    fun deleteMeal(meal: Meal)
+}
+
 open class MealListAdapter(private val realm: Realm,
                            private val cameraImagePipe: CameraImagePipe,
                            private val query: () -> RealmQuery<Meal>,
-                           accountStateChangeReceiver: Observable<Intent>)
+                           accountStateChangeReceiver: Observable<Intent>,
+                           private val mealListAdapterPipe: MealListAdapterPipe)
     : RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(query.invoke().findAll(), true) {
 
     init {
@@ -55,7 +60,7 @@ open class MealListAdapter(private val realm: Realm,
             description.text = meal?.description
             lastDateOfCooking.text = getLongFormattedDate(meal?.date)
             deleteButton.setOnClickListener {
-                meal?.delete(realm)
+                if (meal != null) mealListAdapterPipe.deleteMeal(meal)
             }
 
             val mainImage = meal?.mainImage ?: byteArrayOf()

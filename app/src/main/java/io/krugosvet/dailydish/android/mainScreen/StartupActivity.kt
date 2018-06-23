@@ -14,7 +14,7 @@ import io.krugosvet.dailydish.android.utils.intent.ImageProviderActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
-class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealListener {
+class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealListener, MealListAdapterPipe {
 
     private lateinit var viewPagerAdapter: ViewPagerAdapter<BaseFragment>
 
@@ -31,16 +31,13 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
             } else showLongSnackbar(this, R.string.network_no_internet_connection)
         }
 
-        mealServicePipe.getMeals().subscribe(object : BaseNetworkObserver<List<Meal>>(this) {
-            override val onErrorMessage: Int = R.string.network_error_message
+        mealServicePipe.getMeals().subscribe(object : BaseNetworkObserver<List<Meal>>(this@StartupActivity) {
+            override val onSuccessMessage = R.string.network_get_meals_success
+            override val onErrorMessage: Int = R.string.network_get_meals_error
 
-            override fun onSuccess(meals: List<Meal>) {
-                realm.executeTransaction { it.insertOrUpdate(meals) }
-                onFinish(R.string.network_success_message)
-            }
-
-            override fun onComplete() {
-                onFinish(R.string.network_success_message)
+            override fun onSuccess(result: List<Meal>) {
+                super.onSuccess(result)
+                realm.executeTransaction { it.insertOrUpdate(result) }
             }
         })
     }
@@ -48,16 +45,30 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
     override fun onAddButtonClick(mealTitle: String, mealDescription: String, parseDate: Date, mainImage: Bitmap?) {
         bytesFromBitmap(mainImage).subscribe { image ->
             val meal = Meal(mealTitle, mealDescription, parseDate, image, authTokenManager.userId())
-            mealServicePipe.sendMeal(meal).subscribe(object : BaseNetworkObserver<MealId>(this) {
-
+            mealServicePipe.sendMeal(meal).subscribe(object : BaseNetworkObserver<MealId>(this@StartupActivity) {
+                override val onSuccessMessage = R.string.network_post_meal_success
                 override val onErrorMessage: Int = R.string.network_post_meal_error
 
-                override fun onSuccess(mealId: MealId) {
-                    onFinish(R.string.network_post_meal_success)
-                    meal.persist(realm, mealId.id)
+                override fun onSuccess(result: MealId) {
+                    super.onSuccess(result)
+                    meal.persist(realm, result.id)
                 }
             })
         }
+    }
+
+    override fun deleteMeal(meal: Meal) {
+        mealServicePipe.deleteMeal(meal).subscribe(
+                object : BaseNetworkObserver<Void>(this@StartupActivity) {
+                    override val onErrorMessage = R.string.network_delete_meal_error
+                    override val onSuccessMessage = R.string.network_delete_meal_success
+
+                    override fun onComplete() {
+                        super.onComplete()
+                        meal.delete(realm)
+                    }
+
+                })
     }
 
     private fun setupViewPager() {

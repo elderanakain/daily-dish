@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 const val PAGE_TITLE = "pageTitle"
 
-open class MealListPageFragment : BaseFragment(), ViewPagerFragment {
+open class MealListPageFragment : BaseFragment(), ViewPagerFragment{
 
     @Inject
     protected lateinit var accountStateChangeReceiver: Observable<Intent>
@@ -29,7 +29,7 @@ open class MealListPageFragment : BaseFragment(), ViewPagerFragment {
         super.onViewCreated(view, savedInstanceState)
         mealList.adapter = MealListAdapter(realm, activity as ImageProviderActivity,
                 { realm.getAscByDateMeals(authTokenManager.userId()) },
-                accountStateChangeReceiver)
+                accountStateChangeReceiver, (activity as MealListAdapterPipe))
     }
 
     override fun getFragmentTitle() = arguments?.getString(PAGE_TITLE) ?: ""

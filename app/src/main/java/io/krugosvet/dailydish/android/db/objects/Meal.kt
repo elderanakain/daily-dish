@@ -11,6 +11,7 @@ import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
 import io.realm.annotations.Required
 import io.realm.kotlin.deleteFromRealm
+import io.realm.kotlin.isValid
 import java.util.*
 import javax.annotation.Nullable
 
@@ -38,7 +39,7 @@ open class Meal @JvmOverloads constructor(
 
     fun delete(realm: Realm) {
         realm.executeTransaction {
-            this.deleteFromRealm()
+            if (isValid()) deleteFromRealm()
         }
     }
 
