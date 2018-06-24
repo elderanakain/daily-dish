@@ -13,17 +13,18 @@ import io.krugosvet.dailydish.android.DailyDishApplication
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.Meal
 import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager
+import io.krugosvet.dailydish.android.utils.addListener
 import io.krugosvet.dailydish.android.utils.getLongFormattedDate
 import io.krugosvet.dailydish.android.utils.image.withNoCache
 import io.krugosvet.dailydish.android.utils.intent.CameraImagePipe
+import io.krugosvet.dailydish.android.utils.removeListener
 import io.reactivex.Observable
-import io.realm.Realm
-import io.realm.RealmQuery
-import io.realm.RealmRecyclerViewAdapter
+import io.realm.*
 import javax.inject.Inject
 
 interface MealListAdapterPipe {
     fun deleteMeal(meal: Meal)
+    fun onMealListChange(isEmpty: Boolean)
 }
 
 @Suppress("ProtectedInFinal")
@@ -31,16 +32,22 @@ class MealListAdapter(private val realm: Realm,
                       private val cameraImagePipe: CameraImagePipe,
                       private val query: () -> RealmQuery<Meal>,
                       private val mealListAdapterPipe: MealListAdapterPipe)
-    : RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(query.invoke().findAll(), true) {
+    : RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(null, true) {
 
     @Inject
     protected lateinit var authTokenManager: AuthTokenManager
     @Inject
     protected lateinit var accountStateChangeReceiver: Observable<Intent>
 
+    private val mealResults = query.invoke().findAll()
+    private val mealListChangeListener = RealmChangeListener<RealmResults<Meal>> {
+        mealListAdapterPipe.onMealListChange(it.isEmpty())
+    }
+
     init {
         DailyDishApplication.appComponent.inject(this)
         setHasStableIds(true)
+        updateData(mealResults)
         accountStateChangeReceiver.subscribe {
             updateData(query.invoke().findAll())
         }
@@ -56,6 +63,13 @@ class MealListAdapter(private val realm: Realm,
 
     override fun getItemId(position: Int): Long {
         return getItem(position)?.id?.toLong() ?: 0
+    }
+
+    override fun updateData(data: OrderedRealmCollection<Meal>?) {
+        removeListener(mealListChangeListener)
+        super.updateData(data)
+        addListener(mealListChangeListener)
+        mealListAdapterPipe.onMealListChange(data?.isEmpty() ?: true)
     }
 
     inner class MealViewHolder(view: View) : RecyclerView.ViewHolder(view) {
