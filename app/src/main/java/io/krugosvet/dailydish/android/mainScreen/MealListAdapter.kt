@@ -28,10 +28,10 @@ interface MealListAdapterPipe {
 }
 
 @Suppress("ProtectedInFinal")
-class MealListAdapter(private val realm: Realm,
-                      private val cameraImagePipe: CameraImagePipe,
-                      private val query: () -> RealmQuery<Meal>,
-                      private val mealListAdapterPipe: MealListAdapterPipe)
+class MealListAdapter @JvmOverloads constructor(private val realm: Realm,
+                                                private val cameraImagePipe: CameraImagePipe,
+                                                private val query: () -> RealmQuery<Meal>,
+                                                private val mealListAdapterPipe: MealListAdapterPipe)
     : RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(null, true) {
 
     @Inject
@@ -41,8 +41,10 @@ class MealListAdapter(private val realm: Realm,
 
     private val mealResults = query.invoke().findAll()
     private val mealListChangeListener = RealmChangeListener<RealmResults<Meal>> {
-        mealListAdapterPipe.onMealListChange(it.isEmpty())
+        mealListAdapterPipe.onMealListChange(isAdapterEmpty())
     }
+    private var mealsToShow: Int = 0
+    private var mealsToHide: Int = 0
 
     init {
         DailyDishApplication.appComponent.inject(this)
@@ -51,6 +53,16 @@ class MealListAdapter(private val realm: Realm,
         accountStateChangeReceiver.subscribe {
             updateData(query.invoke().findAll())
         }
+    }
+
+    fun setMealsToShow(mealsToShow: Int) {
+        this.mealsToShow = mealsToShow
+        notifyDataSetChanged()
+    }
+
+    fun setMealsToHide(mealsToHide: Int) {
+        this.mealsToHide = mealsToHide
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -69,8 +81,18 @@ class MealListAdapter(private val realm: Realm,
         removeListener(mealListChangeListener)
         super.updateData(data)
         addListener(mealListChangeListener)
-        mealListAdapterPipe.onMealListChange(data?.isEmpty() ?: true)
+        mealListAdapterPipe.onMealListChange(isAdapterEmpty())
     }
+
+    override fun getItemCount(): Int {
+        val dataCount = super.getItemCount()
+        if (dataCount == 0) return dataCount
+        if (mealsToShow > 0) return if (mealsToShow <= dataCount) mealsToShow else dataCount
+        if (mealsToHide > 0) return if (dataCount - mealsToHide >= 0) dataCount - mealsToHide else 0
+        return dataCount
+    }
+
+    private fun isAdapterEmpty() = itemCount == 0 || data?.isEmpty() ?: true
 
     inner class MealViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val title = view.findViewById<TextView>(R.id.title)

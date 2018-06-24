@@ -1,6 +1,7 @@
 package io.krugosvet.dailydish.android.mainScreen.tab
 
 import android.os.Bundle
+import android.support.annotation.StringRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,13 +23,17 @@ const val PAGE_TITLE = "pageTitle"
 
 abstract class MealListPageFragment : BaseFragment(), ViewPagerFragment, MealListAdapterPipe {
 
+    protected lateinit var adapter: MealListAdapter
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
             inflater.inflate(R.layout.fragment_meal_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mealList.adapter = MealListAdapter(realm, activity as ImageProviderActivity,
+        adapter = MealListAdapter(realm, activity as ImageProviderActivity,
                 getMealListQuery(), this)
+        mealList.adapter = adapter
+        emptyLayoutText.text = getString(getEmptyLayoutText())
     }
 
     override fun getFragmentTitle() = arguments?.getString(PAGE_TITLE) ?: ""
@@ -57,4 +62,7 @@ abstract class MealListPageFragment : BaseFragment(), ViewPagerFragment, MealLis
     }
 
     protected abstract fun getMealListQuery(): () -> RealmQuery<Meal>
+
+    @StringRes
+    protected abstract fun getEmptyLayoutText(): Int
 }
