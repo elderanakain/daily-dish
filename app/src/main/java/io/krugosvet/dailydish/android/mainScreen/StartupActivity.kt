@@ -5,6 +5,8 @@ import android.os.Bundle
 import io.krugosvet.dailydish.android.DailyDishApplication
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.Meal
+import io.krugosvet.dailydish.android.mainScreen.tab.RecentlyCookedFragment
+import io.krugosvet.dailydish.android.mainScreen.tab.WhatToCookTodayFragment
 import io.krugosvet.dailydish.android.network.BaseNetworkObserver
 import io.krugosvet.dailydish.android.network.json.MealId
 import io.krugosvet.dailydish.android.utils.baseUi.BaseFragment
@@ -62,7 +64,7 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
     private fun setupViewPager() {
         viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
         viewPager.adapter = viewPagerAdapter
-        viewPagerAdapter.addFragments(ForTodayFragment.newInstance(getString(R.string.for_today)), MealListPageFragment.newInstance(getString(R.string.earlier)))
+        viewPagerAdapter.addFragments(WhatToCookTodayFragment.newInstance(this), RecentlyCookedFragment.newInstance(this))
         tabs.setupWithViewPager(viewPager, true)
     }
 }

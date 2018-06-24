@@ -9,6 +9,11 @@ fun Realm.getAscByDateMeals(userId: String): RealmQuery<Meal> {
     return if (userId.isEmpty()) query else query.equalTo("userId", userId)
 }
 
+fun Realm.getDescByDateMeals(userId: String): RealmQuery<Meal> {
+    val query = this.where(Meal::class.java).sort("date", Sort.DESCENDING)
+    return if (userId.isEmpty()) query else query.equalTo("userId", userId)
+}
+
 fun <T : RealmModel, S : RecyclerView.ViewHolder, L : OrderedRealmCollection<T>>
         RealmRecyclerViewAdapter<T, S>.addListener(listener: RealmChangeListener<L>) {
     if (data != null) {
