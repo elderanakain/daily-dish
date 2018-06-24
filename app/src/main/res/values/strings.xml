@@ -1,7 +1,7 @@
 <resources>
     <string name="dialog_add_meal_name_field_hint">Title</string>
     <string name="dialog_add_meal_description_field_hint">Description</string>
-    <string name="dialog_add_meal_date_field_hint">Last date of cooking</string>
+    <string name="dialog_add_meal_date_field_hint">Cooked on</string>
     <string name="dialog_add_meal_button_add_text">Add</string>
     <string name="dialog_add_meal_empty_title_error">Please, enter a title</string>
     <string name="dialog_add_meal_empty_description_error">Please, enter a description</string>
@@ -33,4 +33,5 @@
         \nAdd some or check what to cook today!</string>
     <!--suppress CheckTagEmptyBody -->
     <string name="empty_string"></string>
+    <string name="cooked_on">Cooked on: %1$s</string>
 </resources>

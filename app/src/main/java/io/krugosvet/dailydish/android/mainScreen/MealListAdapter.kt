@@ -107,7 +107,8 @@ class MealListAdapter(private val realm: Realm,
         fun bind(meal: Meal) {
             title.text = meal.title
             description.text = meal.description
-            lastDateOfCooking.text = getLongFormattedDate(meal.date)
+            lastDateOfCooking.text = lastDateOfCooking.context
+                    .getString(R.string.cooked_on, getLongFormattedDate(meal.date))
 
             bindDeleteButton(meal)
 
