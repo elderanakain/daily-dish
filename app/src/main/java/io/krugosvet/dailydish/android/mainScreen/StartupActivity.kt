@@ -14,7 +14,7 @@ import io.krugosvet.dailydish.android.utils.intent.ImageProviderActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
-class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealListener, MealListAdapterPipe {
+class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealListener {
 
     private lateinit var viewPagerAdapter: ViewPagerAdapter<BaseFragment>
 
@@ -57,20 +57,6 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
                 }
             })
         }
-    }
-
-    override fun deleteMeal(meal: Meal) {
-        mealServicePipe.deleteMeal(meal).subscribe(
-                object : BaseNetworkObserver<Void>(this@StartupActivity) {
-                    override val onErrorMessage = R.string.network_delete_meal_error
-                    override val onSuccessMessage = R.string.network_delete_meal_success
-
-                    override fun onComplete() {
-                        super.onComplete()
-                        meal.delete(realm)
-                    }
-
-                })
     }
 
     private fun setupViewPager() {
