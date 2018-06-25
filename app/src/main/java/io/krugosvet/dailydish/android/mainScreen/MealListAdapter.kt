@@ -21,6 +21,7 @@ import io.krugosvet.dailydish.android.utils.intent.CameraImagePipe
 import io.krugosvet.dailydish.android.utils.removeListener
 import io.reactivex.Observable
 import io.realm.*
+import io.realm.kotlin.isValid
 import javax.inject.Inject
 
 interface MealListAdapterPipe {
@@ -126,7 +127,7 @@ class MealListAdapter(private val realm: Realm,
         private fun bindDeleteButton(meal: Meal) {
             if (authTokenManager.isUserIdentified()) {
                 deleteButton.visibility = View.VISIBLE
-                deleteButton.setOnClickListener { mealListAdapterPipe.deleteMeal(meal) }
+                deleteButton.setOnClickListener { if (meal.isValid()) mealListAdapterPipe.deleteMeal(meal) }
             } else deleteButton.visibility = View.GONE
         }
     }
