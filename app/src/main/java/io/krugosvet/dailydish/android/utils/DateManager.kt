@@ -32,6 +32,11 @@ fun defaultFormatDate(date: String): Date =
 fun defaultFormatDate(year: Int, month: Int, day: Int): Date =
         getSimpleDefaultDateFormat().parse("$year-$month-$day ${currentFormattedTime()}")
 
+fun isCurrentDate(date: Date): Boolean {
+    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    return formatter.format(date) == formatter.format(getCurrentDate())
+}
+
 /**
  * @return SimpleDateFormat with default locale and default timezone in "yyyy-MM-dd HH:mm:ss" format
  */

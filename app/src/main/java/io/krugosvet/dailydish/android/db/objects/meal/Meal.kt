@@ -4,6 +4,7 @@ import android.net.Uri
 import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
 import io.krugosvet.dailydish.android.network.json.MainImageTypeAdapter
+import io.krugosvet.dailydish.android.utils.getCurrentDate
 import io.realm.Realm
 import io.realm.RealmModel
 import io.realm.annotations.PrimaryKey
@@ -49,6 +50,14 @@ open class Meal @JvmOverloads constructor(
     fun removeMainImage(realm: Realm) {
         realm.executeTransaction {
             this.mainImage = ""
+        }
+    }
+
+    fun updateDateToCurrent(realm: Realm) {
+        if (isValid()) {
+            realm.executeTransaction {
+                this.date = getCurrentDate()
+            }
         }
     }
 }

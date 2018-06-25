@@ -1,5 +1,6 @@
 package io.krugosvet.dailydish.android.network
 
+import android.app.Activity
 import android.support.annotation.StringRes
 import android.view.View
 import io.krugosvet.dailydish.android.BuildConfig
@@ -12,7 +13,7 @@ import io.reactivex.disposables.Disposable
 import java.net.UnknownHostException
 import javax.annotation.OverridingMethodsMustInvokeSuper
 
-abstract class BaseNetworkObserver<T>(private val baseActivity: BaseActivity) : MaybeObserver<T>,
+abstract class BaseNetworkObserver<T>(private val baseActivity: Activity?) : MaybeObserver<T>,
         SingleObserver<T> {
 
     companion object {
@@ -22,7 +23,7 @@ abstract class BaseNetworkObserver<T>(private val baseActivity: BaseActivity) : 
     protected abstract val onErrorMessage: Int
     protected abstract val onSuccessMessage: Int
 
-    private val progressBar = baseActivity.getProgressBar()
+    private val progressBar = (baseActivity as? BaseActivity)?.getProgressBar()
 
     @OverridingMethodsMustInvokeSuper
     override fun onSubscribe(d: Disposable) {
@@ -34,7 +35,7 @@ abstract class BaseNetworkObserver<T>(private val baseActivity: BaseActivity) : 
     override fun onError(e: Throwable) {
         if (BuildConfig.DEBUG) e.printStackTrace()
 
-        if (e is UnknownHostException && !baseActivity.isInternetConnection()) {
+        if (e is UnknownHostException && (baseActivity as? BaseActivity)?.isInternetConnection() == false) {
             onFinish(R.string.network_no_internet_connection)
         } else onFinish(onErrorMessage)
     }
@@ -50,7 +51,7 @@ abstract class BaseNetworkObserver<T>(private val baseActivity: BaseActivity) : 
     }
 
     private fun onFinish(@StringRes messageId: Int) {
-        showLongSnackbar(baseActivity, messageId)
+        showLongSnackbar((baseActivity as? BaseActivity), messageId)
         if (activeRequests != 0) activeRequests--
         toggleProgressBarVisibility()
     }

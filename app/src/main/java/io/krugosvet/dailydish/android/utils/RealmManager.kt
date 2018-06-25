@@ -5,12 +5,12 @@ import io.krugosvet.dailydish.android.db.objects.meal.Meal
 import io.realm.*
 
 fun Realm.getAscByDateMeals(userId: String): RealmQuery<Meal> {
-    val query = this.where(Meal::class.java).sort("date", Sort.ASCENDING)
+    val query = this.where(Meal::class.java).sort("date", Sort.ASCENDING).notEqualTo("id", -1 as Int)
     return if (userId.isEmpty()) query else query.equalTo("userId", userId)
 }
 
 fun Realm.getDescByDateMeals(userId: String): RealmQuery<Meal> {
-    val query = this.where(Meal::class.java).sort("date", Sort.DESCENDING)
+    val query = this.where(Meal::class.java).sort("date", Sort.DESCENDING).notEqualTo("id", -1 as Int)
     return if (userId.isEmpty()) query else query.equalTo("userId", userId)
 }
 

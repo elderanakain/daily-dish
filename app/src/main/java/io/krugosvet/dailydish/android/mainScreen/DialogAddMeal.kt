@@ -6,14 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-import com.bumptech.glide.Glide
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import io.krugosvet.dailydish.android.R
+import io.krugosvet.dailydish.android.db.objects.meal.Meal
 import io.krugosvet.dailydish.android.utils.*
+import io.krugosvet.dailydish.android.utils.baseUi.BaseActivity
 import io.krugosvet.dailydish.android.utils.baseUi.BaseDialogFragment
 import io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout
-import io.krugosvet.dailydish.android.utils.image.withNoCache
+import io.krugosvet.dailydish.android.utils.image.loadMealMainImage
 import io.krugosvet.dailydish.android.utils.intent.CameraImagePipe
+import io.realm.Realm
+import io.realm.RealmChangeListener
+import io.realm.kotlin.addChangeListener
 import kotlinx.android.synthetic.main.dialog_add_meal.*
 import java.util.*
 
@@ -28,7 +32,10 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
     private var mainImage: Uri = Uri.parse("")
     private var date: Date = getCurrentDate()
 
+    private var meal = Meal().apply { id = -1 }
+
     private lateinit var cameraImagePipe: CameraImagePipe
+    private lateinit var realm: Realm
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View =
@@ -36,8 +43,24 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        cameraImagePipe = activity as CameraImagePipe
+        realm = (activity as BaseActivity).realm
         showKeyboard(title.editText!!)
         handleForms()
+        loadMealMainImage(addMealImage, mainImage.path)
+
+        realm.executeTransaction {
+            it.insertOrUpdate(meal)
+        }
+        meal = realm.where(Meal::class.java).equalTo("id", -1 as Int).findFirst()!!
+        meal.addChangeListener(
+                RealmChangeListener {
+                    if (isAdded) {
+                        mainImage = Uri.parse(it.mainImage)
+                        loadMealMainImage(addMealImage, meal.mainImage)
+                    }
+                }
+        )
 
         addMealButton.setOnClickListener {
             if (areFormsValid()) {
@@ -48,19 +71,11 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
         }
 
         addMealImage.setOnClickListener {
-            cameraImagePipe.openMealMainImageUpdateDialog({ file ->
-                if (isAdded) {
-                    mainImage = file
-                    Glide.with(activity).applyDefaultRequestOptions(
-                            withNoCache().centerInside())
-                            .load(file).into(addMealImage)
-                }
+            cameraImagePipe.openMealMainImageUpdateDialog({ image ->
+                meal.changeMainImage(realm, image)
             }, {
-                if (isAdded) {
-                    Glide.with(activity).applyDefaultRequestOptions(
-                            withNoCache().centerInside())
-                            .load(R.drawable.ic_insert_photo_black_48dp).into(addMealImage)
-                }
+                mainImage = Uri.parse("")
+                loadMealMainImage(addMealImage, mainImage.toString())
             }, mainImage.toString().isEmpty())
         }
 
@@ -77,9 +92,20 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
         dateEditText.editText?.setText(getLongFormattedDate(date))
     }
 
-    fun addCameraImagePipe(cameraImagePipe: CameraImagePipe): DialogAddMeal {
-        this.cameraImagePipe = cameraImagePipe
-        return this
+    override fun onSaveInstanceState(outState: Bundle?) {
+        outState?.putString("title", title.getEditTextInput())
+        outState?.putString("description", description.getEditTextInput())
+        outState?.putSerializable("date", date)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if (savedInstanceState != null) {
+            if (!savedInstanceState.getString("title").isNullOrEmpty()) title.editText?.setText(savedInstanceState.getString("title"))
+            if (!savedInstanceState.getString("description").isNullOrEmpty()) description.editText?.setText(savedInstanceState.getString("description"))
+            if (!savedInstanceState.getString("date").isNullOrEmpty()) dateEditText.editText?.setText(getLongFormattedDate(savedInstanceState.getSerializable("date") as Date))
+        }
     }
 
     private fun handleForms() {

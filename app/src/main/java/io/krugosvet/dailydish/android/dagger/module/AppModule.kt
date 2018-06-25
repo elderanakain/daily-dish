@@ -17,7 +17,6 @@ class AppModule(private val appContext: Context) {
 
     @Provides
     @NonNull
-    @Singleton
     fun provideRealm(): Realm {
         return Realm.getDefaultInstance()
     }
