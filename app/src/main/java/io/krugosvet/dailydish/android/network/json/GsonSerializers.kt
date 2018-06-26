@@ -11,9 +11,13 @@ import org.apache.commons.io.IOUtils
 class MainImageTypeAdapter : TypeAdapter<String>() {
     override fun write(out: JsonWriter?, value: String?) {
         if (out != null && value != null) {
-            out.value(Base64.encodeToString(IOUtils.toByteArray(
-                    DailyDishApplication.appContext.contentResolver
-                            .openInputStream(Uri.parse(value))), Base64.NO_WRAP))
+            if (!value.isEmpty()) {
+                out.value(Base64.encodeToString(IOUtils.toByteArray(
+                        DailyDishApplication.appContext.contentResolver
+                                .openInputStream(Uri.parse(value))), Base64.NO_WRAP))
+            } else {
+                out.value("")
+            }
         }
     }
 

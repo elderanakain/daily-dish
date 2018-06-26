@@ -1,6 +1,7 @@
 package io.krugosvet.dailydish.android.mainScreen
 
 import android.content.Intent
+import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,8 @@ import javax.inject.Inject
 interface MealListAdapterPipe {
     fun deleteMeal(meal: Meal)
     fun onMealListChange(isEmpty: Boolean)
+    fun changeMealMainImage(meal: Meal, image: Uri)
+    fun removeMealMainImage(meal: Meal)
 }
 
 @Suppress("ProtectedInFinal")
@@ -114,9 +117,8 @@ class MealListAdapter(private val realm: Realm,
 
             mealImage.setOnClickListener {
                 cameraImagePipe.openMealMainImageUpdateDialog({ image ->
-                    meal.changeMainImage(realm, image)
-                    notifyItemChanged(layoutPosition)
-                }, { meal.removeMainImage(realm) }, meal.mainImage.isEmpty())
+                    mealListAdapterPipe.changeMealMainImage(meal, image)
+                }, { mealListAdapterPipe.removeMealMainImage(meal) }, meal.mainImage.isEmpty())
             }
         }
 

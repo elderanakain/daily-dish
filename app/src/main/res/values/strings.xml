@@ -23,6 +23,8 @@
     <string name="network_delete_meal_error">Server error while deleting the meal</string>
     <string name="network_delete_meal_success">The meal is deleted</string>
     <string name="not_auth_add_meal_error">Please, log in to add a new meal</string>
+    <string name="network_put_meal_error">Server error while updating the meal</string>
+    <string name="network_put_meal_success">The meal is updated</string>
     <string name="sign_out">Sign out</string>
     <string name="sign_up">Sign up</string>
     <string name="sign_in">Sign in</string>
