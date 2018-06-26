@@ -1,8 +1,10 @@
 package io.krugosvet.dailydish.android.network
 
-import io.krugosvet.dailydish.android.db.objects.Meal
+import io.krugosvet.dailydish.android.db.objects.meal.Meal
 import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager
 import io.krugosvet.dailydish.android.network.json.MealId
+import io.krugosvet.dailydish.android.network.json.UpdateDateMeal
+import io.krugosvet.dailydish.android.network.json.UpdateImageMeal
 import io.krugosvet.dailydish.android.utils.applySchedulers
 import io.reactivex.Maybe
 import io.reactivex.Single
@@ -25,14 +27,20 @@ interface MealService {
 
     @DELETE(MEAL_ENDPOINT)
     fun deleteMeal(@Query(MEAL_ID_QUERY) mealId: Int): Maybe<Void>
+
+    @PUT(MEAL_ENDPOINT)
+    fun updateImageMeal(@Body meal: UpdateImageMeal): Maybe<Void>
+
+    @PUT(MEAL_ENDPOINT)
+    fun updateDateMeal(@Body meal: UpdateDateMeal): Maybe<Void>
 }
 
 interface MealServicePipe {
     fun getMeals(): Maybe<List<Meal>>
-
     fun sendMeal(meal: Meal): Single<MealId>
-
     fun deleteMeal(meal: Meal): Maybe<Void>
+    fun updateImageMeal(meal: UpdateImageMeal): Maybe<Void>
+    fun updateDateMeal(meal: UpdateDateMeal): Maybe<Void>
 }
 
 class MealServicePipeImpl(private val mealService: MealService,
@@ -45,6 +53,12 @@ class MealServicePipeImpl(private val mealService: MealService,
 
     override fun deleteMeal(meal: Meal): Maybe<Void> =
             mealService.deleteMeal(meal.id).applySchedulers()
+
+    override fun updateImageMeal(meal: UpdateImageMeal): Maybe<Void> =
+            mealService.updateImageMeal(meal).applySchedulers()
+
+    override fun updateDateMeal(meal: UpdateDateMeal): Maybe<Void> =
+            mealService.updateDateMeal(meal).applySchedulers()
 
     private fun getMealObserver(userId: String) =
             if (userId.isEmpty()) mealService.getMeals() else mealService.getMeals(userId)

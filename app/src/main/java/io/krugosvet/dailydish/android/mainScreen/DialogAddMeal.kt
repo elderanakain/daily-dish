@@ -1,6 +1,6 @@
 package io.krugosvet.dailydish.android.mainScreen
 
-import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,11 +21,11 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
 
     interface DialogAddMealListener {
         fun onAddButtonClick(mealTitle: String, mealDescription: String, parseDate: Date,
-                             mainImage: Bitmap?)
+                             mainImage: Uri)
     }
 
     private val forms = mutableListOf<BaseTextInputLayout>()
-    private var mainImage: Bitmap? = null
+    private var mainImage: Uri = Uri.parse("")
     private var date: Date = getCurrentDate()
 
     private lateinit var cameraImagePipe: CameraImagePipe
@@ -57,12 +57,11 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
                 }
             }, {
                 if (isAdded) {
-                    mainImage = null
                     Glide.with(activity).applyDefaultRequestOptions(
                             withNoCache().centerInside())
                             .load(R.drawable.ic_insert_photo_black_48dp).into(addMealImage)
                 }
-            }, mainImage == null)
+            }, mainImage.toString().isEmpty())
         }
 
         createDateForm()

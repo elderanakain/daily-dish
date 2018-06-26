@@ -1,5 +1,6 @@
 package io.krugosvet.dailydish.android.mainScreen.tab
 
+import android.net.Uri
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.view.LayoutInflater
@@ -7,10 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import io.krugosvet.dailydish.android.DailyDishApplication
 import io.krugosvet.dailydish.android.R
-import io.krugosvet.dailydish.android.db.objects.Meal
+import io.krugosvet.dailydish.android.db.objects.meal.Meal
 import io.krugosvet.dailydish.android.mainScreen.MealListAdapter
 import io.krugosvet.dailydish.android.mainScreen.MealListAdapterPipe
 import io.krugosvet.dailydish.android.network.BaseNetworkObserver
+import io.krugosvet.dailydish.android.network.json.UpdateImageMeal
 import io.krugosvet.dailydish.android.utils.ViewPagerFragment
 import io.krugosvet.dailydish.android.utils.baseUi.BaseActivity
 import io.krugosvet.dailydish.android.utils.baseUi.BaseFragment
@@ -59,6 +61,34 @@ abstract class MealListPageFragment : BaseFragment(), ViewPagerFragment, MealLis
     override fun onMealListChange(isEmpty: Boolean) {
         mealList.visibility = if (isEmpty) View.GONE else View.VISIBLE
         emptyLayout.visibility = if (isEmpty) View.VISIBLE else View.GONE
+    }
+
+    override fun changeMealMainImage(meal: Meal, image: Uri) {
+        mealServicePipe.updateImageMeal(
+                UpdateImageMeal(meal.id, image.toString(), authTokenManager.userId())).subscribe(
+                object : BaseNetworkObserver<Void>(activity as BaseActivity) {
+                    override val onErrorMessage = R.string.network_put_meal_error
+                    override val onSuccessMessage = R.string.network_put_meal_success
+
+                    override fun onComplete() {
+                        super.onComplete()
+                        meal.changeMainImage(realm, image)
+                    }
+                })
+    }
+
+    override fun removeMealMainImage(meal: Meal) {
+        mealServicePipe.updateImageMeal(
+                UpdateImageMeal(meal.id, "", authTokenManager.userId())).subscribe(
+                object : BaseNetworkObserver<Void>(activity as BaseActivity) {
+                    override val onErrorMessage = R.string.network_put_meal_error
+                    override val onSuccessMessage = R.string.network_put_meal_success
+
+                    override fun onComplete() {
+                        super.onComplete()
+                        meal.removeMainImage(realm)
+                    }
+                })
     }
 
     protected abstract fun getMealListQuery(): () -> RealmQuery<Meal>

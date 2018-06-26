@@ -1,7 +1,7 @@
 package io.krugosvet.dailydish.android.utils.intent
 
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
+import android.net.Uri
 import io.krugosvet.dailydish.android.utils.baseUi.BaseActivity
 
 abstract class ImageProviderActivity : BaseActivity(), CameraImagePipe {
@@ -15,7 +15,7 @@ abstract class ImageProviderActivity : BaseActivity(), CameraImagePipe {
         }
     }
 
-    override fun openMealMainImageUpdateDialog(onPhotoReceiveCallback: (Bitmap) -> Unit, onPhotoDelete: () -> Unit, mainImageIsEmpty: Boolean) {
+    override fun openMealMainImageUpdateDialog(onPhotoReceiveCallback: (Uri) -> Unit, onPhotoDelete: () -> Unit, mainImageIsEmpty: Boolean) {
         imageProvider = ImageProvider(onPhotoReceiveCallback, onPhotoDelete, mainImageIsEmpty, this)
     }
 }
