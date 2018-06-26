@@ -1,6 +1,7 @@
 package io.krugosvet.dailydish.android
 
 import android.app.Application
+import android.content.Context
 import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider
@@ -16,6 +17,7 @@ class DailyDishApplication : Application() {
 
     companion object {
         lateinit var appComponent: AppComponent
+        lateinit var appContext: Context
     }
 
     override fun onCreate() {
@@ -23,6 +25,7 @@ class DailyDishApplication : Application() {
         Fabric.with(this, Crashlytics())
         Realm.init(this)
         appComponent = buildComponent()
+        appContext = this
 
         if (BuildConfig.DEBUG) {
             Stetho.initialize(Stetho.newInitializerBuilder(this)

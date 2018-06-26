@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import io.krugosvet.dailydish.android.DailyDishApplication
 import io.krugosvet.dailydish.android.R
-import io.krugosvet.dailydish.android.db.objects.Meal
+import io.krugosvet.dailydish.android.db.objects.meal.Meal
 import io.krugosvet.dailydish.android.mainScreen.MealListAdapter
 import io.krugosvet.dailydish.android.mainScreen.MealListAdapterPipe
 import io.krugosvet.dailydish.android.network.BaseNetworkObserver

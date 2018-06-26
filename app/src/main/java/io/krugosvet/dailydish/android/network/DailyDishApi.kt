@@ -1,6 +1,6 @@
 package io.krugosvet.dailydish.android.network
 
-import io.krugosvet.dailydish.android.db.objects.Meal
+import io.krugosvet.dailydish.android.db.objects.meal.Meal
 import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager
 import io.krugosvet.dailydish.android.network.json.MealId
 import io.krugosvet.dailydish.android.utils.applySchedulers

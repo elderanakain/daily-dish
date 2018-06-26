@@ -4,7 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
+import android.net.Uri
 import android.support.annotation.StringRes
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -15,12 +15,12 @@ import io.krugosvet.dailydish.android.mainScreen.ImageProviderMainAction
 import io.krugosvet.dailydish.android.mainScreen.ImageProviderSource
 import io.krugosvet.dailydish.android.mainScreen.getImageProviderMainActionNames
 import io.krugosvet.dailydish.android.mainScreen.getImageProviderNames
-import io.krugosvet.dailydish.android.utils.image.uriToBitmapMapper
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 
 class ImageProvider @JvmOverloads constructor(
-        private val onPhotoReceiveCallback: (image: Bitmap) -> Unit = {},
+        private val onPhotoReceiveCallback: (image: Uri) -> Unit = {},
         private val onPhotoDelete: () -> Unit,
         mainImageIsEmpty: Boolean, private val hostActivity: Activity) {
 
@@ -62,11 +62,11 @@ class ImageProvider @JvmOverloads constructor(
 
     private fun startImagePicker(sources: Sources) {
         RxImagePicker.with(hostActivity).requestImage(sources)
-                .subscribeOn(Schedulers.io()).observeOn(Schedulers.io())
-                .flatMap(uriToBitmapMapper(hostActivity)).subscribe { passReceivedImage(it) }
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe { passReceivedImage(it) }
     }
 
     private fun getString(@StringRes resId: Int) = hostActivity.getString(resId)
 
-    private fun passReceivedImage(image: Bitmap) = onPhotoReceiveCallback.invoke(image)
+    private fun passReceivedImage(image: Uri) = onPhotoReceiveCallback.invoke(image)
 }

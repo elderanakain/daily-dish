@@ -11,7 +11,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import io.krugosvet.dailydish.android.DailyDishApplication
 import io.krugosvet.dailydish.android.R
-import io.krugosvet.dailydish.android.db.objects.Meal
+import io.krugosvet.dailydish.android.db.objects.meal.Meal
 import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager
 import io.krugosvet.dailydish.android.utils.addListener
 import io.krugosvet.dailydish.android.utils.getLongFormattedDate
@@ -28,11 +28,11 @@ interface MealListAdapterPipe {
 }
 
 @Suppress("ProtectedInFinal")
-class MealListAdapter @JvmOverloads constructor(private val realm: Realm,
-                                                private val cameraImagePipe: CameraImagePipe,
-                                                private val query: () -> RealmQuery<Meal>,
-                                                private val mealListAdapterPipe: MealListAdapterPipe)
-    : RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(null, true) {
+class MealListAdapter(private val realm: Realm,
+                      private val cameraImagePipe: CameraImagePipe,
+                      private val query: () -> RealmQuery<Meal>,
+                      private val mealListAdapterPipe: MealListAdapterPipe) :
+        RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(null, true) {
 
     @Inject
     protected lateinit var authTokenManager: AuthTokenManager
@@ -108,16 +108,15 @@ class MealListAdapter @JvmOverloads constructor(private val realm: Realm,
 
             bindDeleteButton(meal)
 
-            val mainImage = meal.mainImage ?: byteArrayOf()
             Glide.with(mealImage).applyDefaultRequestOptions(withNoCache().centerCrop())
-                    .load(if (mainImage.isEmpty()) R.drawable.food_clock_bw_800px else mainImage)
+                    .load(if (meal.mainImage.isEmpty()) R.drawable.food_clock_bw_800px else meal.mainImage)
                     .into(mealImage)
 
             mealImage.setOnClickListener {
                 cameraImagePipe.openMealMainImageUpdateDialog({ image ->
                     meal.changeMainImage(realm, image)
                     notifyItemChanged(layoutPosition)
-                }, { meal.removeMainImage(realm) }, meal.mainImage?.isEmpty() ?: true)
+                }, { meal.removeMainImage(realm) }, meal.mainImage.isEmpty())
             }
         }
 

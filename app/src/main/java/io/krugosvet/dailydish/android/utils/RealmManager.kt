@@ -1,7 +1,7 @@
 package io.krugosvet.dailydish.android.utils
 
 import android.support.v7.widget.RecyclerView
-import io.krugosvet.dailydish.android.db.objects.Meal
+import io.krugosvet.dailydish.android.db.objects.meal.Meal
 import io.realm.*
 
 fun Realm.getAscByDateMeals(userId: String): RealmQuery<Meal> {
