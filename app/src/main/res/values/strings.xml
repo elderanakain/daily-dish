@@ -1,12 +1,13 @@
 <resources>
     <string name="dialog_add_meal_name_field_hint">Title</string>
     <string name="dialog_add_meal_description_field_hint">Description</string>
-    <string name="dialog_add_meal_date_field_hint">Last date of cooking</string>
+    <string name="dialog_add_meal_date_field_hint">Cooked on</string>
     <string name="dialog_add_meal_button_add_text">Add</string>
     <string name="dialog_add_meal_empty_title_error">Please, enter a title</string>
     <string name="dialog_add_meal_empty_description_error">Please, enter a description</string>
     <string name="dialog_add_meal_empty_form_error">Please, enter a %s</string>
     <string name="meal_card_delete_button">Delete</string>
+    <string name="meal_card_cooked_button">Cooked today</string>
     <string name="add_meal_dialog_title">Add a new meal</string>
     <string name="what_to_cook_today">What to cook today</string>
     <string name="recently_cooked">Recently cooked</string>
@@ -23,6 +24,7 @@
     <string name="network_delete_meal_error">Server error while deleting the meal</string>
     <string name="network_delete_meal_success">The meal is deleted</string>
     <string name="not_auth_add_meal_error">Please, log in to add a new meal</string>
+    <string name="not_auth_update_meal_image_error">Please, log in to update the meal image</string>
     <string name="network_put_meal_error">Server error while updating the meal</string>
     <string name="network_put_meal_success">The meal is updated</string>
     <string name="sign_out">Sign out</string>
@@ -33,4 +35,5 @@
         \nAdd some or check what to cook today!</string>
     <!--suppress CheckTagEmptyBody -->
     <string name="empty_string"></string>
+    <string name="cooked_on">Cooked on: %1$s</string>
 </resources>

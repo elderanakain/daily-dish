@@ -2,6 +2,7 @@ package io.krugosvet.dailydish.android.mainScreen
 
 import android.content.Intent
 import android.net.Uri
+import android.support.annotation.StringRes
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -9,18 +10,19 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import com.bumptech.glide.Glide
 import io.krugosvet.dailydish.android.DailyDishApplication
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.meal.Meal
 import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager
 import io.krugosvet.dailydish.android.utils.addListener
 import io.krugosvet.dailydish.android.utils.getLongFormattedDate
-import io.krugosvet.dailydish.android.utils.image.withNoCache
+import io.krugosvet.dailydish.android.utils.image.loadMealMainImage
 import io.krugosvet.dailydish.android.utils.intent.CameraImagePipe
+import io.krugosvet.dailydish.android.utils.isCurrentDate
 import io.krugosvet.dailydish.android.utils.removeListener
 import io.reactivex.Observable
 import io.realm.*
+import io.realm.kotlin.isValid
 import javax.inject.Inject
 
 interface MealListAdapterPipe {
@@ -28,11 +30,12 @@ interface MealListAdapterPipe {
     fun onMealListChange(isEmpty: Boolean)
     fun changeMealMainImage(meal: Meal, image: Uri)
     fun removeMealMainImage(meal: Meal)
+    fun showLongSnackbar(@StringRes message: Int)
+    fun changeMealCookedDate(meal: Meal)
 }
 
 @Suppress("ProtectedInFinal")
-class MealListAdapter(private val realm: Realm,
-                      private val cameraImagePipe: CameraImagePipe,
+class MealListAdapter(private val cameraImagePipe: CameraImagePipe,
                       private val query: () -> RealmQuery<Meal>,
                       private val mealListAdapterPipe: MealListAdapterPipe) :
         RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(null, true) {
@@ -103,30 +106,70 @@ class MealListAdapter(private val realm: Realm,
         private val deleteButton = view.findViewById<Button>(R.id.delete)
         private val lastDateOfCooking = view.findViewById<TextView>(R.id.last_date_of_cooking)
         private val mealImage = view.findViewById<ImageView>(R.id.meal_image)
+        private val cookedTodayButton = view.findViewById<Button>(R.id.cookedButton)
+        private val expandCardButton = view.findViewById<ImageView>(R.id.expandCardButton)
+
+        private var isExpanded = false
 
         fun bind(meal: Meal) {
             title.text = meal.title
             description.text = meal.description
-            lastDateOfCooking.text = getLongFormattedDate(meal.date)
+            lastDateOfCooking.text = lastDateOfCooking.context
+                    .getString(R.string.cooked_on, getLongFormattedDate(meal.date))
 
             bindDeleteButton(meal)
+            bindMealMainImage(meal)
+            bindCookedTodayButton(meal)
 
-            Glide.with(mealImage).applyDefaultRequestOptions(withNoCache().centerCrop())
-                    .load(if (meal.mainImage.isEmpty()) R.drawable.food_clock_bw_800px else meal.mainImage)
-                    .into(mealImage)
-
-            mealImage.setOnClickListener {
-                cameraImagePipe.openMealMainImageUpdateDialog({ image ->
-                    mealListAdapterPipe.changeMealMainImage(meal, image)
-                }, { mealListAdapterPipe.removeMealMainImage(meal) }, meal.mainImage.isEmpty())
+            expandCardButton.setOnClickListener {
+                if (isExpanded) {
+                    expandCardButton.setImageResource(R.drawable.meal_expand_arrow)
+                    description.maxLines = 3
+                    isExpanded = false
+                } else {
+                    expandCardButton.setImageResource(R.drawable.meal_collapse_arrow)
+                    description.maxLines = Integer.MAX_VALUE
+                    isExpanded = true
+                }
             }
+        }
+
+        private fun bindCookedTodayButton(meal: Meal) {
+            if (authTokenManager.isUserIdentified()) {
+                cookedTodayButton.visibility = View.VISIBLE
+                if (!isCurrentDate(meal.date)) {
+                    cookedTodayButton.isEnabled = true
+                    cookedTodayButton.setOnClickListener {
+                        mealListAdapterPipe.changeMealCookedDate(meal)
+                    }
+                } else {
+                    cookedTodayButton.isEnabled = false
+                }
+            } else {
+                cookedTodayButton.visibility = View.GONE
+            }
+
         }
 
         private fun bindDeleteButton(meal: Meal) {
             if (authTokenManager.isUserIdentified()) {
                 deleteButton.visibility = View.VISIBLE
-                deleteButton.setOnClickListener { mealListAdapterPipe.deleteMeal(meal) }
+                deleteButton.setOnClickListener { if (meal.isValid()) mealListAdapterPipe.deleteMeal(meal) }
             } else deleteButton.visibility = View.GONE
+        }
+
+        private fun bindMealMainImage(meal: Meal) {
+            loadMealMainImage(mealImage, meal.mainImage)
+
+            mealImage.setOnClickListener {
+                if (authTokenManager.isUserIdentified()) {
+                    cameraImagePipe.openMealMainImageUpdateDialog({ image ->
+                        mealListAdapterPipe.changeMealMainImage(meal, image)
+                    }, { mealListAdapterPipe.removeMealMainImage(meal) }, meal.mainImage.isEmpty())
+                } else {
+                    mealListAdapterPipe.showLongSnackbar(R.string.not_auth_update_meal_image_error)
+                }
+            }
         }
     }
 }

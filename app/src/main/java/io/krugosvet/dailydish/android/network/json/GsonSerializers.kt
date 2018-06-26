@@ -12,9 +12,10 @@ class MainImageTypeAdapter : TypeAdapter<String>() {
     override fun write(out: JsonWriter?, value: String?) {
         if (out != null && value != null) {
             if (!value.isEmpty()) {
-                out.value(Base64.encodeToString(IOUtils.toByteArray(
-                        DailyDishApplication.appContext.contentResolver
-                                .openInputStream(Uri.parse(value))), Base64.NO_WRAP))
+                DailyDishApplication.appContext.contentResolver
+                        .openInputStream(Uri.parse(value)).use {
+                            out.value(Base64.encodeToString(IOUtils.toByteArray(it), Base64.NO_WRAP))
+                        }
             } else {
                 out.value("")
             }

@@ -1,17 +1,25 @@
 package io.krugosvet.dailydish.android.utils.image
 
-import com.bumptech.glide.load.engine.DiskCacheStrategy
+import android.support.annotation.DrawableRes
+import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.signature.ObjectKey
+import io.krugosvet.dailydish.android.R
 
-fun withNoCache() = RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)
-        .skipMemoryCache(true).signature(ObjectKey(System.currentTimeMillis()))
+fun loadMealMainImage(imageView: ImageView, image: String) {
+    Glide.with(imageView)
+            .applyDefaultRequestOptions(getRequestOptions())
+            .load(image)
+            .into(imageView)
+}
 
-//fun uriImageCompress(context: Context) =
-//        Function<Uri, ObservableSource<Uri>> { uri ->
-//            return@Function RxImageConverters.uriToBitmap(context, uri).subscribe {
-//                val stream = ByteArrayOutputStream()
-//                it.compress(Bitmap.CompressFormat.JPEG, 50, stream)
-//                stream.writeTo(FileOutputStream(File(uri.path)))
-//            }
-//        }
+fun loadMealMainImage(imageView: ImageView, @DrawableRes image: Int) {
+    Glide.with(imageView)
+            .applyDefaultRequestOptions(getRequestOptions())
+            .load(image)
+            .into(imageView)
+}
+
+private fun getRequestOptions() = RequestOptions()
+        .placeholder(R.drawable.meal_empty_main_image)
+        .centerCrop()

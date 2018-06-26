@@ -1,5 +1,6 @@
 package io.krugosvet.dailydish.android.mainScreen.tab
 
+import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.support.annotation.StringRes
@@ -12,10 +13,13 @@ import io.krugosvet.dailydish.android.db.objects.meal.Meal
 import io.krugosvet.dailydish.android.mainScreen.MealListAdapter
 import io.krugosvet.dailydish.android.mainScreen.MealListAdapterPipe
 import io.krugosvet.dailydish.android.network.BaseNetworkObserver
+import io.krugosvet.dailydish.android.network.json.UpdateDateMeal
 import io.krugosvet.dailydish.android.network.json.UpdateImageMeal
 import io.krugosvet.dailydish.android.utils.ViewPagerFragment
 import io.krugosvet.dailydish.android.utils.baseUi.BaseActivity
 import io.krugosvet.dailydish.android.utils.baseUi.BaseFragment
+import io.krugosvet.dailydish.android.utils.baseUi.showLongSnackbar
+import io.krugosvet.dailydish.android.utils.getCurrentDate
 import io.krugosvet.dailydish.android.utils.intent.ImageProviderActivity
 import io.realm.RealmQuery
 import kotlinx.android.synthetic.main.fragment_meal_list.*
@@ -32,8 +36,7 @@ abstract class MealListPageFragment : BaseFragment(), ViewPagerFragment, MealLis
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = MealListAdapter(realm, activity as ImageProviderActivity,
-                getMealListQuery(), this)
+        adapter = MealListAdapter(activity as ImageProviderActivity, getMealListQuery(), this)
         mealList.adapter = adapter
         emptyLayoutText.text = getString(getEmptyLayoutText())
     }
@@ -59,14 +62,16 @@ abstract class MealListPageFragment : BaseFragment(), ViewPagerFragment, MealLis
     }
 
     override fun onMealListChange(isEmpty: Boolean) {
-        mealList.visibility = if (isEmpty) View.GONE else View.VISIBLE
-        emptyLayout.visibility = if (isEmpty) View.VISIBLE else View.GONE
+        if (isAdded) {
+            mealList.visibility = if (isEmpty) View.GONE else View.VISIBLE
+            emptyLayout.visibility = if (isEmpty) View.VISIBLE else View.GONE
+        }
     }
 
     override fun changeMealMainImage(meal: Meal, image: Uri) {
         mealServicePipe.updateImageMeal(
                 UpdateImageMeal(meal.id, image.toString(), authTokenManager.userId())).subscribe(
-                object : BaseNetworkObserver<Void>(activity as BaseActivity) {
+                object : BaseNetworkObserver<Void>((activity as? Activity)) {
                     override val onErrorMessage = R.string.network_put_meal_error
                     override val onSuccessMessage = R.string.network_put_meal_success
 
@@ -87,6 +92,24 @@ abstract class MealListPageFragment : BaseFragment(), ViewPagerFragment, MealLis
                     override fun onComplete() {
                         super.onComplete()
                         meal.removeMainImage(realm)
+                    }
+                })
+    }
+
+    override fun showLongSnackbar(message: Int) {
+        showLongSnackbar(activity as BaseActivity, message)
+    }
+
+    override fun changeMealCookedDate(meal: Meal) {
+        mealServicePipe.updateDateMeal(
+                UpdateDateMeal(meal.id, getCurrentDate(), authTokenManager.userId())).subscribe(
+                object : BaseNetworkObserver<Void>(activity as BaseActivity) {
+                    override val onErrorMessage = R.string.network_put_meal_error
+                    override val onSuccessMessage = R.string.network_put_meal_success
+
+                    override fun onComplete() {
+                        super.onComplete()
+                        meal.updateDateToCurrent(realm)
                     }
                 })
     }

@@ -31,7 +31,7 @@ abstract class BaseActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickList
     @Inject
     protected lateinit var authTokenManager: AuthTokenManager
     @Inject
-    protected lateinit var realm: Realm
+    lateinit var realm: Realm
     @Inject
     protected lateinit var mealServicePipe: MealServicePipe
 
