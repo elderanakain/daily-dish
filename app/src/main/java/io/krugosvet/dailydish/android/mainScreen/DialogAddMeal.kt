@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import io.krugosvet.dailydish.android.R
@@ -84,7 +85,7 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
 
     override fun onResume() {
         super.onResume()
-        dialog.window.setLayout(getDimension(R.dimen.dialog_add_meal_width).toInt(), WRAP_CONTENT)
+        dialog.window.setLayout(MATCH_PARENT, WRAP_CONTENT)
     }
 
     override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
