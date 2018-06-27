@@ -79,6 +79,11 @@ abstract class BaseActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickList
         showLongSnackbar(this, R.string.network_no_internet_connection)
     }
 
+    protected open fun onAccountStateChanged() {
+        runOnUiThread { accountName.title = authTokenManager.userName() }
+        sendBroadcast(Intent(ACCOUNT_STATE_CHANGE))
+    }
+
     private fun authorizeUser(toSignIn: Boolean): Boolean = when {
         isInternetConnection() -> {
             if (toSignIn) appID.loginWidget.launch(this, onAuthorizationSuccess())
@@ -104,11 +109,6 @@ abstract class BaseActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickList
             authTokenManager.persistTokens()
             onAccountStateChanged()
         }
-    }
-
-    private fun onAccountStateChanged() {
-        runOnUiThread { accountName.title = authTokenManager.userName() }
-        sendBroadcast(Intent(ACCOUNT_STATE_CHANGE))
     }
 
     private fun showAuthMenuPopup(view: View) {

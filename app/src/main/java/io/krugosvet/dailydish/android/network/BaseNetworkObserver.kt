@@ -57,6 +57,8 @@ abstract class BaseNetworkObserver<T>(private val baseActivity: Activity?) : May
     }
 
     private fun toggleProgressBarVisibility() {
-        progressBar?.visibility = if (activeRequests > 0) View.VISIBLE else View.INVISIBLE
+        baseActivity?.runOnUiThread{
+            progressBar?.visibility = if (activeRequests > 0) View.VISIBLE else View.INVISIBLE
+        }
     }
 }
