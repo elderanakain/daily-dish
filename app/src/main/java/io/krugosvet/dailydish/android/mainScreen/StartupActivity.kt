@@ -34,15 +34,7 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
             }
         }
 
-        mealServicePipe.getMeals().subscribe(object : BaseNetworkObserver<List<Meal>>(this@StartupActivity) {
-            override val onSuccessMessage = R.string.network_get_meals_success
-            override val onErrorMessage: Int = R.string.network_get_meals_error
-
-            override fun onSuccess(result: List<Meal>) {
-                super.onSuccess(result)
-                realm.executeTransaction { it.insertOrUpdate(result) }
-            }
-        })
+        getMeals()
     }
 
     override fun onAddButtonClick(mealTitle: String, mealDescription: String, parseDate: Date, mainImage: Uri) {
@@ -59,11 +51,28 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
         })
     }
 
+    override fun onAccountStateChanged() {
+        super.onAccountStateChanged()
+        getMeals()
+    }
+
     private fun setupViewPager() {
         viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
         viewPager.adapter = viewPagerAdapter
         viewPagerAdapter.addFragments(WhatToCookTodayFragment.newInstance(this),
                 RecentlyCookedFragment.newInstance(this))
         tabs.setupWithViewPager(viewPager, true)
+    }
+
+    private fun getMeals() {
+        mealServicePipe.getMeals().subscribe(object : BaseNetworkObserver<List<Meal>>(this@StartupActivity) {
+            override val onSuccessMessage = R.string.network_get_meals_success
+            override val onErrorMessage: Int = R.string.network_get_meals_error
+
+            override fun onSuccess(result: List<Meal>) {
+                super.onSuccess(result)
+                realm.executeTransaction { it.insertOrUpdate(result) }
+            }
+        })
     }
 }
