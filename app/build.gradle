@@ -5,8 +5,6 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
 apply plugin: 'io.fabric'
 
-apply from: 'gradle/signing.gradle'
-
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -24,7 +22,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", 'BASE_URL', '"https://ssme-20180514184900630.eu-gb.mybluemix.net"'
             resValue "string", "app_name", "DailyDish"
-            signingConfig signingConfigs.release
             manifestPlaceholders = ['appIdRedirectScheme': android.defaultConfig.applicationId + applicationIdSuffix]
         }
 
@@ -33,7 +30,6 @@ android {
             debuggable true
             buildConfigField "String", 'BASE_URL', '"https://ssme-20180514184900630.eu-gb.mybluemix.net"'
             resValue "string", "app_name", "DailyDish Debug"
-            signingConfig signingConfigs.debug
             manifestPlaceholders = ['appIdRedirectScheme': android.defaultConfig.applicationId + applicationIdSuffix]
         }
 
@@ -42,7 +38,6 @@ android {
             debuggable true
             buildConfigField "String", 'BASE_URL', '"https://ssme-20180514184900630.eu-gb.mybluemix.net"'
             resValue "string", "app_name", "DailyDish Beta"
-            signingConfig signingConfigs.debug
             manifestPlaceholders = ['appIdRedirectScheme': android.defaultConfig.applicationId + applicationIdSuffix]
         }
     }
