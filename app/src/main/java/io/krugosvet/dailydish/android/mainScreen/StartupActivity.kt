@@ -24,11 +24,7 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
     setupViewPager()
 
     floatingButton.setOnClickListener {
-      when {
-        !authTokenManager.isUserIdentified() -> showLongSnackbar(this, R.string.not_auth_add_meal_error)
-        !isInternetConnection() -> noInternetConnectionError()
-        else -> DialogAddMeal().show(fragmentManager, "")
-      }
+      DialogAddMeal().show(fragmentManager, "")
     }
 
     getMeals()
