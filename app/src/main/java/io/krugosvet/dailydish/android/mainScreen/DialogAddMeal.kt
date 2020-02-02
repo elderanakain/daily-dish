@@ -1,10 +1,11 @@
 package io.krugosvet.dailydish.android.mainScreen
 
+import android.app.*
 import android.net.*
 import android.os.*
 import android.view.*
 import android.view.ViewGroup.LayoutParams.*
-import com.wdullaer.materialdatetimepicker.date.*
+import android.widget.*
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.meal.*
 import io.krugosvet.dailydish.android.utils.*
@@ -79,12 +80,7 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
 
   override fun onResume() {
     super.onResume()
-    dialog.window.setLayout(MATCH_PARENT, WRAP_CONTENT)
-  }
-
-  override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
-    date = defaultFormatDate(year, monthOfYear + 1, dayOfMonth)
-    dateEditText.editText?.setText(getLongFormattedDate(date))
+    dialog.window?.setLayout(MATCH_PARENT, WRAP_CONTENT)
   }
 
   override fun onSaveInstanceState(outState: Bundle?) {
@@ -127,9 +123,12 @@ class DialogAddMeal : BaseDialogFragment(), DatePickerDialog.OnDateSetListener {
   private fun createDateForm() {
     dateEditText.editText?.setText(getLongFormattedDate(date))
     dateEditText.editText?.setOnClickListener {
-      DatePickerDialog.newInstance(this, Calendar.getInstance()).apply {
-        maxDate = Calendar.getInstance()
-      }.show(fragmentManager, "")
+
     }
+  }
+
+  override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+    date = defaultFormatDate(year, month + 1, dayOfMonth)
+    dateEditText.editText?.setText(getLongFormattedDate(date))
   }
 }

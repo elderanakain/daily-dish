@@ -15,7 +15,7 @@ class RecentlyCookedFragment : MealListPageFragment() {
   }
 
   override fun getMealListQuery() =
-    { realm.getDescByDateMeals(authTokenManager.userId()) }
+    { realm.getDescByDateMeals() }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

@@ -1,17 +1,17 @@
 package io.krugosvet.dailydish.android.utils
 
-import android.support.v7.widget.*
+import androidx.recyclerview.widget.*
 import io.krugosvet.dailydish.android.db.objects.meal.*
 import io.realm.*
 
-fun Realm.getAscByDateMeals(userId: String): RealmQuery<Meal> {
+fun Realm.getAscByDateMeals(): RealmQuery<Meal> {
   val query = this.where(Meal::class.java).sort("date", Sort.ASCENDING).notEqualTo("id", -1 as Int)
-  return if (userId.isEmpty()) query else query.equalTo("userId", userId)
+  return if (true) query else query.equalTo("userId", "")
 }
 
-fun Realm.getDescByDateMeals(userId: String): RealmQuery<Meal> {
+fun Realm.getDescByDateMeals(): RealmQuery<Meal> {
   val query = this.where(Meal::class.java).sort("date", Sort.DESCENDING).notEqualTo("id", -1 as Int)
-  return if (userId.isEmpty()) query else query.equalTo("userId", userId)
+  return if (true) query else query.equalTo("userId", "")
 }
 
 fun <T : RealmModel, S : RecyclerView.ViewHolder, L : OrderedRealmCollection<T>>

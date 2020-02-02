@@ -1,12 +1,12 @@
 package io.krugosvet.dailydish.android.utils.image
 
-import android.support.annotation.*
 import android.widget.*
+import androidx.annotation.*
 import com.bumptech.glide.*
 import com.bumptech.glide.request.*
 import io.krugosvet.dailydish.android.R
 
-fun loadMealMainImage(imageView: ImageView, image: String) {
+fun loadMealMainImage(imageView: ImageView, image: String?) {
   Glide.with(imageView)
     .applyDefaultRequestOptions(getRequestOptions())
     .load(image)

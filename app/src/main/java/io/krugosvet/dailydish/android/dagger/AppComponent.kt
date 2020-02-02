@@ -8,7 +8,7 @@ import io.krugosvet.dailydish.android.utils.baseUi.*
 import javax.inject.*
 
 @Singleton
-@Component(modules = [AppModule::class, NetworkModule::class, AccountModule::class])
+@Component(modules = [AppModule::class, NetworkModule::class])
 interface AppComponent {
   fun inject(activity: BaseActivity)
   fun inject(activity: StartupActivity)

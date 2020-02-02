@@ -1,7 +1,6 @@
 package io.krugosvet.dailydish.android.network
 
 import io.krugosvet.dailydish.android.db.objects.meal.*
-import io.krugosvet.dailydish.android.ibm.appId.*
 import io.krugosvet.dailydish.android.network.json.*
 import io.krugosvet.dailydish.android.utils.*
 import io.reactivex.*
@@ -40,11 +39,9 @@ interface MealServicePipe {
   fun updateDateMeal(meal: UpdateDateMeal): Maybe<Void>
 }
 
-class MealServicePipeImpl(private val mealService: MealService,
-  private val authTokenManager: AuthTokenManager) : MealServicePipe {
+class MealServicePipeImpl(private val mealService: MealService) : MealServicePipe {
 
-  override fun getMeals(): Maybe<List<Meal>> =
-    getMealObserver(authTokenManager.userId()).applySchedulers()
+  override fun getMeals(): Maybe<List<Meal>> = getMealObserver("").applySchedulers()
 
   override fun sendMeal(meal: Meal): Single<MealId> = mealService.sendMeal(meal).applySchedulers()
 

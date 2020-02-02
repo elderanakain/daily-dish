@@ -31,8 +31,7 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
   }
 
   override fun onAddButtonClick(mealTitle: String, mealDescription: String, parseDate: Date, mainImage: Uri) {
-    val meal = Meal(mealTitle, mealDescription, parseDate,
-      mainImage.toString(), authTokenManager.userId())
+    val meal = Meal(mealTitle, mealDescription, parseDate, mainImage.toString())
     mealServicePipe.sendMeal(meal).subscribe(object : BaseNetworkObserver<MealId>(this@StartupActivity) {
       override val onSuccessMessage = R.string.network_post_meal_success
       override val onErrorMessage: Int = R.string.network_post_meal_error

@@ -1,22 +1,18 @@
 package io.krugosvet.dailydish.android.mainScreen
 
-import android.content.*
 import android.net.*
-import android.support.annotation.*
-import android.support.v7.widget.*
 import android.view.*
 import android.widget.*
+import androidx.annotation.*
+import androidx.recyclerview.widget.*
 import io.krugosvet.dailydish.android.*
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.db.objects.meal.*
-import io.krugosvet.dailydish.android.ibm.appId.*
 import io.krugosvet.dailydish.android.utils.*
 import io.krugosvet.dailydish.android.utils.image.*
 import io.krugosvet.dailydish.android.utils.intent.*
-import io.reactivex.*
 import io.realm.*
 import io.realm.kotlin.*
-import javax.inject.*
 
 interface MealListAdapterPipe {
   fun deleteMeal(meal: Meal)
@@ -33,11 +29,6 @@ class MealListAdapter(private val cameraImagePipe: CameraImagePipe,
   private val mealListAdapterPipe: MealListAdapterPipe) :
   RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(null, true) {
 
-  @Inject
-  protected lateinit var authTokenManager: AuthTokenManager
-  @Inject
-  protected lateinit var accountStateChangeReceiver: Observable<Intent>
-
   private val mealResults = query.invoke().findAll()
   private val mealListChangeListener = RealmChangeListener<RealmResults<Meal>> {
     mealListAdapterPipe.onMealListChange(isAdapterEmpty())
@@ -49,9 +40,8 @@ class MealListAdapter(private val cameraImagePipe: CameraImagePipe,
     DailyDishApplication.appComponent.inject(this)
     setHasStableIds(true)
     updateData(mealResults)
-    accountStateChangeReceiver.subscribe {
-      updateData(query.invoke().findAll())
-    }
+
+    updateData(query.invoke().findAll())
   }
 
   fun setMealsToShow(mealsToShow: Int) {
@@ -128,7 +118,7 @@ class MealListAdapter(private val cameraImagePipe: CameraImagePipe,
     }
 
     private fun bindCookedTodayButton(meal: Meal) {
-      if (authTokenManager.isUserIdentified()) {
+      if (true) {
         cookedTodayButton.visibility = View.VISIBLE
         if (!isCurrentDate(meal.date)) {
           cookedTodayButton.isEnabled = true
@@ -145,7 +135,7 @@ class MealListAdapter(private val cameraImagePipe: CameraImagePipe,
     }
 
     private fun bindDeleteButton(meal: Meal) {
-      if (authTokenManager.isUserIdentified()) {
+      if (true) {
         deleteButton.visibility = View.VISIBLE
         deleteButton.setOnClickListener { if (meal.isValid()) mealListAdapterPipe.deleteMeal(meal) }
       } else deleteButton.visibility = View.GONE
@@ -155,7 +145,7 @@ class MealListAdapter(private val cameraImagePipe: CameraImagePipe,
       loadMealMainImage(mealImage, meal.mainImage)
 
       mealImage.setOnClickListener {
-        if (authTokenManager.isUserIdentified()) {
+        if (true) {
           cameraImagePipe.openMealMainImageUpdateDialog({ image ->
             mealListAdapterPipe.changeMealMainImage(meal, image)
           }, { mealListAdapterPipe.removeMealMainImage(meal) }, meal.mainImage.isEmpty())

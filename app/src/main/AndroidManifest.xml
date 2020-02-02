@@ -33,7 +33,7 @@
             android:value="d267459a68976792c2c8b97f8791f15ebfbbf427" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

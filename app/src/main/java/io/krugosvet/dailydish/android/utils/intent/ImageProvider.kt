@@ -7,9 +7,9 @@ import android.content.pm.*
 import android.graphics.*
 import android.net.*
 import android.provider.*
-import android.support.annotation.*
-import android.support.v4.app.*
-import android.support.v4.content.*
+import androidx.annotation.*
+import androidx.core.app.*
+import androidx.core.content.*
 import com.mlsdev.rximagepicker.*
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.mainScreen.*
@@ -89,6 +89,6 @@ class ImageProvider @JvmOverloads constructor(
     val cv = ContentValues()
     val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
     cv.put(MediaStore.Images.Media.TITLE, timeStamp)
-    return contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv)
+    return contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv)!!
   }
 }

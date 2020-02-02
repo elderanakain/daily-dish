@@ -3,15 +3,11 @@ package io.krugosvet.dailydish.android.utils.baseUi
 import android.content.*
 import android.net.*
 import android.os.*
-import android.support.v7.app.*
-import android.support.v7.widget.PopupMenu
 import android.view.*
 import android.widget.*
-import com.ibm.bluemix.appid.android.api.*
-import com.ibm.bluemix.appid.android.api.tokens.*
+import androidx.appcompat.app.*
 import io.krugosvet.dailydish.android.*
 import io.krugosvet.dailydish.android.R
-import io.krugosvet.dailydish.android.ibm.appId.*
 import io.krugosvet.dailydish.android.network.*
 import io.krugosvet.dailydish.android.utils.intent.*
 import io.realm.*
@@ -19,10 +15,6 @@ import javax.inject.*
 
 abstract class BaseActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
-  @Inject
-  protected lateinit var appID: AppID
-  @Inject
-  protected lateinit var authTokenManager: AuthTokenManager
   @Inject
   lateinit var realm: Realm
   @Inject
@@ -43,7 +35,6 @@ abstract class BaseActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickList
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
     menuInflater.inflate(R.menu.action_bar, menu)
     this.accountName = menu.findItem(R.id.account_name)
-    if (authTokenManager.accountState == AccountState.IDENTIFIED) signInExistingUser()
     return true
   }
 
@@ -53,8 +44,6 @@ abstract class BaseActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickList
   } else super.onOptionsItemSelected(item)
 
   override fun onMenuItemClick(item: MenuItem?): Boolean = when (item?.itemId) {
-    R.id.authMenuSignIn -> authorizeUser(true)
-    R.id.authMenuSignUp -> authorizeUser(false)
     R.id.authMenuSignOut -> signOut()
     else -> false
   }
@@ -73,40 +62,16 @@ abstract class BaseActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickList
   }
 
   protected open fun onAccountStateChanged() {
-    runOnUiThread { accountName.title = authTokenManager.userName() }
     sendBroadcast(Intent(ACCOUNT_STATE_CHANGE))
   }
 
-  private fun authorizeUser(toSignIn: Boolean): Boolean = when {
-    isInternetConnection() -> {
-      if (toSignIn) appID.loginWidget.launch(this, onAuthorizationSuccess())
-      else appID.loginWidget.launchSignUp(this, onAuthorizationSuccess()); true
-    }
-    else -> {
-      noInternetConnectionError(); false
-    }
-  }
-
-  private fun signInExistingUser() =
-    appID.signinWithRefreshToken(this, authTokenManager.refreshToken(), onAuthorizationSuccess())
-
   private fun signOut(): Boolean {
-    authTokenManager.clearTokens()
     onAccountStateChanged()
     return true
   }
 
-  private fun onAuthorizationSuccess(): SimpleAuthorizationListener = object : SimpleAuthorizationListener() {
-    override fun onAuthorizationSuccess(accessToken: AccessToken?, identityToken: IdentityToken?, refreshToken: RefreshToken?) {
-      super.onAuthorizationSuccess(accessToken, identityToken, refreshToken)
-      authTokenManager.persistTokens()
-      onAccountStateChanged()
-    }
-  }
-
   private fun showAuthMenuPopup(view: View) {
     val popup = PopupMenu(this, view)
-    popup.menuInflater.inflate(if (authTokenManager.isUserIdentified()) R.menu.auth_action_bar else R.menu.not_auth_action_bar, popup.menu)
     popup.setOnMenuItemClickListener(this)
     popup.show()
   }

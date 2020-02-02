@@ -15,7 +15,7 @@ class WhatToCookTodayFragment : MealListPageFragment() {
   }
 
   override fun getMealListQuery() =
-    { realm.getAscByDateMeals(authTokenManager.userId()) }
+    { realm.getAscByDateMeals() }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

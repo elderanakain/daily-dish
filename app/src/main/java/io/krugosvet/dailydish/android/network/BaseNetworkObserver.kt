@@ -1,8 +1,8 @@
 package io.krugosvet.dailydish.android.network
 
 import android.app.*
-import android.support.annotation.*
 import android.view.*
+import androidx.annotation.*
 import io.krugosvet.dailydish.android.*
 import io.krugosvet.dailydish.android.utils.baseUi.*
 import io.reactivex.*

@@ -1,7 +1,7 @@
 package io.krugosvet.dailydish.android.mainScreen
 
-import android.support.v4.app.*
-import android.support.v4.view.*
+import androidx.fragment.app.*
+import androidx.viewpager.widget.*
 import io.krugosvet.dailydish.android.utils.*
 import java.util.*
 
