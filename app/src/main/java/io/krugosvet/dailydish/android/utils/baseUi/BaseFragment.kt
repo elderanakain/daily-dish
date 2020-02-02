@@ -1,33 +1,27 @@
 package io.krugosvet.dailydish.android.utils.baseUi
 
-import android.content.Context
-import android.support.v4.app.Fragment
-import com.ibm.bluemix.appid.android.api.AppID
-import io.krugosvet.dailydish.android.ibm.appId.AuthTokenManager
-import io.krugosvet.dailydish.android.network.MealServicePipe
-import io.realm.Realm
-import javax.inject.Inject
+import android.os.*
+import androidx.fragment.app.*
+import io.krugosvet.dailydish.android.network.*
+import io.realm.*
+import javax.inject.*
 
 abstract class BaseFragment : Fragment() {
 
-    @Inject
-    protected lateinit var realm: Realm
-    @Inject
-    protected lateinit var appID: AppID
-    @Inject
-    protected lateinit var authTokenManager: AuthTokenManager
-    @Inject
-    protected lateinit var mealServicePipe: MealServicePipe
+  @Inject
+  protected lateinit var realm: Realm
+  @Inject
+  protected lateinit var mealServicePipe: MealServicePipe
 
-    protected abstract fun initInjection()
+  protected abstract fun initInjection()
 
-    override fun onAttach(context: Context?) {
-        initInjection()
-        super.onAttach(context)
-    }
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    initInjection()
+  }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        realm.close()
-    }
+  override fun onDestroy() {
+    super.onDestroy()
+    realm.close()
+  }
 }

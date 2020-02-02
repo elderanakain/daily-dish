@@ -1,20 +1,17 @@
 package io.krugosvet.dailydish.android.dagger
 
-import dagger.Component
-import io.krugosvet.dailydish.android.dagger.module.AccountModule
-import io.krugosvet.dailydish.android.dagger.module.AppModule
-import io.krugosvet.dailydish.android.dagger.module.NetworkModule
-import io.krugosvet.dailydish.android.mainScreen.MealListAdapter
-import io.krugosvet.dailydish.android.mainScreen.tab.MealListPageFragment
-import io.krugosvet.dailydish.android.mainScreen.StartupActivity
-import io.krugosvet.dailydish.android.utils.baseUi.BaseActivity
-import javax.inject.Singleton
+import dagger.*
+import io.krugosvet.dailydish.android.dagger.module.*
+import io.krugosvet.dailydish.android.mainScreen.*
+import io.krugosvet.dailydish.android.mainScreen.tab.*
+import io.krugosvet.dailydish.android.utils.baseUi.*
+import javax.inject.*
 
 @Singleton
-@Component(modules = [AppModule::class, NetworkModule::class, AccountModule::class])
+@Component(modules = [AppModule::class, NetworkModule::class])
 interface AppComponent {
-    fun inject(activity: BaseActivity)
-    fun inject(activity: StartupActivity)
-    fun inject(fragment: MealListPageFragment)
-    fun inject(adapter: MealListAdapter)
+  fun inject(activity: BaseActivity)
+  fun inject(activity: StartupActivity)
+  fun inject(fragment: MealListPageFragment)
+  fun inject(adapter: MealListAdapter)
 }

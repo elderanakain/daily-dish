@@ -1,98 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:padding="24dp"
+  >
+
+  <TextView
+    android:id="@+id/dialogTitle"
+    style="@style/TitleTextView"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="24dp">
+    android:text="@string/add_meal_dialog_title"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
 
-    <TextView
-        android:id="@+id/dialogTitle"
-        style="@style/TitleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add_meal_dialog_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+  <Button
+    android:id="@+id/addMealButton"
+    style="@style/Widget.AppCompat.Button.Colored"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:text="@string/dialog_add_meal_button_add_text"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@id/dialogTitle"
+    />
 
-    <Button
-        android:id="@+id/addMealButton"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/dialog_add_meal_button_add_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/dialogTitle" />
+  <io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout
+    android:id="@+id/title"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:tag="title"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/dialogTitle"
+    >
 
-    <io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout
-        android:id="@+id/title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:tag="title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dialogTitle">
+    <android.support.design.widget.TextInputEditText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/dialog_add_meal_name_field_hint"
+      android:inputType="text|textCapSentences"
+      android:lines="1"
+      />
 
-        <android.support.design.widget.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/dialog_add_meal_name_field_hint"
-            android:inputType="text|textCapSentences"
-            android:lines="1" />
+  </io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout>
 
-    </io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout>
+  <io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout
+    android:id="@+id/description"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:tag="description"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/title"
+    >
 
-    <io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout
-        android:id="@+id/description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:tag="description"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title">
+    <android.support.design.widget.TextInputEditText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/dialog_add_meal_description_field_hint"
+      android:inputType="text|textCapSentences|textAutoCorrect|textMultiLine"
+      android:maxLines="5"
+      />
 
-        <android.support.design.widget.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/dialog_add_meal_description_field_hint"
-            android:inputType="text|textCapSentences|textAutoCorrect|textMultiLine"
-            android:maxLines="5" />
+  </io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout>
 
-    </io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout>
+  <io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout
+    android:id="@+id/dateEditText"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    app:errorEnabled="false"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/description"
+    >
 
-    <io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout
-        android:id="@+id/dateEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        app:errorEnabled="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/description">
+    <android.support.design.widget.TextInputEditText
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:focusableInTouchMode="false"
+      android:gravity="center"
+      android:hint="@string/dialog_add_meal_date_field_hint"
+      android:inputType="none"
+      android:minWidth="129dp"
+      tools:text="November 2, 2018"
+      />
 
-        <android.support.design.widget.TextInputEditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:focusableInTouchMode="false"
-            android:gravity="center"
-            android:hint="@string/dialog_add_meal_date_field_hint"
-            android:inputType="none"
-            android:minWidth="129dp"
-            tools:text="November 2, 2018" />
+  </io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout>
 
-    </io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout>
+  <ImageButton
+    android:id="@+id/addMealImage"
+    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+    android:layout_width="150dp"
+    android:layout_height="150dp"
+    android:adjustViewBounds="true"
+    android:scaleType="centerInside"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@id/dateEditText"
+    />
 
-    <ImageButton
-        android:id="@+id/addMealImage"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerInside"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/dateEditText" />
-
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
