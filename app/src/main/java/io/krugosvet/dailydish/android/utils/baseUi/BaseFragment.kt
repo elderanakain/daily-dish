@@ -10,6 +10,7 @@ abstract class BaseFragment : Fragment() {
 
   @Inject
   protected lateinit var realm: Realm
+
   @Inject
   protected lateinit var mealServicePipe: MealServicePipe
 
@@ -17,11 +18,13 @@ abstract class BaseFragment : Fragment() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
     initInjection()
   }
 
   override fun onDestroy() {
     super.onDestroy()
+
     realm.close()
   }
 }

@@ -16,23 +16,32 @@ import io.realm.kotlin.*
 
 interface MealListAdapterPipe {
   fun deleteMeal(meal: Meal)
+
   fun onMealListChange(isEmpty: Boolean)
+
   fun changeMealMainImage(meal: Meal, image: Uri)
+
   fun removeMealMainImage(meal: Meal)
+
   fun showLongSnackbar(@StringRes message: Int)
+
   fun changeMealCookedDate(meal: Meal)
 }
 
 @Suppress("ProtectedInFinal")
-class MealListAdapter(private val cameraImagePipe: CameraImagePipe,
-  private val query: () -> RealmQuery<Meal>,
-  private val mealListAdapterPipe: MealListAdapterPipe) :
-  RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(null, true) {
+class MealListAdapter(
+    private val cameraImagePipe: CameraImagePipe,
+    private val query: () -> RealmQuery<Meal>,
+    private val mealListAdapterPipe: MealListAdapterPipe
+) :
+    RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(null, true) {
 
   private val mealResults = query.invoke().findAll()
+
   private val mealListChangeListener = RealmChangeListener<RealmResults<Meal>> {
     mealListAdapterPipe.onMealListChange(isAdapterEmpty())
   }
+
   private var mealsToShow: Int = 0
   private var mealsToHide: Int = 0
 
@@ -46,25 +55,30 @@ class MealListAdapter(private val cameraImagePipe: CameraImagePipe,
 
   fun setMealsToShow(mealsToShow: Int) {
     this.mealsToShow = mealsToShow
+
     notifyDataSetChanged()
   }
 
   fun setMealsToHide(mealsToHide: Int) {
     this.mealsToHide = mealsToHide
+
     notifyDataSetChanged()
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    MealViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_meal, parent, false))
+      MealViewHolder(
+          LayoutInflater.from(parent.context).inflate(R.layout.list_meal, parent, false)
+      )
 
   override fun onBindViewHolder(holder: MealViewHolder, position: Int) {
     val meal = data?.get(position)
-    if (meal != null) holder.bind(meal)
+
+    if (meal != null) {
+      holder.bind(meal)
+    }
   }
 
-  override fun getItemId(position: Int): Long {
-    return getItem(position)?.id?.toLong() ?: 0
-  }
+  override fun getItemId(position: Int): Long = getItem(position)?.id?.toLong() ?: 0
 
   override fun updateData(data: OrderedRealmCollection<Meal>?) {
     removeListener(mealListChangeListener)
@@ -75,10 +89,13 @@ class MealListAdapter(private val cameraImagePipe: CameraImagePipe,
 
   override fun getItemCount(): Int {
     val dataCount = super.getItemCount()
-    if (dataCount == 0) return dataCount
-    if (mealsToShow > 0) return if (mealsToShow <= dataCount) mealsToShow else dataCount
-    if (mealsToHide > 0) return if (dataCount - mealsToHide >= 0) dataCount - mealsToHide else 0
-    return dataCount
+
+    return when {
+      dataCount == 0 -> dataCount
+      mealsToShow > 0 -> if (mealsToShow <= dataCount) mealsToShow else dataCount
+      mealsToHide > 0 -> if (dataCount - mealsToHide >= 0) dataCount - mealsToHide else 0
+      else -> dataCount
+    }
   }
 
   private fun isAdapterEmpty() = itemCount == 0 || data?.isEmpty() ?: true
@@ -98,7 +115,7 @@ class MealListAdapter(private val cameraImagePipe: CameraImagePipe,
       title.text = meal.title
       description.text = meal.description
       lastDateOfCooking.text = lastDateOfCooking.context
-        .getString(R.string.cooked_on, getLongFormattedDate(meal.date))
+          .getString(R.string.cooked_on, getLongFormattedDate(meal.date))
 
       bindDeleteButton(meal)
       bindMealMainImage(meal)

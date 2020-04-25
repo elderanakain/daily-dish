@@ -1,12 +1,15 @@
 package io.krugosvet.dailydish.android
 
-import android.app.*
-import android.content.*
-import io.krugosvet.dailydish.android.dagger.*
-import io.krugosvet.dailydish.android.dagger.module.*
-import io.realm.*
+import android.app.Application
+import android.content.Context
+import io.krugosvet.dailydish.android.dagger.AppComponent
+import io.krugosvet.dailydish.android.dagger.DaggerAppComponent
+import io.krugosvet.dailydish.android.dagger.module.AppModule
+import io.krugosvet.dailydish.android.dagger.module.NetworkModule
+import io.realm.Realm
 
-class DailyDishApplication : Application() {
+class DailyDishApplication :
+    Application() {
 
   companion object {
     lateinit var appComponent: AppComponent
@@ -15,12 +18,17 @@ class DailyDishApplication : Application() {
 
   override fun onCreate() {
     super.onCreate()
+
     Realm.init(this)
+
     appComponent = buildComponent()
     appContext = this
   }
 
-  private fun buildComponent() = DaggerAppComponent.builder()
-    .appModule(AppModule(this))
-    .networkModule(NetworkModule()).build()
+  private fun buildComponent() =
+      DaggerAppComponent
+          .builder()
+          .appModule(AppModule(this))
+          .networkModule(NetworkModule())
+          .build()
 }

@@ -5,8 +5,12 @@ import android.text.*
 import android.util.*
 import com.google.android.material.textfield.*
 
-class BaseTextInputLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
-  : TextInputLayout(context, attrs, defStyleAttr) {
+class BaseTextInputLayout @JvmOverloads constructor(
+    context: Context, attrs:
+    AttributeSet? = null,
+    defStyleAttr: Int = 0
+) :
+    TextInputLayout(context, attrs, defStyleAttr) {
 
   private var textWatcher: TextWatcher? = null
 

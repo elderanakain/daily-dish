@@ -10,11 +10,14 @@ import java.io.*
 import java.text.*
 import java.util.*
 
-
-
 @Throws(IOException::class)
-fun createImageFile(context: Context): File = File.createTempFile("JPEG_" + SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date()) + "_",
-  ".jpg", context.getExternalFilesDir(Environment.DIRECTORY_PICTURES))
+fun createImageFile(context: Context): File =
+    File.createTempFile(
+        "JPEG_"
+            + SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+            + "_",
+        ".jpg", context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+    )
 
 fun readBytesFromFile(file: File?): ByteArray {
   var fileInputStream: FileInputStream? = null
@@ -35,15 +38,15 @@ fun readBytesFromFile(file: File?): ByteArray {
   return bytesArray
 }
 
-fun bytesFromBitmap(bitmap: Bitmap?): Single<ByteArray> {
-  return Single.create(SingleOnSubscribe<ByteArray> { e -> e.onSuccess(compressBitmap(bitmap)) })
-    .subscribeOn(Schedulers.io())
-    .observeOn(AndroidSchedulers.mainThread())
-}
+fun bytesFromBitmap(bitmap: Bitmap?): Single<ByteArray> =
+    Single.create(SingleOnSubscribe<ByteArray> { e -> e.onSuccess(compressBitmap(bitmap)) })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
 
 fun compressBitmap(bitmap: Bitmap?): ByteArray {
   val stream = ByteArrayOutputStream()
   bitmap?.compress(Bitmap.CompressFormat.JPEG, 50, stream)
   val byteArray = stream.toByteArray()
+
   return byteArray ?: byteArrayOf()
 }

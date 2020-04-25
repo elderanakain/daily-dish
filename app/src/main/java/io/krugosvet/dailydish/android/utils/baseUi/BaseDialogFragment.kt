@@ -4,5 +4,7 @@ import android.app.*
 import androidx.annotation.*
 
 open class BaseDialogFragment: DialogFragment() {
+
   protected fun getDimension(@DimenRes id: Int) = resources.getDimension(id)
+
 }

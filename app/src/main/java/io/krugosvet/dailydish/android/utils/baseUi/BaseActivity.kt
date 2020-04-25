@@ -17,6 +17,7 @@ abstract class BaseActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickList
 
   @Inject
   lateinit var realm: Realm
+
   @Inject
   protected lateinit var mealServicePipe: MealServicePipe
 
@@ -24,32 +25,40 @@ abstract class BaseActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickList
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
     DailyDishApplication.appComponent.inject(this)
   }
 
   override fun onDestroy() {
     super.onDestroy()
+
     realm.close()
   }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
     menuInflater.inflate(R.menu.action_bar, menu)
     this.accountName = menu.findItem(R.id.account_name)
+
     return true
   }
 
-  override fun onOptionsItemSelected(item: MenuItem) = if (item.itemId == R.id.action_login) {
-    showAuthMenuPopup(findViewById(item.itemId))
-    true
-  } else super.onOptionsItemSelected(item)
+  override fun onOptionsItemSelected(item: MenuItem) =
+      if (item.itemId == R.id.action_login) {
+        showAuthMenuPopup(findViewById(item.itemId))
+        true
+      } else {
+        super.onOptionsItemSelected(item)
+      }
 
-  override fun onMenuItemClick(item: MenuItem?): Boolean = when (item?.itemId) {
-    R.id.authMenuSignOut -> signOut()
-    else -> false
-  }
+  override fun onMenuItemClick(item: MenuItem?): Boolean =
+      when (item?.itemId) {
+        R.id.authMenuSignOut -> signOut()
+        else -> false
+      }
 
   fun isInternetConnection(): Boolean {
     val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
     return cm.activeNetworkInfo?.isConnectedOrConnecting ?: false
   }
 
@@ -67,6 +76,7 @@ abstract class BaseActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickList
 
   private fun signOut(): Boolean {
     onAccountStateChanged()
+
     return true
   }
 

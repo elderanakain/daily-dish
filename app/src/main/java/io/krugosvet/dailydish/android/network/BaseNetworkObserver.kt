@@ -10,8 +10,11 @@ import io.reactivex.disposables.*
 import java.net.*
 import javax.annotation.*
 
-abstract class BaseNetworkObserver<T>(private val baseActivity: Activity?) : MaybeObserver<T>,
-  SingleObserver<T> {
+abstract class BaseNetworkObserver<T>(
+    private val baseActivity: Activity?
+) :
+    MaybeObserver<T>,
+    SingleObserver<T> {
 
   companion object {
     var activeRequests: Int = 0
@@ -30,11 +33,18 @@ abstract class BaseNetworkObserver<T>(private val baseActivity: Activity?) : May
 
   @OverridingMethodsMustInvokeSuper
   override fun onError(e: Throwable) {
-    if (BuildConfig.DEBUG) e.printStackTrace()
+    if (BuildConfig.DEBUG) {
+      e.printStackTrace()
+    }
 
-    if (e is UnknownHostException && (baseActivity as? BaseActivity)?.isInternetConnection() == false) {
+    if (
+        e is UnknownHostException
+        && (baseActivity as? BaseActivity)?.isInternetConnection() == false
+    ) {
       onFinish(R.string.network_no_internet_connection)
-    } else onFinish(onErrorMessage)
+    } else {
+      onFinish(onErrorMessage)
+    }
   }
 
   @OverridingMethodsMustInvokeSuper
@@ -49,12 +59,16 @@ abstract class BaseNetworkObserver<T>(private val baseActivity: Activity?) : May
 
   private fun onFinish(@StringRes messageId: Int) {
     showLongSnackbar((baseActivity as? BaseActivity), messageId)
-    if (activeRequests != 0) activeRequests--
+
+    if (activeRequests != 0) {
+      activeRequests--
+    }
+
     toggleProgressBarVisibility()
   }
 
   private fun toggleProgressBarVisibility() {
-    baseActivity?.runOnUiThread{
+    baseActivity?.runOnUiThread {
       progressBar?.visibility = if (activeRequests > 0) View.VISIBLE else View.INVISIBLE
     }
   }

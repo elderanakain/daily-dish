@@ -20,6 +20,7 @@ fun loadMealMainImage(imageView: ImageView, @DrawableRes image: Int) {
     .into(imageView)
 }
 
-private fun getRequestOptions() = RequestOptions()
+private fun getRequestOptions() =
+    RequestOptions()
   .placeholder(R.drawable.meal_empty_main_image)
   .centerCrop()
