@@ -12,7 +12,9 @@ import io.krugosvet.dailydish.android.utils.intent.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
-class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealListener {
+class StartupActivity :
+    ImageProviderActivity(),
+    DialogAddMeal.DialogAddMealListener {
 
   private lateinit var viewPagerAdapter: ViewPagerAdapter<BaseFragment>
 
@@ -32,39 +34,51 @@ class StartupActivity : ImageProviderActivity(), DialogAddMeal.DialogAddMealList
 
   override fun onAddButtonClick(mealTitle: String, mealDescription: String, parseDate: Date, mainImage: Uri) {
     val meal = Meal(mealTitle, mealDescription, parseDate, mainImage.toString())
-    mealServicePipe.sendMeal(meal).subscribe(object : BaseNetworkObserver<MealId>(this@StartupActivity) {
-      override val onSuccessMessage = R.string.network_post_meal_success
-      override val onErrorMessage: Int = R.string.network_post_meal_error
 
-      override fun onSuccess(result: MealId) {
-        super.onSuccess(result)
-        meal.persist(realm, result.id)
-      }
-    })
+    mealServicePipe
+        .sendMeal(meal)
+        .subscribe(
+            object : BaseNetworkObserver<MealId>(this@StartupActivity) {
+              override val onSuccessMessage = R.string.network_post_meal_success
+              override val onErrorMessage: Int = R.string.network_post_meal_error
+
+              override fun onSuccess(result: MealId) {
+                super.onSuccess(result)
+                meal.persist(realm, result.id)
+              }
+            }
+        )
   }
 
   override fun onAccountStateChanged() {
     super.onAccountStateChanged()
+
     getMeals()
   }
 
   private fun setupViewPager() {
     viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
     viewPager.adapter = viewPagerAdapter
-    viewPagerAdapter.addFragments(WhatToCookTodayFragment.newInstance(this),
-      RecentlyCookedFragment.newInstance(this))
+
+    viewPagerAdapter.addFragments(
+        WhatToCookTodayFragment.newInstance(this), RecentlyCookedFragment.newInstance(this)
+    )
+
     tabs.setupWithViewPager(viewPager, true)
   }
 
-  private fun getMeals() {
-    mealServicePipe.getMeals().subscribe(object : BaseNetworkObserver<List<Meal>>(this@StartupActivity) {
-      override val onSuccessMessage = R.string.network_get_meals_success
-      override val onErrorMessage: Int = R.string.network_get_meals_error
+  private fun getMeals() =
+      mealServicePipe
+          .getMeals()
+          .subscribe(
+              object : BaseNetworkObserver<List<Meal>>(this@StartupActivity) {
+                override val onSuccessMessage = R.string.network_get_meals_success
+                override val onErrorMessage: Int = R.string.network_get_meals_error
 
-      override fun onSuccess(result: List<Meal>) {
-        super.onSuccess(result)
-        realm.executeTransaction { it.insertOrUpdate(result) }
-      }
-    })
-  }
+                override fun onSuccess(result: List<Meal>) {
+                  super.onSuccess(result)
+                  realm.executeTransaction { it.insertOrUpdate(result) }
+                }
+              }
+          )
 }

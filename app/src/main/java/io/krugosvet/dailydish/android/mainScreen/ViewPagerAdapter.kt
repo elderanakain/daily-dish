@@ -5,7 +5,8 @@ import androidx.viewpager.widget.*
 import io.krugosvet.dailydish.android.utils.*
 import java.util.*
 
-class ViewPagerAdapter<F : Fragment>(manager: FragmentManager) : FragmentStatePagerAdapter(manager) {
+class ViewPagerAdapter<F : Fragment>(manager: FragmentManager) :
+    FragmentStatePagerAdapter(manager) {
 
   private val fragmentList = ArrayList<F>()
 
@@ -13,6 +14,7 @@ class ViewPagerAdapter<F : Fragment>(manager: FragmentManager) : FragmentStatePa
 
   override fun getItemPosition(`object`: Any): Int {
     val position = fragmentList.indexOf(`object`)
+
     return if (position == -1) PagerAdapter.POSITION_NONE else position
   }
 
@@ -22,8 +24,6 @@ class ViewPagerAdapter<F : Fragment>(manager: FragmentManager) : FragmentStatePa
     fragmentList.addAll(fragment)
     notifyDataSetChanged()
   }
-
-  fun getFragment(fragmentClass: Class<F>) = fragmentList.firstOrNull { fragmentClass.isInstance(it) }
 
   override fun getPageTitle(position: Int): CharSequence? {
     val fragment = fragmentList[position]

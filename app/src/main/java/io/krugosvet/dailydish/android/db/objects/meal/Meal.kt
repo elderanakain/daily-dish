@@ -10,13 +10,13 @@ import java.util.*
 
 @RealmClass
 open class Meal constructor(
-  @Required var title: String = "",
-  @Required var description: String = "",
-  @Required var date: Date = Date(),
-  @Required var mainImage: String = "",
-  @Required var userId: String = ""
-):
-  RealmModel {
+    @Required var title: String = "",
+    @Required var description: String = "",
+    @Required var date: Date = Date(),
+    @Required var mainImage: String = "",
+    @Required var userId: String = ""
+) :
+    RealmModel {
 
   @PrimaryKey
   var id = 0
@@ -30,23 +30,20 @@ open class Meal constructor(
     }
   }
 
-  fun delete(realm: Realm) {
-    realm.executeTransaction {
-      if (isValid()) deleteFromRealm()
-    }
-  }
+  fun delete(realm: Realm) =
+      realm.executeTransaction {
+        if (isValid()) deleteFromRealm()
+      }
 
-  fun changeMainImage(realm: Realm, uri: Uri) {
-    realm.executeTransaction {
-      this.mainImage = uri.toString()
-    }
-  }
+  fun changeMainImage(realm: Realm, uri: Uri) =
+      realm.executeTransaction {
+        this.mainImage = uri.toString()
+      }
 
-  fun removeMainImage(realm: Realm) {
-    realm.executeTransaction {
-      this.mainImage = ""
-    }
-  }
+  fun removeMainImage(realm: Realm) =
+      realm.executeTransaction {
+        this.mainImage = ""
+      }
 
   fun updateDateToCurrent(realm: Realm) {
     if (isValid()) {
@@ -55,4 +52,5 @@ open class Meal constructor(
       }
     }
   }
+
 }

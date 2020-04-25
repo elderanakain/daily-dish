@@ -4,6 +4,9 @@ import android.net.*
 
 interface CameraImagePipe {
 
-  fun openMealMainImageUpdateDialog(onPhotoReceiveCallback: (Uri) -> Unit,
-    onPhotoDelete: () -> Unit, mainImageIsEmpty: Boolean)
+  fun openMealMainImageUpdateDialog(
+      onPhotoReceiveCallback: (Uri) -> Unit,
+      onPhotoDelete: () -> Unit,
+      mainImageIsEmpty: Boolean
+  )
 }

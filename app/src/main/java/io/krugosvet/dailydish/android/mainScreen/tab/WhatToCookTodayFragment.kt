@@ -4,7 +4,9 @@ import android.content.*
 import android.os.*
 import android.view.*
 import io.krugosvet.dailydish.android.*
+import io.krugosvet.dailydish.android.db.objects.meal.Meal
 import io.krugosvet.dailydish.android.utils.*
+import io.realm.RealmQuery
 
 class WhatToCookTodayFragment : MealListPageFragment() {
 
@@ -14,11 +16,11 @@ class WhatToCookTodayFragment : MealListPageFragment() {
     }
   }
 
-  override fun getMealListQuery() =
-    { realm.getAscByDateMeals() }
+  override fun getMealListQuery(): () -> RealmQuery<Meal> = { realm.getAscByDateMeals() }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+
     adapter.setMealsToShow(5)
   }
 

@@ -33,9 +33,13 @@ interface MealService {
 
 interface MealServicePipe {
   fun getMeals(): Maybe<List<Meal>>
+
   fun sendMeal(meal: Meal): Single<MealId>
+
   fun deleteMeal(meal: Meal): Maybe<Void>
+
   fun updateImageMeal(meal: UpdateImageMeal): Maybe<Void>
+
   fun updateDateMeal(meal: UpdateDateMeal): Maybe<Void>
 }
 
@@ -43,17 +47,30 @@ class MealServicePipeImpl(private val mealService: MealService) : MealServicePip
 
   override fun getMeals(): Maybe<List<Meal>> = getMealObserver("").applySchedulers()
 
-  override fun sendMeal(meal: Meal): Single<MealId> = mealService.sendMeal(meal).applySchedulers()
+  override fun sendMeal(meal: Meal): Single<MealId> =
+      mealService
+          .sendMeal(meal)
+          .applySchedulers()
 
   override fun deleteMeal(meal: Meal): Maybe<Void> =
-    mealService.deleteMeal(meal.id).applySchedulers()
+      mealService
+          .deleteMeal(meal.id)
+          .applySchedulers()
 
   override fun updateImageMeal(meal: UpdateImageMeal): Maybe<Void> =
-    mealService.updateImageMeal(meal).applySchedulers()
+      mealService
+          .updateImageMeal(meal)
+          .applySchedulers()
 
   override fun updateDateMeal(meal: UpdateDateMeal): Maybe<Void> =
-    mealService.updateDateMeal(meal).applySchedulers()
+      mealService
+          .updateDateMeal(meal)
+          .applySchedulers()
 
   private fun getMealObserver(userId: String) =
-    if (userId.isEmpty()) mealService.getMeals() else mealService.getMeals(userId)
+      if (userId.isEmpty()) {
+        mealService.getMeals()
+      } else {
+        mealService.getMeals(userId)
+      }
 }

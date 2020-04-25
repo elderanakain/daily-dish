@@ -4,21 +4,26 @@ import android.content.*
 import android.os.*
 import android.view.*
 import io.krugosvet.dailydish.android.*
+import io.krugosvet.dailydish.android.db.objects.meal.Meal
 import io.krugosvet.dailydish.android.utils.*
+import io.realm.RealmQuery
 
-class RecentlyCookedFragment : MealListPageFragment() {
+class RecentlyCookedFragment :
+    MealListPageFragment() {
 
   companion object {
-    fun newInstance(context: Context) = RecentlyCookedFragment().apply {
-      arguments = Bundle().apply { putString(PAGE_TITLE, context.getString(R.string.recently_cooked)) }
-    }
+    fun newInstance(context: Context) =
+        RecentlyCookedFragment()
+            .apply {
+              arguments = Bundle().apply { putString(PAGE_TITLE, context.getString(R.string.recently_cooked)) }
+            }
   }
 
-  override fun getMealListQuery() =
-    { realm.getDescByDateMeals() }
+  override fun getMealListQuery(): () -> RealmQuery<Meal> = { realm.getDescByDateMeals() }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+
     adapter.setMealsToHide(5)
   }
 

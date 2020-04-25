@@ -10,8 +10,12 @@ import javax.inject.*
 @Singleton
 @Component(modules = [AppModule::class, NetworkModule::class])
 interface AppComponent {
+
   fun inject(activity: BaseActivity)
+
   fun inject(activity: StartupActivity)
+
   fun inject(fragment: MealListPageFragment)
+
   fun inject(adapter: MealListAdapter)
 }

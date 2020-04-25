@@ -6,7 +6,9 @@ import io.realm.*
 import javax.inject.*
 
 @Module
-class AppModule(private val appContext: Context) {
+class AppModule(
+    private val appContext: Context
+) {
 
   @Provides
   @Singleton
