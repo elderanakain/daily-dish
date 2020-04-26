@@ -1,20 +1,23 @@
 package io.krugosvet.dailydish.android.network
 
-import android.app.*
-import android.view.*
-import androidx.annotation.*
-import io.krugosvet.dailydish.android.*
-import io.krugosvet.dailydish.android.utils.baseUi.*
-import io.reactivex.*
-import io.reactivex.disposables.*
-import java.net.*
-import javax.annotation.*
+import android.app.Activity
+import android.view.View
+import androidx.annotation.StringRes
+import io.krugosvet.dailydish.android.BuildConfig
+import io.krugosvet.dailydish.android.R
+import io.krugosvet.dailydish.android.architecture.ui.BaseActivity
+import io.krugosvet.dailydish.android.utils.baseUi.showLongSnackbar
+import io.reactivex.MaybeObserver
+import io.reactivex.SingleObserver
+import io.reactivex.disposables.Disposable
+import java.net.UnknownHostException
+import javax.annotation.OverridingMethodsMustInvokeSuper
 
 abstract class BaseNetworkObserver<T>(
-    private val baseActivity: Activity?
+  private val baseActivity: Activity?
 ) :
-    MaybeObserver<T>,
-    SingleObserver<T> {
+  MaybeObserver<T>,
+  SingleObserver<T> {
 
   companion object {
     var activeRequests: Int = 0
@@ -23,7 +26,7 @@ abstract class BaseNetworkObserver<T>(
   protected abstract val onErrorMessage: Int
   protected abstract val onSuccessMessage: Int
 
-  private val progressBar = (baseActivity as? BaseActivity)?.getProgressBar()
+  private val progressBar = (baseActivity as? BaseActivity<*>)?.getProgressBar()
 
   @OverridingMethodsMustInvokeSuper
   override fun onSubscribe(d: Disposable) {
@@ -38,8 +41,8 @@ abstract class BaseNetworkObserver<T>(
     }
 
     if (
-        e is UnknownHostException
-        && (baseActivity as? BaseActivity)?.isInternetConnection() == false
+      e is UnknownHostException
+      && (baseActivity as? BaseActivity<*>)?.isInternetConnection() == false
     ) {
       onFinish(R.string.network_no_internet_connection)
     } else {
@@ -58,7 +61,7 @@ abstract class BaseNetworkObserver<T>(
   }
 
   private fun onFinish(@StringRes messageId: Int) {
-    showLongSnackbar((baseActivity as? BaseActivity), messageId)
+    showLongSnackbar((baseActivity as? BaseActivity<*>), messageId)
 
     if (activeRequests != 0) {
       activeRequests--

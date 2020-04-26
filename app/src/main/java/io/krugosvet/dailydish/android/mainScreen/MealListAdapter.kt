@@ -30,11 +30,11 @@ interface MealListAdapterPipe {
 
 @Suppress("ProtectedInFinal")
 class MealListAdapter(
-    private val cameraImagePipe: CameraImagePipe,
-    private val query: () -> RealmQuery<Meal>,
-    private val mealListAdapterPipe: MealListAdapterPipe
+  private val cameraImagePipe: CameraImagePipe,
+  private val query: () -> RealmQuery<Meal>,
+  private val mealListAdapterPipe: MealListAdapterPipe
 ) :
-    RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(null, true) {
+  RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(null, true) {
 
   private val mealResults = query.invoke().findAll()
 
@@ -66,9 +66,9 @@ class MealListAdapter(
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-      MealViewHolder(
-          LayoutInflater.from(parent.context).inflate(R.layout.list_meal, parent, false)
-      )
+    MealViewHolder(
+      LayoutInflater.from(parent.context).inflate(R.layout.list_meal, parent, false)
+    )
 
   override fun onBindViewHolder(holder: MealViewHolder, position: Int) {
     val meal = data?.get(position)
@@ -115,7 +115,7 @@ class MealListAdapter(
       title.text = meal.title
       description.text = meal.description
       lastDateOfCooking.text = lastDateOfCooking.context
-          .getString(R.string.cooked_on, getLongFormattedDate(meal.date))
+        .getString(R.string.cooked_on, getLongFormattedDate(meal.date))
 
       bindDeleteButton(meal)
       bindMealMainImage(meal)

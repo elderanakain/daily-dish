@@ -17,11 +17,11 @@ fun getLongFormattedDate(date: Date?): String = getDateInstance(LONG).format(dat
  * @return parsed date
  */
 fun defaultFormatDate(date: String): Date =
-    try {
-      getSimpleDefaultDateFormat().parse(date)
-    } catch (e: ParseException) {
-      getCurrentDate()
-    }
+  try {
+    getSimpleDefaultDateFormat().parse(date)
+  } catch (e: ParseException) {
+    getCurrentDate()
+  }
 
 /**
  * @param year to parse
@@ -30,7 +30,7 @@ fun defaultFormatDate(date: String): Date =
  * @return parse date with current time in "yyyy-MM-dd HH:mm:ss" format
  */
 fun defaultFormatDate(year: Int, month: Int, day: Int): Date =
-    getSimpleDefaultDateFormat().parse("$year-$month-$day ${currentFormattedTime()}")
+  getSimpleDefaultDateFormat().parse("$year-$month-$day ${currentFormattedTime()}")
 
 fun isCurrentDate(date: Date): Boolean {
   val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())

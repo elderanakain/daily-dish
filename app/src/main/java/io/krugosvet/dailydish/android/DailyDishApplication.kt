@@ -9,7 +9,7 @@ import io.krugosvet.dailydish.android.dagger.module.NetworkModule
 import io.realm.Realm
 
 class DailyDishApplication :
-    Application() {
+  Application() {
 
   companion object {
     lateinit var appComponent: AppComponent
@@ -26,9 +26,9 @@ class DailyDishApplication :
   }
 
   private fun buildComponent() =
-      DaggerAppComponent
-          .builder()
-          .appModule(AppModule(this))
-          .networkModule(NetworkModule())
-          .build()
+    DaggerAppComponent
+      .builder()
+      .appModule(AppModule(this))
+      .networkModule(NetworkModule())
+      .build()
 }

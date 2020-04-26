@@ -1,9 +1,12 @@
 package io.krugosvet.dailydish.android.network
 
-import io.krugosvet.dailydish.android.db.objects.meal.*
-import io.krugosvet.dailydish.android.network.json.*
-import io.krugosvet.dailydish.android.utils.*
-import io.reactivex.*
+import io.krugosvet.dailydish.android.db.objects.meal.Meal
+import io.krugosvet.dailydish.android.network.json.MealId
+import io.krugosvet.dailydish.android.network.json.UpdateDateMeal
+import io.krugosvet.dailydish.android.network.json.UpdateImageMeal
+import io.krugosvet.dailydish.android.utils.applySchedulers
+import io.reactivex.Maybe
+import io.reactivex.Single
 import retrofit2.http.*
 
 const val MEAL_ENDPOINT = "meal.php"
@@ -48,29 +51,29 @@ class MealServicePipeImpl(private val mealService: MealService) : MealServicePip
   override fun getMeals(): Maybe<List<Meal>> = getMealObserver("").applySchedulers()
 
   override fun sendMeal(meal: Meal): Single<MealId> =
-      mealService
-          .sendMeal(meal)
-          .applySchedulers()
+    mealService
+      .sendMeal(meal)
+      .applySchedulers()
 
   override fun deleteMeal(meal: Meal): Maybe<Void> =
-      mealService
-          .deleteMeal(meal.id)
-          .applySchedulers()
+    mealService
+      .deleteMeal(meal.id)
+      .applySchedulers()
 
   override fun updateImageMeal(meal: UpdateImageMeal): Maybe<Void> =
-      mealService
-          .updateImageMeal(meal)
-          .applySchedulers()
+    mealService
+      .updateImageMeal(meal)
+      .applySchedulers()
 
   override fun updateDateMeal(meal: UpdateDateMeal): Maybe<Void> =
-      mealService
-          .updateDateMeal(meal)
-          .applySchedulers()
+    mealService
+      .updateDateMeal(meal)
+      .applySchedulers()
 
   private fun getMealObserver(userId: String) =
-      if (userId.isEmpty()) {
-        mealService.getMeals()
-      } else {
-        mealService.getMeals(userId)
-      }
+    if (userId.isEmpty()) {
+      mealService.getMeals()
+    } else {
+      mealService.getMeals(userId)
+    }
 }

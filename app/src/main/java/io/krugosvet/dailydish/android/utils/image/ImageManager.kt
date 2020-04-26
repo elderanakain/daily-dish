@@ -1,9 +1,9 @@
 package io.krugosvet.dailydish.android.utils.image
 
-import android.widget.*
-import androidx.annotation.*
-import com.bumptech.glide.*
-import com.bumptech.glide.request.*
+import android.widget.ImageView
+import androidx.annotation.DrawableRes
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import io.krugosvet.dailydish.android.R
 
 fun loadMealMainImage(imageView: ImageView, image: String?) {
@@ -21,6 +21,6 @@ fun loadMealMainImage(imageView: ImageView, @DrawableRes image: Int) {
 }
 
 private fun getRequestOptions() =
-    RequestOptions()
-  .placeholder(R.drawable.meal_empty_main_image)
-  .centerCrop()
+  RequestOptions()
+    .placeholder(R.drawable.meal_empty_main_image)
+    .centerCrop()
