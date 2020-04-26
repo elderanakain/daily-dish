@@ -1,12 +1,14 @@
 package io.krugosvet.dailydish.android.mainScreen
 
-import androidx.fragment.app.*
-import androidx.viewpager.widget.*
-import io.krugosvet.dailydish.android.utils.*
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.viewpager.widget.PagerAdapter
+import io.krugosvet.dailydish.android.utils.ViewPagerFragment
 import java.util.*
 
 class ViewPagerAdapter<F : Fragment>(manager: FragmentManager) :
-    FragmentStatePagerAdapter(manager) {
+  FragmentStatePagerAdapter(manager) {
 
   private val fragmentList = ArrayList<F>()
 

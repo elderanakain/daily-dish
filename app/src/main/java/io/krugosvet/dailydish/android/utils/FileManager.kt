@@ -1,23 +1,27 @@
 package io.krugosvet.dailydish.android.utils
 
-import android.content.*
-import android.graphics.*
-import android.os.*
-import io.reactivex.*
-import io.reactivex.android.schedulers.*
-import io.reactivex.schedulers.*
-import java.io.*
-import java.text.*
+import android.content.Context
+import android.graphics.Bitmap
+import android.os.Environment
+import io.reactivex.Single
+import io.reactivex.SingleOnSubscribe
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileInputStream
+import java.io.IOException
+import java.text.SimpleDateFormat
 import java.util.*
 
 @Throws(IOException::class)
 fun createImageFile(context: Context): File =
-    File.createTempFile(
-        "JPEG_"
-            + SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-            + "_",
-        ".jpg", context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-    )
+  File.createTempFile(
+    "JPEG_"
+      + SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+      + "_",
+    ".jpg", context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+  )
 
 fun readBytesFromFile(file: File?): ByteArray {
   var fileInputStream: FileInputStream? = null
@@ -39,9 +43,9 @@ fun readBytesFromFile(file: File?): ByteArray {
 }
 
 fun bytesFromBitmap(bitmap: Bitmap?): Single<ByteArray> =
-    Single.create(SingleOnSubscribe<ByteArray> { e -> e.onSuccess(compressBitmap(bitmap)) })
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+  Single.create(SingleOnSubscribe<ByteArray> { e -> e.onSuccess(compressBitmap(bitmap)) })
+    .subscribeOn(Schedulers.io())
+    .observeOn(AndroidSchedulers.mainThread())
 
 fun compressBitmap(bitmap: Bitmap?): ByteArray {
   val stream = ByteArrayOutputStream()
