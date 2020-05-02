@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <data>
+        <import type="androidx.lifecycle.LiveData" />
+        <import type="io.krugosvet.dailydish.android.mainScreen.tab.MealListPageFragment.Visual" />
+        <variable
+            name="visual"
+            type="LiveData&lt;Visual>"
+            />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        >
         <include
             android:id="@+id/emptyLayout"
             layout="@layout/layout_meal_empty"
-            android:visibility="gone" />
-
+            android:visibility="@{visual.emptyLayoutVisible}"
+            app:text="@{visual.emptyLayoutText}"
+            />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mealList"
             android:layout_width="match_parent"
@@ -18,7 +28,9 @@
             android:clipToPadding="false"
             android:orientation="vertical"
             android:paddingBottom="75dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
+            android:visibility="@{visual.isMealListVisible}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:adapter="@{visual.adapter}"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
