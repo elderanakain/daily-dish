@@ -4,30 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
+import io.krugosvet.bindingcomponent.IBindingContainer
 import io.krugosvet.dailydish.android.DailyDishApplication
 import io.krugosvet.dailydish.android.dagger.AppComponent
 import io.krugosvet.dailydish.android.network.MealServicePipe
 import io.realm.Realm
 import javax.inject.Inject
 
-abstract class BaseFragment<VB : ViewDataBinding> :
-  DialogFragment() {
-
-  lateinit var binding: VB
-    private set
+abstract class BaseFragment<TVisual> :
+  DialogFragment(),
+  IBindingContainer<TVisual> {
 
   @Inject
   protected lateinit var realm: Realm
 
   @Inject
   protected lateinit var mealServicePipe: MealServicePipe
-
-  @get:LayoutRes
-  protected abstract val layoutId: Int
 
   protected abstract fun inject(appComponent: AppComponent)
 
@@ -39,12 +32,8 @@ abstract class BaseFragment<VB : ViewDataBinding> :
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-  ): View {
-
-    binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
-
-    return binding.root
-  }
+  ): View =
+    bindingComponent.rootView
 
   override fun onDestroy() {
     super.onDestroy()

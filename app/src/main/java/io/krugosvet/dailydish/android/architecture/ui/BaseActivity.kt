@@ -9,10 +9,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
 import android.widget.ProgressBar
-import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
+import io.krugosvet.bindingcomponent.IBindingContainer
 import io.krugosvet.dailydish.android.DailyDishApplication
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.dagger.AppComponent
@@ -22,21 +20,16 @@ import io.krugosvet.dailydish.android.utils.intent.ACCOUNT_STATE_CHANGE
 import io.realm.Realm
 import javax.inject.Inject
 
-abstract class BaseActivity<VB : ViewDataBinding> :
+abstract class BaseActivity<TVisual> :
   AppCompatActivity(),
+  IBindingContainer<TVisual>,
   PopupMenu.OnMenuItemClickListener {
 
   @Inject
   lateinit var realm: Realm
 
-  lateinit var binding: VB
-    private set
-
   @Inject
   protected lateinit var mealServicePipe: MealServicePipe
-
-  @get:LayoutRes
-  protected abstract val layoutId: Int
 
   private lateinit var accountName: MenuItem
 
@@ -44,8 +37,7 @@ abstract class BaseActivity<VB : ViewDataBinding> :
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    binding = DataBindingUtil.inflate(layoutInflater, layoutId, null, false)
-    setContentView(binding.root)
+    //setContentView(binding.root)
 
     inject(DailyDishApplication.appComponent)
   }

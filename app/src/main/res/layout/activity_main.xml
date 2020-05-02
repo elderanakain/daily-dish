@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <data>
+        <import type="androidx.lifecycle.LiveData" />
+        <import type="io.krugosvet.dailydish.android.mainScreen.StartupActivity.Visual" />
+        <variable
+            name="visual"
+            type="LiveData&lt;Visual>"
+            />
+    </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/parentCoordinatorLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        >
         <ProgressBar
             android:id="@+id/progressBar"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -14,23 +23,24 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="-7dp"
             android:indeterminate="true"
-            android:visibility="invisible" />
-
+            android:visibility="invisible"
+            />
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:adapter="@{visual.adapter}"
+            >
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                app:tabTextAppearance="@style/MainScreenTabs" />
-
+                app:tabTextAppearance="@style/MainScreenTabs"
+                app:adapter="@{viewPager}"
+                />
         </androidx.viewpager.widget.ViewPager>
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingButton"
             android:layout_width="wrap_content"
@@ -38,7 +48,8 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:src="@drawable/ic_add_white_24dp"
-            app:fabSize="normal" />
-
+            android:onClick="@{visual.onFloatingButtonClick}"
+            app:fabSize="normal"
+            />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
