@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import com.google.android.material.snackbar.Snackbar
 import io.krugosvet.dailydish.android.architecture.ui.BaseActivity
 
-fun showLongSnackbar(baseActivity: BaseActivity<*>?, @StringRes errorMessageId: Int) {
+fun showLongSnackbar(baseActivity: BaseActivity<*, *>?, @StringRes errorMessageId: Int) {
   val coordinatorLayout = baseActivity?.getParentCoordinatorLayout()
 
   if (coordinatorLayout != null) {

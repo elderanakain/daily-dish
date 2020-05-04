@@ -29,8 +29,8 @@
             android:orientation="vertical"
             android:paddingBottom="75dp"
             android:visibility="@{visual.isMealListVisible}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:adapter="@{visual.adapter}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

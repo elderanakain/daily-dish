@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
 import io.krugosvet.bindingcomponent.IBindingContainer
 import io.krugosvet.dailydish.android.DailyDishApplication
@@ -12,9 +13,9 @@ import io.krugosvet.dailydish.android.network.MealServicePipe
 import io.realm.Realm
 import javax.inject.Inject
 
-abstract class BaseFragment<TVisual> :
+abstract class BaseFragment<TBinding: ViewDataBinding, TVisual> :
   DialogFragment(),
-  IBindingContainer<TVisual> {
+  IBindingContainer<TBinding, TVisual> {
 
   @Inject
   protected lateinit var realm: Realm
@@ -33,7 +34,7 @@ abstract class BaseFragment<TVisual> :
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
   ): View =
-    bindingComponent.rootView
+    bindingComponent.binding.root
 
   override fun onDestroy() {
     super.onDestroy()

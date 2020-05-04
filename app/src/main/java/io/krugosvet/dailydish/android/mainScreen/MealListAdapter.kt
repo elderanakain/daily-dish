@@ -1,20 +1,28 @@
 package io.krugosvet.dailydish.android.mainScreen
 
-import android.net.*
-import android.view.*
-import android.widget.*
-import androidx.annotation.*
-import androidx.recyclerview.widget.*
-import io.krugosvet.dailydish.android.*
+import android.net.Uri
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.annotation.StringRes
+import androidx.recyclerview.widget.RecyclerView
+import io.krugosvet.dailydish.android.DailyDishApplication
 import io.krugosvet.dailydish.android.R
-import io.krugosvet.dailydish.android.db.objects.meal.*
-import io.krugosvet.dailydish.android.utils.*
-import io.krugosvet.dailydish.android.utils.image.*
-import io.krugosvet.dailydish.android.utils.intent.*
+import io.krugosvet.dailydish.android.db.objects.meal.Meal
+import io.krugosvet.dailydish.android.utils.addListener
+import io.krugosvet.dailydish.android.utils.getLongFormattedDate
+import io.krugosvet.dailydish.android.utils.image.loadMealMainImage
+import io.krugosvet.dailydish.android.utils.intent.CameraImagePipe
+import io.krugosvet.dailydish.android.utils.isCurrentDate
+import io.krugosvet.dailydish.android.utils.removeListener
 import io.realm.*
-import io.realm.kotlin.*
+import io.realm.kotlin.isValid
 
 interface MealListAdapterPipe {
+
   fun deleteMeal(meal: Meal)
 
   fun onMealListChange(isEmpty: Boolean)
@@ -26,12 +34,13 @@ interface MealListAdapterPipe {
   fun showLongSnackbar(@StringRes message: Int)
 
   fun changeMealCookedDate(meal: Meal)
+
 }
 
 @Suppress("ProtectedInFinal")
 class MealListAdapter(
   private val cameraImagePipe: CameraImagePipe,
-  private val query: () -> RealmQuery<Meal>,
+  query: () -> RealmQuery<Meal>,
   private val mealListAdapterPipe: MealListAdapterPipe
 ) :
   RealmRecyclerViewAdapter<Meal, MealListAdapter.MealViewHolder>(null, true) {
