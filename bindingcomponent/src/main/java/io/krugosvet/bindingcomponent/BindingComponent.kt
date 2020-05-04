@@ -2,19 +2,15 @@ package io.krugosvet.bindingcomponent
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.*
 
-interface IBindingContainer<TVisual> : LifecycleOwner {
+interface IBindingContainer<TBinding: ViewDataBinding, TVisual> : LifecycleOwner {
 
-  val bindingComponent: IBindingComponent<TVisual>
-
-  val visual: MutableLiveData<TVisual>
-    get() = bindingComponent.visual
+  val bindingComponent: IBindingComponent<TBinding, TVisual>
 
   fun onBind() = Unit
 
@@ -24,7 +20,7 @@ interface IBindingContainer<TVisual> : LifecycleOwner {
 /**
  * Represents binding part of UI layer
  */
-interface IBindingComponent<TVisual> {
+interface IBindingComponent<TBinding: ViewDataBinding, TVisual> {
 
   @get:LayoutRes
   val layoutId: Int
@@ -34,31 +30,28 @@ interface IBindingComponent<TVisual> {
    */
   val visual: MutableLiveData<TVisual>
 
-  val rootView: View
+  val binding: TBinding
 }
 
-class BindingComponent<TVisual>(
+class BindingComponent<TBinding: ViewDataBinding, TVisual>(
   @LayoutRes
   override val layoutId: Int,
-  val container: IBindingContainer<TVisual>,
-  val visualVar: Int
+  private val container: IBindingContainer<TBinding, TVisual>,
+  private val visualVar: Int
 ) :
-  IBindingComponent<TVisual>,
+  IBindingComponent<TBinding, TVisual>,
   LifecycleObserver {
 
   override val visual = MutableLiveData<TVisual>()
 
-  override val rootView: View
-    get() = binding.root
-
-  private lateinit var binding: ViewDataBinding
+  override lateinit var binding: TBinding
 
   init {
     container.lifecycle.addObserver(this)
   }
 
   @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-  fun createBinding() {
+  private fun createBinding() {
     val context = container.parentContext
 
     binding = DataBindingUtil.inflate(LayoutInflater.from(context), layoutId, null, false)
@@ -72,8 +65,7 @@ class BindingComponent<TVisual>(
   }
 
   @OnLifecycleEvent(Lifecycle.Event.ON_START)
-  fun bindVisual() {
+  private fun bindVisual() {
     binding.setVariable(visualVar, visual)
   }
 }
-

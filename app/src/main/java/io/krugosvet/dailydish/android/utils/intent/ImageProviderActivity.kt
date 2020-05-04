@@ -2,10 +2,11 @@ package io.krugosvet.dailydish.android.utils.intent
 
 import android.content.pm.PackageManager
 import android.net.Uri
+import androidx.databinding.ViewDataBinding
 import io.krugosvet.dailydish.android.architecture.ui.BaseActivity
 
-abstract class ImageProviderActivity<TVisual> :
-  BaseActivity<TVisual>(),
+abstract class ImageProviderActivity<TBinding: ViewDataBinding, TVisual> :
+  BaseActivity<TBinding, TVisual>(),
   CameraImagePipe {
 
   private var imageProvider: ImageProvider? = null

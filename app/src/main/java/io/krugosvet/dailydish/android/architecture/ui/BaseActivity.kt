@@ -1,73 +1,52 @@
 package io.krugosvet.dailydish.android.architecture.ui
 
 import android.content.Context
-import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.widget.PopupMenu
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.ViewDataBinding
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import io.krugosvet.bindingcomponent.IBindingContainer
 import io.krugosvet.dailydish.android.DailyDishApplication
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.dagger.AppComponent
 import io.krugosvet.dailydish.android.network.MealServicePipe
 import io.krugosvet.dailydish.android.utils.baseUi.showLongSnackbar
-import io.krugosvet.dailydish.android.utils.intent.ACCOUNT_STATE_CHANGE
 import io.realm.Realm
 import javax.inject.Inject
 
-abstract class BaseActivity<TVisual> :
+abstract class BaseActivity<TBinding: ViewDataBinding, TVisual> :
   AppCompatActivity(),
-  IBindingContainer<TVisual>,
-  PopupMenu.OnMenuItemClickListener {
+  IBindingContainer<TBinding, TVisual> {
 
   @Inject
-  lateinit var realm: Realm
+  protected lateinit var realm: Realm
 
   @Inject
   protected lateinit var mealServicePipe: MealServicePipe
 
-  private lateinit var accountName: MenuItem
+  protected val navController: NavController by lazy {
+    findNavController(R.id.hostFragment)
+  }
 
   protected abstract fun inject(appComponent: AppComponent)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    //setContentView(binding.root)
 
     inject(DailyDishApplication.appComponent)
   }
+
+  override fun onSupportNavigateUp() = navController.navigateUp()
 
   override fun onDestroy() {
     super.onDestroy()
 
     realm.close()
   }
-
-  override fun onCreateOptionsMenu(menu: Menu): Boolean {
-    menuInflater.inflate(R.menu.action_bar, menu)
-    this.accountName = menu.findItem(R.id.account_name)
-
-    return true
-  }
-
-  override fun onOptionsItemSelected(item: MenuItem) =
-    if (item.itemId == R.id.action_login) {
-      showAuthMenuPopup(findViewById(item.itemId))
-      true
-    } else {
-      super.onOptionsItemSelected(item)
-    }
-
-  override fun onMenuItemClick(item: MenuItem?): Boolean =
-    when (item?.itemId) {
-      R.id.authMenuSignOut -> signOut()
-      else -> false
-    }
 
   fun isInternetConnection(): Boolean {
     val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -81,21 +60,5 @@ abstract class BaseActivity<TVisual> :
 
   protected fun noInternetConnectionError() {
     showLongSnackbar(this, R.string.network_no_internet_connection)
-  }
-
-  protected open fun onAccountStateChanged() {
-    sendBroadcast(Intent(ACCOUNT_STATE_CHANGE))
-  }
-
-  private fun signOut(): Boolean {
-    onAccountStateChanged()
-
-    return true
-  }
-
-  private fun showAuthMenuPopup(view: View) {
-    val popup = PopupMenu(this, view)
-    popup.setOnMenuItemClickListener(this)
-    popup.show()
   }
 }

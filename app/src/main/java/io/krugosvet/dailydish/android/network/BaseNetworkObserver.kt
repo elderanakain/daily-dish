@@ -26,7 +26,7 @@ abstract class BaseNetworkObserver<T>(
   protected abstract val onErrorMessage: Int
   protected abstract val onSuccessMessage: Int
 
-  private val progressBar = (baseActivity as? BaseActivity<*>)?.getProgressBar()
+  private val progressBar = (baseActivity as? BaseActivity<*, *>)?.getProgressBar()
 
   @OverridingMethodsMustInvokeSuper
   override fun onSubscribe(d: Disposable) {
@@ -42,7 +42,7 @@ abstract class BaseNetworkObserver<T>(
 
     if (
       e is UnknownHostException
-      && (baseActivity as? BaseActivity<*>)?.isInternetConnection() == false
+      && (baseActivity as? BaseActivity<*, *>)?.isInternetConnection() == false
     ) {
       onFinish(R.string.network_no_internet_connection)
     } else {
@@ -61,7 +61,7 @@ abstract class BaseNetworkObserver<T>(
   }
 
   private fun onFinish(@StringRes messageId: Int) {
-    showLongSnackbar((baseActivity as? BaseActivity<*>), messageId)
+    showLongSnackbar((baseActivity as? BaseActivity<*, *>), messageId)
 
     if (activeRequests != 0) {
       activeRequests--

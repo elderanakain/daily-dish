@@ -1,4 +1,4 @@
-package io.krugosvet.dailydish.android.architecture.ui.binding
+package io.krugosvet.dailydish.android.mainScreen
 
 import android.view.View
 import androidx.databinding.BindingAdapter
@@ -10,4 +10,9 @@ fun View.setOnClickListener(listener: (() -> Unit)?) {
   setOnClickListener {
     listener.invoke()
   }
+}
+
+@BindingAdapter("android:visibility")
+fun View.setVisibility(isVisible: Boolean) {
+  visibility = if (isVisible) View.VISIBLE else View.GONE
 }
