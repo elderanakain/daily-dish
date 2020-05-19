@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/whatToCookTodayFragment"
+        android:id="@+id/mealListFragment"
         android:icon="@android:drawable/btn_plus"
         android:title="@string/what_to_cook_today" />
-    <item
-        android:id="@+id/recentlyCookedFragment"
-        android:icon="@drawable/ic_add_white_24dp"
-        android:title="Item" />
 </menu>

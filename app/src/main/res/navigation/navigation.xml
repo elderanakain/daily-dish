@@ -2,25 +2,23 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/navigation"
-            app:startDestination="@id/whatToCookTodayFragment">
+            app:startDestination="@id/mealListFragment">
     <fragment
-        android:id="@+id/recentlyCookedFragment"
-        android:name="io.krugosvet.dailydish.android.mainScreen.tab.RecentlyCookedFragment"
-        android:label="@string/recently_cooked">
+        android:id="@+id/mealListFragment"
+        android:name="io.krugosvet.dailydish.android.screen.mealList.view.MealListFragment"
+        android:label="MealListFragment" >
         <action
-            android:id="@+id/action_recentlyCookedFragment_to_whatToCookTodayFragment"
-            app:destination="@id/whatToCookTodayFragment"
-            app:enterAnim="@anim/nav_default_pop_enter_anim"
-            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+            android:id="@+id/action_mealListFragment_to_dialogAddMeal"
+            app:destination="@id/dialogAddMeal"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
     </fragment>
     <fragment
-        android:id="@+id/whatToCookTodayFragment"
-        android:name="io.krugosvet.dailydish.android.mainScreen.tab.WhatToCookTodayFragment"
-        android:label="@string/what_to_cook_today">
+        android:id="@+id/dialogAddMeal"
+        android:name="io.krugosvet.dailydish.android.screen.addMeal.view.AddMealFragment"
+        android:label="DialogAddMeal" >
         <action
-            android:id="@+id/action_whatToCookTodayFragment_to_recentlyCookedFragment"
-            app:destination="@id/recentlyCookedFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit" />
+            android:id="@+id/action_dialogAddMeal_to_mealListFragment"
+            app:destination="@id/mealListFragment" />
     </fragment>
 </navigation>

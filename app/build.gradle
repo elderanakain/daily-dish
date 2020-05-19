@@ -17,6 +17,15 @@ android {
         multiDexEnabled true
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -52,66 +61,41 @@ android {
 dependencies {
     implementation project(":bindingcomponent")
 
-    //ktx
+    // ktx
     implementation "androidx.core:core-ktx:1.2.0"
     implementation "androidx.fragment:fragment-ktx:1.2.4"
 
-    //jetpack
-    def lifecycle_version = "2.2.0"
+    // Jetpack
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
-    implementation("androidx.appcompat:appcompat:1.1.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.0-beta4")
-    implementation("com.google.android.material:material:1.2.0-alpha06")
+    implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation "androidx.constraintlayout:constraintlayout:2.0.0-beta6"
+    implementation "com.google.android.material:material:1.2.0-alpha06"
 
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     implementation 'com.mlsdev.rximagepicker:library:2.0.2'
 
-    // Dagger
+    // Koin
 
-    def daggerVersion = "2.24"
+    implementation "org.koin:koin-androidx-scope:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    implementation "org.koin:koin-androidx-fragment:$koin_version"
+    implementation "org.koin:koin-androidx-ext:$koin_version"
 
-    implementation("com.google.dagger:dagger:$daggerVersion")
-    testImplementation("com.google.dagger:dagger:$daggerVersion")
-    kapt("com.google.dagger:dagger-compiler:$daggerVersion")
-    kapt("com.google.dagger:dagger-android-processor:$daggerVersion")
-    kaptTest("com.google.dagger:dagger-compiler:$daggerVersion")
+    // RX
 
-    //RX
+    implementation "io.reactivex.rxjava2:rxjava:2.2.19"
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
 
-    implementation("io.reactivex.rxjava2:rxjava:2.2.19")
-    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
+    // DB
 
-    //DB
-
-    implementation 'io.realm:android-adapters:2.1.1'
-
-    // Network
-
-    def retrofitVersion = "2.6.1"
-
-    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    implementation("com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion")
-    implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
-
-    def moshiVersion = "1.8.0"
-
-    implementation("com.squareup.moshi:moshi:$moshiVersion")
-    implementation("com.squareup.moshi:moshi-adapters:$moshiVersion")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
-    implementation("com.serjltt.moshi:moshi-lazy-adapters:2.2")
-
-    def okHttpVersion = "4.2.0"
-
-    implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
-    implementation("com.squareup.okhttp3:logging-interceptor:$okHttpVersion")
-    implementation("com.squareup.okhttp3:okhttp-urlconnection:$okHttpVersion")
-
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 }

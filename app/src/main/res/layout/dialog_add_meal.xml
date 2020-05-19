@@ -4,6 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     >
+    <data>
+        <variable
+            name="viewModel"
+            type="io.krugosvet.dailydish.android.screen.addMeal.viewmodel.AddMealViewModel"
+            />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,11 +30,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:onClick="@{viewModel.onAddMeal}"
             android:text="@string/dialog_add_meal_button_add_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/dialogTitle"
             />
-        <io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -44,9 +51,10 @@
                 android:hint="@string/dialog_add_meal_name_field_hint"
                 android:inputType="text|textCapSentences"
                 android:lines="1"
+                android:text="@={viewModel.title}"
                 />
-        </io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout>
-        <io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -62,9 +70,10 @@
                 android:hint="@string/dialog_add_meal_description_field_hint"
                 android:inputType="text|textCapSentences|textAutoCorrect|textMultiLine"
                 android:maxLines="5"
+                android:text="@={viewModel.description}"
                 />
-        </io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout>
-        <io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/dateEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -82,18 +91,22 @@
                 android:hint="@string/dialog_add_meal_date_field_hint"
                 android:inputType="none"
                 android:minWidth="129dp"
+                android:text="@={viewModel.date}"
                 tools:text="November 2, 2018"
                 />
-        </io.krugosvet.dailydish.android.utils.baseUi.BaseTextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
         <ImageButton
             android:id="@+id/addMealImage"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:adjustViewBounds="true"
+            android:onClick="@{() -> viewModel.showImagePicker()}"
             android:scaleType="centerInside"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/dateEditText"
+            app:srcUri="@{viewModel.mainImage}"
+            tools:src="@drawable/meal_empty_image"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

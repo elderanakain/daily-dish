@@ -1,34 +1,28 @@
 package io.krugosvet.dailydish.android
 
 import android.app.Application
-import android.content.Context
-import io.krugosvet.dailydish.android.dagger.AppComponent
-import io.krugosvet.dailydish.android.dagger.DaggerAppComponent
-import io.krugosvet.dailydish.android.dagger.module.AppModule
-import io.krugosvet.dailydish.android.dagger.module.NetworkModule
+import io.krugosvet.dailydish.android.architecture.injection.module
 import io.realm.Realm
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
+import timber.log.Timber
 
 class DailyDishApplication :
   Application() {
-
-  companion object {
-    lateinit var appComponent: AppComponent
-    lateinit var appContext: Context
-  }
 
   override fun onCreate() {
     super.onCreate()
 
     Realm.init(this)
+    Timber.plant(Timber.DebugTree())
 
-    appComponent = buildComponent()
-    appContext = this
+    startKoin {
+      androidContext(this@DailyDishApplication)
+      androidLogger(Level.INFO)
+
+      modules(module)
+    }
   }
-
-  private fun buildComponent() =
-    DaggerAppComponent
-      .builder()
-      .appModule(AppModule(this))
-      .networkModule(NetworkModule())
-      .build()
 }

@@ -14,8 +14,6 @@
     <string name="intent_select_image_from_gallery">Select Image</string>
     <string name="dialog_cancel_button">Cancel</string>
     <string name="login_action_bar_icon">Login</string>
-    <!--suppress CheckTagEmptyBody -->
-    <string name="login_action_bar_name"></string>
     <string name="network_get_meals_success">Synced with the server</string>
     <string name="network_get_meals_error">Error while syncing with the server</string>
     <string name="network_post_meal_error">Error while adding the meal to the server</string>
@@ -31,9 +29,10 @@
     <string name="sign_up">Sign up</string>
     <string name="sign_in">Sign in</string>
     <string name="layout_empty_what_to_cook_today">No meals here?\nAdd some!</string>
-    <string name="layout_empty_recently_cooked_text">No recently cooked meals here?
-        \nAdd some or check what to cook today!</string>
-    <!--suppress CheckTagEmptyBody -->
-    <string name="empty_string"></string>
+    <string name="layout_empty_recently_cooked_text">No recently cooked meals here?\nAdd some or check what to cook today!</string>
     <string name="cooked_on">Cooked on: %1$s</string>
+    <string name="take_a_picture">Take a picture</string>
+    <string name="pick_from_gallery">Pick from a gallery</string>
+    <string name="update_picture">Update picture</string>
+    <string name="remove_picture">Remove picture</string>
 </resources>
