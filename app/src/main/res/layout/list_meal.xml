@@ -4,6 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     >
+    <data>
+        <import type="androidx.lifecycle.LiveData" />
+        <import type="io.krugosvet.dailydish.android.screen.mealList.view.MealVisual" />
+        <variable
+            name="visual"
+            type="LiveData&lt;MealVisual>"
+            />
+    </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,10 +27,13 @@
                 android:layout_height="0dp"
                 android:background="@color/meal_image_placeholder"
                 android:scaleType="centerInside"
+                android:onClick="@{visual.onImageClick}"
+                app:srcUri="@{visual.image}"
                 app:layout_constraintDimensionRatio="H,16:9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription"
                 />
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/innerLayout"
@@ -35,6 +46,7 @@
                     android:id="@+id/title"
                     style="@style/TitleTextView"
                     android:paddingTop="8dp"
+                    android:text="@{visual.title}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/innerLayout"
@@ -45,18 +57,10 @@
                     style="@style/SubheadTextView"
                     android:fontFamily="@font/roboto_medium"
                     android:paddingTop="12dp"
+                    android:text="@{visual.lastDateOfCooking}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/title"
                     tools:text="February 13, 2018"
-                    />
-                <ImageView
-                    android:id="@+id/expandCardButton"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/meal_expand_arrow"
-                    app:layout_constraintBottom_toBottomOf="@id/last_date_of_cooking"
-                    app:layout_constraintEnd_toEndOf="parent"
                     />
                 <TextView
                     android:id="@+id/description"
@@ -64,6 +68,7 @@
                     android:layout_marginTop="16dp"
                     android:ellipsize="end"
                     android:maxLines="3"
+                    android:text="@{visual.description}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/last_date_of_cooking"
@@ -71,7 +76,7 @@
                     />
             </androidx.constraintlayout.widget.ConstraintLayout>
             <Button
-                android:id="@+id/delete"
+                android:id="@+id/deleteButton"
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -79,6 +84,7 @@
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/meal_card_delete_button"
                 android:textColor="@color/button"
+                android:onClick="@{visual.onDelete}"
                 app:layout_constraintEnd_toStartOf="@+id/cookedButton"
                 app:layout_constraintTop_toBottomOf="@id/innerLayout"
                 />
@@ -91,6 +97,8 @@
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/meal_card_cooked_button"
                 android:textColor="@color/white"
+                android:onClick="@{visual.onCookTodayClick}"
+                android:enabled="@{visual.cookTodayButtonEnabled}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/innerLayout"
                 />

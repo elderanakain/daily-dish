@@ -2,15 +2,8 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     >
-    <data>
-        <import type="androidx.lifecycle.LiveData" />
-        <import type="io.krugosvet.dailydish.android.mainScreen.tab.MealListPageFragment.Visual" />
-        <variable
-            name="visual"
-            type="LiveData&lt;Visual>"
-            />
-    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,19 +11,22 @@
         <include
             android:id="@+id/emptyLayout"
             layout="@layout/layout_meal_empty"
-            android:visibility="@{visual.emptyLayoutVisible}"
-            app:text="@{visual.emptyLayoutText}"
             />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mealList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/primary"
             android:clipToPadding="false"
             android:orientation="vertical"
             android:paddingBottom="75dp"
-            android:visibility="@{visual.isMealListVisible}"
-            app:adapter="@{visual.adapter}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:itemCount="3"
+            tools:listitem="@layout/list_meal"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

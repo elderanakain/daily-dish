@@ -8,41 +8,36 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.*
 
-interface IBindingContainer<TBinding: ViewDataBinding, TVisual> : LifecycleOwner {
+interface IBindingContainer<TBinding : ViewDataBinding, TViewModel : ViewModel> : LifecycleOwner {
 
-  val bindingComponent: IBindingComponent<TBinding, TVisual>
+  val bindingComponent: IBindingComponent<TBinding>
 
   fun onBind() = Unit
 
   val parentContext: Context
+
+  val viewModel: TViewModel
 }
 
 /**
  * Represents binding part of UI layer
  */
-interface IBindingComponent<TBinding: ViewDataBinding, TVisual> {
+interface IBindingComponent<TBinding : ViewDataBinding> {
 
   @get:LayoutRes
   val layoutId: Int
 
-  /**
-   * Required visual model for data binding
-   */
-  val visual: MutableLiveData<TVisual>
-
   val binding: TBinding
 }
 
-class BindingComponent<TBinding: ViewDataBinding, TVisual>(
+class BindingComponent<TBinding : ViewDataBinding, TViewModel : ViewModel>(
   @LayoutRes
   override val layoutId: Int,
-  private val container: IBindingContainer<TBinding, TVisual>,
-  private val visualVar: Int
+  private val container: IBindingContainer<TBinding, TViewModel>,
+  private val viewModelVar: Int
 ) :
-  IBindingComponent<TBinding, TVisual>,
-  LifecycleObserver {
-
-  override val visual = MutableLiveData<TVisual>()
+  IBindingComponent<TBinding>,
+  DefaultLifecycleObserver {
 
   override lateinit var binding: TBinding
 
@@ -50,8 +45,9 @@ class BindingComponent<TBinding: ViewDataBinding, TVisual>(
     container.lifecycle.addObserver(this)
   }
 
-  @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-  private fun createBinding() {
+  override fun onCreate(owner: LifecycleOwner) {
+    super.onCreate(owner)
+
     val context = container.parentContext
 
     binding = DataBindingUtil.inflate(LayoutInflater.from(context), layoutId, null, false)
@@ -64,8 +60,9 @@ class BindingComponent<TBinding: ViewDataBinding, TVisual>(
     container.onBind()
   }
 
-  @OnLifecycleEvent(Lifecycle.Event.ON_START)
-  private fun bindVisual() {
-    binding.setVariable(visualVar, visual)
+  override fun onStart(owner: LifecycleOwner) {
+    super.onStart(owner)
+
+    binding.setVariable(viewModelVar, container.viewModel)
   }
 }
