@@ -1,7 +1,13 @@
+@file:Suppress("RemoveExplicitTypeArguments")
+
 package io.krugosvet.dailydish.android.architecture.injection
 
+import android.content.Context
 import androidx.fragment.app.Fragment
+import androidx.room.Room
 import io.krugosvet.dailydish.android.architecture.view.GenericBaseActivity
+import io.krugosvet.dailydish.android.db.DatabaseService
+import io.krugosvet.dailydish.android.db.meal.MealDao
 import io.krugosvet.dailydish.android.screen.addMeal.viewmodel.AddMealViewModel
 import io.krugosvet.dailydish.android.screen.container.view.ContainerActivity
 import io.krugosvet.dailydish.android.screen.mealList.view.MealVisualFactory
@@ -24,7 +30,6 @@ val module = module {
     scoped<KeyboardService>()
   }
 
-  single<DataBaseService>()
   single<DateService>()
   single<ResourceService>()
 
@@ -32,6 +37,20 @@ val module = module {
 
   viewModel<AddMealViewModel>()
   viewModel<MealListViewModel>()
+}
+
+val dbModule = module {
+
+  single<DatabaseService> {
+    Room
+      .databaseBuilder(get<Context>(), DatabaseService::class.java, "database")
+      .build()
+  }
+
+  single<MealDao> {
+    get<DatabaseService>().mealDao
+  }
+
 }
 
 inline fun <reified T : Any> GenericBaseActivity.activityInject() =
