@@ -3,7 +3,7 @@ package io.krugosvet.dailydish.android.screen.mealList.viewmodel
 import android.net.Uri
 import io.krugosvet.dailydish.android.architecture.extension.liveData
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
-import io.krugosvet.dailydish.android.db.Meal
+import io.krugosvet.dailydish.android.db.meal.MealEntity
 import io.krugosvet.dailydish.android.screen.mealList.view.MealVisual
 import io.krugosvet.dailydish.android.screen.mealList.view.MealVisualFactory
 import io.krugosvet.dailydish.android.service.DataBaseService
@@ -16,7 +16,7 @@ class MealListViewModel(
   ViewModel<MealListViewModel.Event>() {
 
   sealed class Event : NavigationEvent() {
-    class ShowImagePicker(val meal: Meal) : Event()
+    class ShowImagePicker(val mealEntity: MealEntity) : Event()
   }
 
   val mealList by liveData(listOf<MealVisual>())
@@ -31,8 +31,8 @@ class MealListViewModel(
       .storeDisposable()
   }
 
-  fun changeImage(meal: Meal, image: Uri) {
-    dataBaseService.changeImage(meal, image.toString())
+  fun changeImage(mealEntity: MealEntity, image: Uri) {
+    dataBaseService.changeImage(mealEntity, image.toString())
 
     refreshVisual()
   }
@@ -41,7 +41,7 @@ class MealListViewModel(
     mealList.postValue(
       dataBaseService.meals.map { meal ->
         mealVisualFactory.from(
-          meal = meal,
+          mealEntity = meal,
           onDelete = { dataBaseService.delete(meal) },
           onImageClick = { navigate(Event.ShowImagePicker(meal)) },
           onCookTodayClick = { dataBaseService.updateDateToCurrent(meal) }
