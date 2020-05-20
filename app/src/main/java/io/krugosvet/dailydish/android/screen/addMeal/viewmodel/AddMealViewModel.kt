@@ -4,7 +4,7 @@ import android.app.DatePickerDialog
 import android.widget.DatePicker
 import io.krugosvet.dailydish.android.architecture.extension.liveData
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
-import io.krugosvet.dailydish.android.db.Meal
+import io.krugosvet.dailydish.android.db.meal.MealEntity
 import io.krugosvet.dailydish.android.screen.addMeal.viewmodel.AddMealViewModel.Event
 import io.krugosvet.dailydish.android.service.DataBaseService
 import io.krugosvet.dailydish.android.service.DateService
@@ -47,11 +47,11 @@ class AddMealViewModel(
     }
 
     dataBaseService.persist(
-      Meal(
+      MealEntity(
         title = title.value,
         description = description.value,
-        date = dateService.defaultFormatDate(date.value),
-        image = mainImage.value
+        lastCookingDate = dateService.defaultFormatDate(date.value),
+        imageUri = mainImage.value
       )
     )
     navigate(Event.Close)

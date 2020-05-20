@@ -1,11 +1,10 @@
 package io.krugosvet.dailydish.android.service
 
-import io.krugosvet.dailydish.android.db.Meal
+import io.krugosvet.dailydish.android.db.meal.MealEntity
 import io.realm.Realm
 import io.realm.RealmResults
 import io.realm.kotlin.deleteFromRealm
 import io.realm.kotlin.isValid
-import java.io.File
 
 class DataBaseService(
   private val dateService: DateService
@@ -14,31 +13,31 @@ class DataBaseService(
   private val realm
     get() = Realm.getDefaultInstance()
 
-  val meals: RealmResults<Meal>
-    get() = realm.where(Meal::class.java).findAll()
+  val meals: RealmResults<MealEntity>
+    get() = realm.where(MealEntity::class.java).findAll()
 
-  fun persist(meal: Meal) =
+  fun persist(mealEntity: MealEntity) =
     doInRealm {
-      val localIMainImage = File(meal.image)
+      val localIMainImage = File(mealEntity.imageUri)
       if (localIMainImage.exists()) {
         localIMainImage.delete()
       }
-      copyToRealmOrUpdate(meal)
+      copyToRealmOrUpdate(mealEntity)
     }
 
-  fun delete(meal: Meal) =
-    doInRealm(meal.isValid()) {
-      meal.deleteFromRealm()
+  fun delete(mealEntity: MealEntity) =
+    doInRealm(mealEntity.isValid()) {
+      mealEntity.deleteFromRealm()
     }
 
-  fun updateDateToCurrent(meal: Meal) =
-    doInRealm(meal.isValid()) {
-      meal.date = dateService.currentDate
+  fun updateDateToCurrent(mealEntity: MealEntity) =
+    doInRealm(mealEntity.isValid()) {
+      mealEntity.lastCookingDate = dateService.currentDate
     }
 
-  fun changeImage(meal: Meal, image: String) =
+  fun changeImage(mealEntity: MealEntity, image: String) =
     doInRealm {
-      meal.image = image
+      mealEntity.imageUri = image
     }
 
   private inline fun doInRealm(
