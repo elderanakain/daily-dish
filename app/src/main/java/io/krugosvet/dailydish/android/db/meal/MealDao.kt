@@ -12,7 +12,7 @@ interface MealDao {
   fun update(mealEntity: MealEntity)
 
   @Query(value = "SELECT * from meal_list_table WHERE id = :mealId")
-  fun get(mealId: Long)
+  fun get(mealId: Long): MealEntity
 
   @Delete
   fun delete(mealEntity: MealEntity)

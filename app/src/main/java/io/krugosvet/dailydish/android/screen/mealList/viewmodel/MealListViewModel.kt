@@ -6,7 +6,6 @@ import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
 import io.krugosvet.dailydish.android.db.meal.MealEntity
 import io.krugosvet.dailydish.android.screen.mealList.view.MealVisual
 import io.krugosvet.dailydish.android.screen.mealList.view.MealVisualFactory
-import io.krugosvet.dailydish.android.service.DataBaseService
 import io.reactivex.schedulers.Schedulers
 
 class MealListViewModel(
