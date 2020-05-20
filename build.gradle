@@ -4,6 +4,8 @@ buildscript {
         nav_version = '2.3.0-alpha06'
         koin_version = '2.1.5'
         lifecycle_version = "2.2.0"
+        room_version = "2.2.5"
+        coroutines_version = "1.3.7"
     }
     repositories {
         google()
@@ -14,7 +16,6 @@ buildscript {
     dependencies {
         classpath('com.android.tools.build:gradle:3.6.3')
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72"
-        classpath "io.realm:realm-gradle-plugin:7.0.0-beta-SNAPSHOT"
         classpath "io.fabric.tools:gradle:1.31.2"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
         classpath "org.koin:koin-gradle-plugin:$koin_version"
@@ -29,7 +30,6 @@ allprojects {
         maven { url 'https://jitpack.io' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         maven { url 'https://maven.fabric.io/public' }
-        maven { url 'https://github.com/WickeDev/stetho-realm/raw/master/maven-repo' }
         maven {
             url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
         }
