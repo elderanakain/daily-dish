@@ -12,6 +12,8 @@ class DateService {
   val currentDate: Date
     get() = Calendar.getInstance().time
 
+  fun toDate(millis: Long) = Date(millis)
+
   fun getLongFormattedDate(date: Date): String =
     DateFormat.getDateInstance(DateFormat.LONG).format(date)
 

@@ -2,7 +2,7 @@ package io.krugosvet.dailydish.android.screen.mealList.view
 
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.extension.OnClick
-import io.krugosvet.dailydish.android.db.meal.MealEntity
+import io.krugosvet.dailydish.android.repository.Meal
 import io.krugosvet.dailydish.android.service.DateService
 import io.krugosvet.dailydish.android.service.ResourceService
 
@@ -23,19 +23,19 @@ class MealVisualFactory(
 ) {
 
   fun from(
-    mealEntity: MealEntity,
+    meal: Meal,
     onDelete: OnClick,
     onImageClick: OnClick,
     onCookTodayClick: OnClick
   ) =
     MealVisual(
-      title = mealEntity.title,
-      description = mealEntity.description,
-      image = mealEntity.imageUri,
+      title = meal.title,
+      description = meal.description,
+      image = meal.imageUri,
       lastDateOfCooking = resourceService.getString(
-        R.string.cooked_on, dateService.getLongFormattedDate(mealEntity.lastCookingDate)
+        R.string.cooked_on, dateService.getLongFormattedDate(meal.lastCookingDate)
       ),
-      isCookTodayButtonEnabled = !dateService.isCurrentDate(mealEntity.lastCookingDate),
+      isCookTodayButtonEnabled = !dateService.isCurrentDate(meal.lastCookingDate),
       onDelete = onDelete,
       onImageClick = onImageClick,
       onCookTodayClick = onCookTodayClick

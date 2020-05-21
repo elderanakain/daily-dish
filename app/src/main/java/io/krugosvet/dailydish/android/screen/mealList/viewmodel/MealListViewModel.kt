@@ -3,47 +3,50 @@ package io.krugosvet.dailydish.android.screen.mealList.viewmodel
 import android.net.Uri
 import io.krugosvet.dailydish.android.architecture.extension.liveData
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
-import io.krugosvet.dailydish.android.db.meal.MealEntity
+import io.krugosvet.dailydish.android.repository.Meal
+import io.krugosvet.dailydish.android.repository.MealRepository
 import io.krugosvet.dailydish.android.screen.mealList.view.MealVisual
 import io.krugosvet.dailydish.android.screen.mealList.view.MealVisualFactory
-import io.reactivex.schedulers.Schedulers
+import io.krugosvet.dailydish.android.service.DateService
 
 class MealListViewModel(
   private val mealVisualFactory: MealVisualFactory,
-  private val dataBaseService: DataBaseService
+  private val mealRepository: MealRepository,
+  private val dateService: DateService
 ) :
   ViewModel<MealListViewModel.Event>() {
 
   sealed class Event : NavigationEvent() {
-    class ShowImagePicker(val mealEntity: MealEntity) : Event()
+    class ShowImagePicker(val meal: Meal) : Event()
   }
 
   val mealList by liveData(listOf<MealVisual>())
 
   init {
-    refreshVisual()
-
-    dataBaseService.meals
-      .asChangesetObservable()
-      .subscribeOn(Schedulers.io())
-      .subscribe { refreshVisual() }
-      .storeDisposable()
+    mealRepository.meals
+      .observeForever { meals ->
+        refreshVisual(meals)
+      }
   }
 
-  fun changeImage(mealEntity: MealEntity, image: Uri) {
-    dataBaseService.changeImage(mealEntity, image.toString())
-
-    refreshVisual()
+  fun changeImage(meal: Meal, image: Uri) {
+    mealRepository.update(meal.copy(imageUri = image.toString()))
   }
 
-  private fun refreshVisual() =
+  private fun refreshVisual(meals: List<Meal>) =
     mealList.postValue(
-      dataBaseService.meals.map { meal ->
+      meals.map { meal ->
         mealVisualFactory.from(
-          mealEntity = meal,
-          onDelete = { dataBaseService.delete(meal) },
-          onImageClick = { navigate(Event.ShowImagePicker(meal)) },
-          onCookTodayClick = { dataBaseService.updateDateToCurrent(meal) }
+          meal = meal,
+          onDelete = {
+            mealRepository.delete(meal)
+          },
+          onImageClick = {
+            navigate(Event.ShowImagePicker(meal))
+          },
+          onCookTodayClick = {
+            mealRepository.update(meal.copy(lastCookingDate = dateService.currentDate))
+          }
         )
       }
     )

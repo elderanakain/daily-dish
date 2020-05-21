@@ -45,8 +45,8 @@ class MealListFragment :
   }
 
   private fun showImagePicker(event: MealListViewModel.Event.ShowImagePicker) {
-    imageService.showImagePicker(event.mealEntity.imageUri.isEmpty())
-      .subscribeOnIoThread(onSuccess = { image -> viewModel.changeImage(event.mealEntity, image) })
+    imageService.showImagePicker(event.meal.imageUri.isEmpty())
+      .subscribeOnIoThread(onSuccess = { image -> viewModel.changeImage(event.meal, image) })
       .storeDisposable()
   }
 }
