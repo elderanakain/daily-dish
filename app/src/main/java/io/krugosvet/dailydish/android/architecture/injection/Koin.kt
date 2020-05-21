@@ -8,6 +8,8 @@ import androidx.room.Room
 import io.krugosvet.dailydish.android.architecture.view.GenericBaseActivity
 import io.krugosvet.dailydish.android.db.DatabaseService
 import io.krugosvet.dailydish.android.db.meal.MealDao
+import io.krugosvet.dailydish.android.repository.MealFactory
+import io.krugosvet.dailydish.android.repository.MealRepository
 import io.krugosvet.dailydish.android.screen.addMeal.viewmodel.AddMealViewModel
 import io.krugosvet.dailydish.android.screen.container.view.ContainerActivity
 import io.krugosvet.dailydish.android.screen.mealList.view.MealVisualFactory
@@ -34,6 +36,8 @@ val module = module {
   single<ResourceService>()
 
   single<MealVisualFactory>()
+  single<MealFactory>()
+  single<MealRepository>()
 
   viewModel<AddMealViewModel>()
   viewModel<MealListViewModel>()
