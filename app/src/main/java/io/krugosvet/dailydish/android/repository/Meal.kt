@@ -6,6 +6,7 @@ import io.krugosvet.dailydish.android.service.DateService
 import java.util.*
 
 data class Meal(
+  val id: Long,
   val title: String,
   val description: String,
   val imageUri: String,

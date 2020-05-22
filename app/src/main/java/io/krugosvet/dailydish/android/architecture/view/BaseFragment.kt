@@ -9,13 +9,14 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import io.krugosvet.bindingcomponent.IBindingContainer
 import io.krugosvet.dailydish.android.architecture.aspect.DisposableAspect
-import io.krugosvet.dailydish.android.architecture.aspect.IDisposableAspect
+import io.krugosvet.dailydish.android.architecture.aspect.IStorageAspect
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
+import io.reactivex.disposables.Disposable
 
 abstract class BaseFragment<TBinding : ViewDataBinding, TViewModel : ViewModel<*>> :
   Fragment(),
   IBindingContainer<TBinding, TViewModel>,
-  IDisposableAspect by DisposableAspect() {
+  IStorageAspect<Disposable> by DisposableAspect() {
 
   abstract override val viewModel: TViewModel
 
@@ -29,6 +30,6 @@ abstract class BaseFragment<TBinding : ViewDataBinding, TViewModel : ViewModel<*
   override fun onDestroy() {
     super.onDestroy()
 
-    clearDisposables()
+    clear()
   }
 }

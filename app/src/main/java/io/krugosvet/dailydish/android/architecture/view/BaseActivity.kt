@@ -7,9 +7,10 @@ import androidx.navigation.findNavController
 import io.krugosvet.bindingcomponent.IBindingContainer
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.aspect.DisposableAspect
-import io.krugosvet.dailydish.android.architecture.aspect.IDisposableAspect
+import io.krugosvet.dailydish.android.architecture.aspect.IStorageAspect
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
 import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.BehaviorSubject
 
 typealias GenericBaseActivity = BaseActivity<*, *>
@@ -17,7 +18,7 @@ typealias GenericBaseActivity = BaseActivity<*, *>
 abstract class BaseActivity<TBinding : ViewDataBinding, TViewModel : ViewModel<*>> :
   AppCompatActivity(),
   IBindingContainer<TBinding, TViewModel>,
-  IDisposableAspect by DisposableAspect() {
+  IStorageAspect<Disposable> by DisposableAspect() {
 
   val permissionsObservable: Observable<Unit>
     get() = permissionsSubject
@@ -39,6 +40,6 @@ abstract class BaseActivity<TBinding : ViewDataBinding, TViewModel : ViewModel<*
   override fun onDestroy() {
     super.onDestroy()
 
-    clearDisposables()
+    clear()
   }
 }
