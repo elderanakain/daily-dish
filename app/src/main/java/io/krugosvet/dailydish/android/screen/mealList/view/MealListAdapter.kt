@@ -27,7 +27,7 @@ class MealListAdapter(
 
   override fun getItemId(position: Int) = getItem(position).id
 
-  class MealViewHolder(binding: ListMealBinding) :
+  class MealViewHolder private constructor(binding: ListMealBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     companion object {
@@ -51,10 +51,7 @@ class MealListAdapter(
 
 object MealDiffUtilCallback : DiffUtil.ItemCallback<MealVisual>() {
 
-  override fun areItemsTheSame(oldItem: MealVisual, newItem: MealVisual) =
-    oldItem.id == newItem.id
+  override fun areItemsTheSame(oldItem: MealVisual, newItem: MealVisual) = oldItem.id == newItem.id
 
-  override fun areContentsTheSame(oldItem: MealVisual, newItem: MealVisual) =
-    oldItem == newItem
-
+  override fun areContentsTheSame(oldItem: MealVisual, newItem: MealVisual) = oldItem == newItem
 }

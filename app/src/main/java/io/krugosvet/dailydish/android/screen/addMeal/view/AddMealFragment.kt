@@ -1,8 +1,10 @@
 package io.krugosvet.dailydish.android.screen.addMeal.view
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.DatePicker
 import androidx.lifecycle.Observer
 import io.krugosvet.bindingcomponent.BindingComponent
 import io.krugosvet.dailydish.android.BR
@@ -12,15 +14,18 @@ import io.krugosvet.dailydish.android.architecture.injection.activityInject
 import io.krugosvet.dailydish.android.architecture.view.BaseFragment
 import io.krugosvet.dailydish.android.databinding.DialogAddMealBinding
 import io.krugosvet.dailydish.android.screen.addMeal.viewmodel.AddMealViewModel
-import io.krugosvet.dailydish.android.service.ImageService
-import io.krugosvet.dailydish.android.service.KeyboardService
+import io.krugosvet.dailydish.android.service.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddMealFragment :
-  BaseFragment<DialogAddMealBinding, AddMealViewModel>() {
+  BaseFragment<DialogAddMealBinding, AddMealViewModel>(),
+  DatePickerDialog.OnDateSetListener {
 
   override val viewModel: AddMealViewModel by viewModel()
   override val bindingComponent = BindingComponent(R.layout.dialog_add_meal, this, BR.viewModel)
+
+  private val dateService: DateService by inject()
 
   private val imageService: ImageService by activityInject()
   private val keyboardService: KeyboardService by activityInject()
@@ -38,6 +43,7 @@ class AddMealFragment :
         when (it) {
           AddMealViewModel.Event.Close -> close()
           AddMealViewModel.Event.ShowImagePicker -> showImagePicker()
+          AddMealViewModel.Event.ShowDatePicker -> showDatePicker()
         }
       })
 
@@ -64,10 +70,21 @@ class AddMealFragment :
       })
   }
 
+  override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+    viewModel.date.value = dateService.format(year, month, dayOfMonth)
+  }
+
   private fun showImagePicker() {
     imageService.showImagePicker(isImageEmpty = viewModel.mainImage.value.isEmpty())
       .subscribeOnIoThread(onSuccess = { image -> viewModel.mainImage.postValue(image.toString()) })
       .store()
+  }
+
+  private fun showDatePicker() {
+    val currentDate = dateService.currentDate
+
+    DatePickerDialog(requireContext(), this, currentDate.year, currentDate.month, currentDate.day)
+      .show()
   }
 
   private fun close() {
