@@ -1,23 +1,23 @@
 package io.krugosvet.dailydish.android.db.meal
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MealDao {
 
-  @Insert
-  fun insert(mealEntity: MealEntity)
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun insert(vararg mealEntity: MealEntity)
 
-  @Update
-  fun update(mealEntity: MealEntity)
+  @Update(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun update(vararg mealEntity: MealEntity)
 
-  @Delete
-  fun delete(mealEntity: MealEntity)
+  @Delete(entity = MealEntity::class)
+  suspend fun delete(vararg mealEntity: MealEntity)
 
-  @Query(value = "SELECT * from meal_list_table WHERE id = :mealId")
-  fun get(mealId: Long): MealEntity
+  @Query(value = "select * from meal_list_table where id = :mealId")
+  suspend fun get(mealId: Long): MealEntity
 
-  @Query(value = "SELECT * from meal_list_table")
-  fun getAll(): LiveData<List<MealEntity>>
+  @Query(value = "select * from meal_list_table")
+  fun getAll(): Flow<List<MealEntity>>
 }
