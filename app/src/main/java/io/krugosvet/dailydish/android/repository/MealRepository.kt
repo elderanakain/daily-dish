@@ -3,16 +3,18 @@ package io.krugosvet.dailydish.android.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import io.krugosvet.dailydish.android.db.meal.MealDao
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 interface IMealRepository {
 
   val meals: LiveData<List<Meal>>
 
-  fun add(meal: Meal)
+  suspend fun add(meal: Meal)
 
-  fun update(meal: Meal)
+  suspend fun update(meal: Meal)
 
-  fun delete(meal: Meal)
+  suspend fun delete(meal: Meal)
 }
 
 class MealRepository(
@@ -26,15 +28,15 @@ class MealRepository(
       mealEntities.map { mealFactory.from(it) }
     }
 
-  override fun add(meal: Meal) {
+  override suspend fun add(meal: Meal) = withContext(Dispatchers.IO) {
     mealDao.insert(mealFactory.to(meal))
   }
 
-  override fun update(meal: Meal) {
+  override suspend fun update(meal: Meal) = withContext(Dispatchers.IO) {
     mealDao.update(mealFactory.to(meal))
   }
 
-  override fun delete(meal: Meal) {
+  override suspend fun delete(meal: Meal) = withContext(Dispatchers.IO) {
     mealDao.delete(mealFactory.to(meal))
   }
 }

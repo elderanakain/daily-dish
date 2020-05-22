@@ -34,7 +34,7 @@ class MealListFragment :
     bindingComponent.binding.mealList.adapter = adapter
 
     viewModel.mealList.observe(viewLifecycleOwner, Observer { mealList ->
-      adapter.data = mealList
+      adapter.submitList(mealList)
     })
 
     viewModel.navigationEvent.observe(viewLifecycleOwner, Observer { event ->
@@ -47,6 +47,6 @@ class MealListFragment :
   private fun showImagePicker(event: MealListViewModel.Event.ShowImagePicker) {
     imageService.showImagePicker(event.meal.imageUri.isEmpty())
       .subscribeOnIoThread(onSuccess = { image -> viewModel.changeImage(event.meal, image) })
-      .storeDisposable()
+      .store()
   }
 }

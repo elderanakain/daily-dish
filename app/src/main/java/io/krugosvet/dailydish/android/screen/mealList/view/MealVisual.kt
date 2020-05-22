@@ -7,6 +7,7 @@ import io.krugosvet.dailydish.android.service.DateService
 import io.krugosvet.dailydish.android.service.ResourceService
 
 data class MealVisual(
+  val id: Long,
   val title: String,
   val description: String,
   val lastDateOfCooking: String,
@@ -29,6 +30,7 @@ class MealVisualFactory(
     onCookTodayClick: OnClick
   ) =
     MealVisual(
+      id = meal.id,
       title = meal.title,
       description = meal.description,
       image = meal.imageUri,

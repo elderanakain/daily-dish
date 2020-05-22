@@ -1,6 +1,7 @@
 package io.krugosvet.dailydish.android.screen.mealList.viewmodel
 
 import android.net.Uri
+import androidx.lifecycle.viewModelScope
 import io.krugosvet.dailydish.android.architecture.extension.liveData
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
 import io.krugosvet.dailydish.android.repository.Meal
@@ -8,6 +9,7 @@ import io.krugosvet.dailydish.android.repository.MealRepository
 import io.krugosvet.dailydish.android.screen.mealList.view.MealVisual
 import io.krugosvet.dailydish.android.screen.mealList.view.MealVisualFactory
 import io.krugosvet.dailydish.android.service.DateService
+import kotlinx.coroutines.launch
 
 class MealListViewModel(
   private val mealVisualFactory: MealVisualFactory,
@@ -30,7 +32,9 @@ class MealListViewModel(
   }
 
   fun changeImage(meal: Meal, image: Uri) {
-    mealRepository.update(meal.copy(imageUri = image.toString()))
+    viewModelScope.launch {
+      mealRepository.update(meal.copy(imageUri = image.toString()))
+    }
   }
 
   private fun refreshVisual(meals: List<Meal>) =
@@ -39,13 +43,19 @@ class MealListViewModel(
         mealVisualFactory.from(
           meal = meal,
           onDelete = {
-            mealRepository.delete(meal)
+            viewModelScope.launch {
+              mealRepository.delete(meal)
+            }
           },
           onImageClick = {
-            navigate(Event.ShowImagePicker(meal))
+            viewModelScope.launch {
+              navigate(Event.ShowImagePicker(meal))
+            }
           },
           onCookTodayClick = {
-            mealRepository.update(meal.copy(lastCookingDate = dateService.currentDate))
+            viewModelScope.launch {
+              mealRepository.update(meal.copy(lastCookingDate = dateService.currentDate))
+            }
           }
         )
       }

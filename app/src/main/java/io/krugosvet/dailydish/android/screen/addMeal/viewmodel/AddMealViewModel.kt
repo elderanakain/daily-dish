@@ -2,12 +2,14 @@ package io.krugosvet.dailydish.android.screen.addMeal.viewmodel
 
 import android.app.DatePickerDialog
 import android.widget.DatePicker
+import androidx.lifecycle.viewModelScope
 import io.krugosvet.dailydish.android.architecture.extension.liveData
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
 import io.krugosvet.dailydish.android.repository.Meal
 import io.krugosvet.dailydish.android.repository.MealRepository
 import io.krugosvet.dailydish.android.screen.addMeal.viewmodel.AddMealViewModel.Event
 import io.krugosvet.dailydish.android.service.DateService
+import kotlinx.coroutines.launch
 
 class AddMealViewModel(
   private val mealRepository: MealRepository,
@@ -28,7 +30,7 @@ class AddMealViewModel(
 
   sealed class Event : NavigationEvent() {
     object Close : Event()
-    object ShowImagePicker: Event()
+    object ShowImagePicker : Event()
   }
 
   fun showImagePicker() {
@@ -46,14 +48,18 @@ class AddMealViewModel(
       return
     }
 
-    mealRepository.add(
-      Meal(
-        title = title.value,
-        description = description.value,
-        lastCookingDate = dateService.defaultFormatDate(date.value),
-        imageUri = mainImage.value
-      )
-    )
+    viewModelScope
+      .launch {
+        mealRepository.add(
+          Meal(
+            title = title.value,
+            description = description.value,
+            lastCookingDate = dateService.defaultFormatDate(date.value),
+            imageUri = mainImage.value
+          )
+        )
+      }
+
     navigate(Event.Close)
   }
 

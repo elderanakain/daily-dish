@@ -67,7 +67,7 @@ class AddMealFragment :
   private fun showImagePicker() {
     imageService.showImagePicker(isImageEmpty = viewModel.mainImage.value.isEmpty())
       .subscribeOnIoThread(onSuccess = { image -> viewModel.mainImage.postValue(image.toString()) })
-      .storeDisposable()
+      .store()
   }
 
   private fun close() {
