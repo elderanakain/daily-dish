@@ -52,13 +52,14 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding = true
     }
 }
 
 dependencies {
     implementation project(":bindingcomponent")
+    implementation project(":db")
 
     // AndroidX Core
 
@@ -101,12 +102,6 @@ dependencies {
     // Logging
 
     implementation 'com.jakewharton.timber:timber:4.7.1'
-
-    // Jetpack Room
-
-    implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
 
     // Coroutines
 
