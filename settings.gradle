@@ -1,3 +1,5 @@
+include ':db'
+include ':db'
 include ':reminder'
 include ':app'
 include ':bindingcomponent'
