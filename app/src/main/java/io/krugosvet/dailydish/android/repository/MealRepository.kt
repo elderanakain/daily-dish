@@ -1,6 +1,6 @@
 package io.krugosvet.dailydish.android.repository
 
-import io.krugosvet.dailydish.android.db.meal.MealDao
+import io.krugosvet.dailydish.meal.MealDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

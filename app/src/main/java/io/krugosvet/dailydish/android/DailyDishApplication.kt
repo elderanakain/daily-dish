@@ -1,8 +1,8 @@
 package io.krugosvet.dailydish.android
 
 import android.app.Application
-import io.krugosvet.dailydish.android.architecture.injection.dbModule
 import io.krugosvet.dailydish.android.architecture.injection.module
+import io.krugosvet.dailydish.injection.dbModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
