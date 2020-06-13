@@ -1,4 +1,4 @@
-package io.krugosvet.dailydish.android.db.meal
+package io.krugosvet.dailydish.meal
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

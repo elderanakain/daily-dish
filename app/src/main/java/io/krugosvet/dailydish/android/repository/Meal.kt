@@ -1,6 +1,6 @@
 package io.krugosvet.dailydish.android.repository
 
-import io.krugosvet.dailydish.android.db.meal.MealEntity
+import io.krugosvet.dailydish.meal.MealEntity
 import io.krugosvet.dailydish.android.service.DateService
 import io.krugosvet.dailydish.android.service.IdGenerator
 import java.util.*
