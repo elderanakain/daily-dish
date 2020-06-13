@@ -1,6 +1,7 @@
 package io.krugosvet.dailydish.android.screen.addMeal.viewmodel
 
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import io.krugosvet.dailydish.android.architecture.extension.liveData
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
@@ -24,9 +25,11 @@ class AddMealViewModel(
   val isDescriptionValid by liveData(false)
 
   val date by liveData("")
-  val formattedDate = Transformations.map(date) {
-    dateService.getLongFormattedDate(it)
-  }
+
+  val formattedDate: LiveData<String> =
+    date.map {
+      dateService.getLongFormattedDate(it)
+    }
 
   val mainImage by liveData("")
 
