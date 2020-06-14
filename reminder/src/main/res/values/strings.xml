@@ -1,0 +1,5 @@
+<resources>
+    <string name="notification_channel_title">Reminders</string>
+    <string name="notification_title">Ready to cook %1$s?</string>
+    <string name="notification_text">%1$s hasn\'t been cooked for a while. Let\'s try it today!</string>
+</resources>

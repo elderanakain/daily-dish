@@ -6,11 +6,11 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import io.krugosvet.dailydish.android.architecture.extension.OnClick
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
-import io.krugosvet.dailydish.android.repository.Meal
-import io.krugosvet.dailydish.android.repository.MealRepository
+import io.krugosvet.dailydish.android.repository.meal.Meal
+import io.krugosvet.dailydish.android.repository.meal.MealRepository
 import io.krugosvet.dailydish.android.screen.mealList.view.MealVisual
 import io.krugosvet.dailydish.android.screen.mealList.view.MealVisualFactory
-import io.krugosvet.dailydish.android.service.DateService
+import io.krugosvet.dailydish.core.service.DateService
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 

@@ -16,6 +16,7 @@ import io.krugosvet.dailydish.android.architecture.extension.sealedObjects
 import io.krugosvet.dailydish.android.architecture.view.GenericBaseActivity
 import io.krugosvet.dailydish.android.service.ImageService.DialogSource.Action
 import io.krugosvet.dailydish.android.service.ImageService.DialogSource.Source
+import io.krugosvet.dailydish.core.service.ResourceService
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
