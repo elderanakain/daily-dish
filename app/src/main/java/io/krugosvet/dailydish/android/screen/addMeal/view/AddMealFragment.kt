@@ -14,7 +14,12 @@ import io.krugosvet.dailydish.android.architecture.injection.activityInject
 import io.krugosvet.dailydish.android.architecture.view.BaseFragment
 import io.krugosvet.dailydish.android.databinding.DialogAddMealBinding
 import io.krugosvet.dailydish.android.screen.addMeal.viewmodel.AddMealViewModel
-import io.krugosvet.dailydish.android.service.*
+import io.krugosvet.dailydish.android.service.ImageService
+import io.krugosvet.dailydish.android.service.KeyboardService
+import io.krugosvet.dailydish.core.service.DateService
+import io.krugosvet.dailydish.core.service.day
+import io.krugosvet.dailydish.core.service.month
+import io.krugosvet.dailydish.core.service.year
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -71,7 +76,7 @@ class AddMealFragment :
   }
 
   override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-    viewModel.date.value = dateService.format(year, month, dayOfMonth)
+    viewModel.date.value = dateService.format(year, month + 1, dayOfMonth)
   }
 
   private fun showImagePicker() {

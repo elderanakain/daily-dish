@@ -2,9 +2,9 @@ package io.krugosvet.dailydish.android.screen.mealList.view
 
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.extension.OnClick
-import io.krugosvet.dailydish.android.repository.Meal
-import io.krugosvet.dailydish.android.service.DateService
-import io.krugosvet.dailydish.android.service.ResourceService
+import io.krugosvet.dailydish.android.repository.meal.Meal
+import io.krugosvet.dailydish.core.service.ResourceService
+import io.krugosvet.dailydish.core.service.DateService
 
 data class MealVisual(
   val id: Long,
