@@ -6,6 +6,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import io.krugosvet.dailydish.android.architecture.extension.OnClick
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
+import io.krugosvet.dailydish.android.reminder.notification.ReminderNotificationService
 import io.krugosvet.dailydish.android.repository.meal.Meal
 import io.krugosvet.dailydish.android.repository.meal.MealRepository
 import io.krugosvet.dailydish.android.screen.mealList.view.MealVisual
@@ -17,7 +18,8 @@ import kotlinx.coroutines.launch
 class MealListViewModel(
   private val mealVisualFactory: MealVisualFactory,
   private val mealRepository: MealRepository,
-  private val dateService: DateService
+  private val dateService: DateService,
+  private val reminderNotificationService: ReminderNotificationService
 ) :
   ViewModel<MealListViewModel.Event>() {
 
@@ -53,6 +55,8 @@ class MealListViewModel(
   }
 
   private fun onCookTodayClick(meal: Meal): OnClick = {
+    reminderNotificationService.closeReminder()
+
     viewModelScope.launch {
       mealRepository.update(meal.copy(lastCookingDate = dateService.currentDate.time))
     }

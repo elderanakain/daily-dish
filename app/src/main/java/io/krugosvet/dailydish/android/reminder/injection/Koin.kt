@@ -1,6 +1,7 @@
 package io.krugosvet.dailydish.android.reminder.injection
 
 import android.content.Context
+import androidx.core.app.NotificationManagerCompat
 import io.krugosvet.dailydish.android.reminder.ReminderService
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotificationService
 import io.krugosvet.dailydish.core.service.ResourceService
@@ -15,10 +16,17 @@ val reminderModule = module {
     )
   }
 
+  single<NotificationManagerCompat> {
+    NotificationManagerCompat.from(
+      get<Context>()
+    )
+  }
+
   single<ReminderNotificationService> {
     ReminderNotificationService(
       get<Context>(),
-      get<ResourceService>()
+      get<ResourceService>(),
+      get<NotificationManagerCompat>()
     )
   }
 }
