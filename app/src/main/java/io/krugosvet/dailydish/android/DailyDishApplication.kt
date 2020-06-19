@@ -1,8 +1,8 @@
 package io.krugosvet.dailydish.android
 
 import android.app.Application
-import io.krugosvet.android.reminder.ReminderService
-import io.krugosvet.android.reminder.injection.reminderModule
+import io.krugosvet.dailydish.android.reminder.ReminderService
+import io.krugosvet.dailydish.android.reminder.injection.reminderModule
 import io.krugosvet.dailydish.android.architecture.injection.module
 import io.krugosvet.dailydish.android.repository.injection.repositoryModule
 import io.krugosvet.dailydish.core.injection.coreModule
