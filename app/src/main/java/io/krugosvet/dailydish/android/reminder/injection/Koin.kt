@@ -1,8 +1,8 @@
-package io.krugosvet.android.reminder.injection
+package io.krugosvet.dailydish.android.reminder.injection
 
 import android.content.Context
-import io.krugosvet.android.reminder.ReminderService
-import io.krugosvet.android.reminder.notification.ReminderNotificationService
+import io.krugosvet.dailydish.android.reminder.ReminderService
+import io.krugosvet.dailydish.android.reminder.notification.ReminderNotificationService
 import io.krugosvet.dailydish.core.service.ResourceService
 import org.koin.dsl.module
 

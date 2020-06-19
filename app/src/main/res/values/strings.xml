@@ -35,4 +35,7 @@
     <string name="pick_from_gallery">Pick from a gallery</string>
     <string name="update_picture">Update picture</string>
     <string name="remove_picture">Remove picture</string>
+    <string name="notification_channel_title">Reminders</string>
+    <string name="notification_title">Ready to cook %1$s?</string>
+    <string name="notification_text">%1$s hasn\'t been cooked for a while. Let\'s try it today!</string>
 </resources>

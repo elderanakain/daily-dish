@@ -1,12 +1,15 @@
-package io.krugosvet.android.reminder.notification
+package io.krugosvet.dailydish.android.reminder.notification
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import io.krugosvet.dailydish.android.reminder.R
+import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.repository.meal.Meal
+import io.krugosvet.dailydish.android.screen.container.view.ContainerActivity
 import io.krugosvet.dailydish.core.service.ResourceService
 
 private object Notification {
@@ -19,6 +22,14 @@ internal class ReminderNotificationService(
   private val context: Context,
   private val resourceService: ResourceService
 ) {
+
+  private val onTapIntent
+    get() = PendingIntent.getActivity(
+      context,
+      Notification.ID,
+      Intent(context, ContainerActivity::class.java),
+      PendingIntent.FLAG_UPDATE_CURRENT
+    )
 
   fun sendReminderNotification(meal: Meal) {
 
@@ -33,6 +44,7 @@ internal class ReminderNotificationService(
         resourceService.getString(R.string.notification_text, meal.title)
       )
       .setPriority(NotificationCompat.PRIORITY_HIGH)
+      .setContentIntent(onTapIntent)
       .build()
 
     NotificationManagerCompat

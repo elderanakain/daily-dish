@@ -1,9 +1,9 @@
-package io.krugosvet.android.reminder.worker
+package io.krugosvet.dailydish.android.reminder.worker
 
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import io.krugosvet.android.reminder.notification.ReminderNotificationService
+import io.krugosvet.dailydish.android.reminder.notification.ReminderNotificationService
 import io.krugosvet.dailydish.android.repository.meal.MealRepository
 import kotlinx.coroutines.flow.first
 import org.koin.core.KoinComponent
