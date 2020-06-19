@@ -18,9 +18,10 @@ private object Notification {
   const val CHANNEL_ID = "dailyDishChannel"
 }
 
-internal class ReminderNotificationService(
+class ReminderNotificationService(
   private val context: Context,
-  private val resourceService: ResourceService
+  private val resourceService: ResourceService,
+  private val notificationManager: NotificationManagerCompat
 ) {
 
   private val onTapIntent
@@ -33,7 +34,9 @@ internal class ReminderNotificationService(
 
   fun sendReminderNotification(meal: Meal) {
 
-    addChannel()
+    if (!isChannelAdded()) {
+      addChannel()
+    }
 
     val notification = NotificationCompat.Builder(context, Notification.CHANNEL_ID)
       .setSmallIcon(R.drawable.ic_notification_reminder)
@@ -43,8 +46,10 @@ internal class ReminderNotificationService(
       .setContentText(
         resourceService.getString(R.string.notification_text, meal.title)
       )
-      .setPriority(NotificationCompat.PRIORITY_HIGH)
+      .setPriority(NotificationCompat.PRIORITY_LOW)
       .setContentIntent(onTapIntent)
+      .setAutoCancel(true)
+      .setDefaults(NotificationCompat.DEFAULT_ALL)
       .build()
 
     NotificationManagerCompat
@@ -52,9 +57,16 @@ internal class ReminderNotificationService(
       .notify(Notification.ID, notification)
   }
 
+  fun closeReminder() {
+    notificationManager.cancel(Notification.ID)
+  }
+
+  private fun isChannelAdded(): Boolean =
+    notificationManager.getNotificationChannel(Notification.CHANNEL_ID) == null
+
   private fun addChannel() {
-    (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?)
-      ?.createNotificationChannel(
+    notificationManager
+      .createNotificationChannel(
         NotificationChannel(
           Notification.CHANNEL_ID,
           resourceService.getString(R.string.notification_channel_title),
