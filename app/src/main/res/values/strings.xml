@@ -10,6 +10,7 @@
     <string name="meal_card_cooked_button">Cooked today</string>
     <string name="add_meal_dialog_title">Add a new meal</string>
     <string name="what_to_cook_today">What to cook today</string>
+    <string name="settings">Settings</string>
     <string name="recently_cooked">Recently cooked</string>
     <string name="intent_select_image_from_gallery">Select Image</string>
     <string name="dialog_cancel_button">Cancel</string>
@@ -38,4 +39,6 @@
     <string name="notification_channel_title">Reminders</string>
     <string name="notification_title">Ready to cook %1$s?</string>
     <string name="notification_text">%1$s hasn\'t been cooked for a while. Let\'s try it today!</string>
+    <string name="settings_reminder">Remind about meals</string>
+    <string name="settings_reminder_summary">Checks for long not cooked meals and sends a notification to cook it</string>
 </resources>

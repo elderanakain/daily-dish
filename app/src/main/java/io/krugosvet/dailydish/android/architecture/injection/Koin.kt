@@ -1,6 +1,7 @@
 package io.krugosvet.dailydish.android.architecture.injection
 
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
 import io.krugosvet.dailydish.android.architecture.view.GenericBaseActivity
 import io.krugosvet.dailydish.android.screen.addMeal.viewmodel.AddMealViewModel
 import io.krugosvet.dailydish.android.screen.container.view.ContainerActivity
@@ -8,6 +9,7 @@ import io.krugosvet.dailydish.android.screen.mealList.view.MealVisualFactory
 import io.krugosvet.dailydish.android.screen.mealList.viewmodel.MealListViewModel
 import io.krugosvet.dailydish.android.service.ImageService
 import io.krugosvet.dailydish.android.service.KeyboardService
+import io.krugosvet.dailydish.android.service.PreferenceService
 import io.krugosvet.dailydish.android.service.SnackbarService
 import org.koin.androidx.scope.lifecycleScope
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -34,6 +36,13 @@ val module = module {
 
   single {
     MealVisualFactory(get(), get())
+  }
+
+  single {
+    PreferenceService(
+      PreferenceManager.getDefaultSharedPreferences(get()),
+      get()
+    )
   }
 
   viewModel {

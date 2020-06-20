@@ -9,6 +9,8 @@ import io.krugosvet.dailydish.android.reminder.notification.ReminderNotification
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotificationReceiver
 import io.krugosvet.dailydish.android.repository.injection.repositoryModule
 import io.krugosvet.dailydish.core.injection.coreModule
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -16,6 +18,8 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import timber.log.Timber
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 class DailyDishApplication :
   Application() {
 

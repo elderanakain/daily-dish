@@ -44,7 +44,7 @@ class ContainerActivity :
     NavigationUI.setupWithNavController(bindingComponent.binding.navView, navController)
 
     navController.addOnDestinationChangedListener { _, destination, _ ->
-      bindingComponent.binding.floatingButton.setVisibility(destination.id != R.id.dialogAddMeal)
+      bindingComponent.binding.floatingButton.setVisibility(destination.id == R.id.mealListFragment)
 
       keyboardService.hideKeyboard()
     }
