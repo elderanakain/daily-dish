@@ -19,7 +19,7 @@ class ReminderService(
   private val constrains: Constraints
     get() = Constraints.Builder()
       .setRequiresBatteryNotLow(true)
-      //.setRequiresDeviceIdle(true)
+      .setRequiresDeviceIdle(true)
       .build()
 
   private val work: PeriodicWorkRequest
@@ -35,7 +35,7 @@ class ReminderService(
     workManager
       .enqueueUniquePeriodicWork(
         REMINDER_WORK_ID,
-        ExistingPeriodicWorkPolicy.REPLACE,
+        ExistingPeriodicWorkPolicy.KEEP,
         work
       )
   }
