@@ -1,20 +1,23 @@
 package io.krugosvet.dailydish.android.reminder
 
-import android.content.Context
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import io.krugosvet.dailydish.android.reminder.worker.ReminderWorker
+import io.krugosvet.dailydish.android.service.PreferenceService
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import java.util.concurrent.TimeUnit
 
 private const val REMINDER_WORK_ID = "reminder_work_id"
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 class ReminderService(
-  context: Context
+  private val workManager: WorkManager,
+  private val preferenceService: PreferenceService
 ) {
-
-  private val workManager = WorkManager.getInstance(context)
 
   private val constrains: Constraints
     get() = Constraints.Builder()
@@ -31,13 +34,20 @@ class ReminderService(
       .setConstraints(constrains)
       .build()
 
-  fun schedule() {
-    workManager
-      .enqueueUniquePeriodicWork(
-        REMINDER_WORK_ID,
-        ExistingPeriodicWorkPolicy.KEEP,
-        work
-      )
+  fun schedule() = GlobalScope.launch(Dispatchers.IO) {
+    preferenceService.isReminderEnabled
+      .collect { isEnabled ->
+        if (isEnabled) startWorker() else stopWorker()
+      }
   }
 
+  private fun stopWorker() {
+    workManager.cancelUniqueWork(REMINDER_WORK_ID)
+  }
+
+  private fun startWorker() {
+    workManager.enqueueUniquePeriodicWork(
+      REMINDER_WORK_ID, ExistingPeriodicWorkPolicy.KEEP, work
+    )
+  }
 }

@@ -21,4 +21,8 @@
             android:id="@+id/action_dialogAddMeal_to_mealListFragment"
             app:destination="@id/mealListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="io.krugosvet.dailydish.android.screen.settings.view.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>
