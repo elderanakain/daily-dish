@@ -1,9 +1,12 @@
 package io.krugosvet.dailydish.android
 
 import android.app.Application
+import android.content.IntentFilter
+import io.krugosvet.dailydish.android.architecture.injection.module
 import io.krugosvet.dailydish.android.reminder.ReminderService
 import io.krugosvet.dailydish.android.reminder.injection.reminderModule
-import io.krugosvet.dailydish.android.architecture.injection.module
+import io.krugosvet.dailydish.android.reminder.notification.ReminderNotification
+import io.krugosvet.dailydish.android.reminder.notification.ReminderNotificationReceiver
 import io.krugosvet.dailydish.android.repository.injection.repositoryModule
 import io.krugosvet.dailydish.core.injection.coreModule
 import org.koin.android.ext.android.get
@@ -34,5 +37,10 @@ class DailyDishApplication :
     }
 
     get<ReminderService>().schedule()
+
+    registerReceiver(
+      get<ReminderNotificationReceiver>(),
+      IntentFilter(ReminderNotification.CookedTodayAction.INTENT)
+    )
   }
 }

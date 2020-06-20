@@ -9,28 +9,40 @@ import io.krugosvet.dailydish.android.screen.mealList.viewmodel.MealListViewMode
 import io.krugosvet.dailydish.android.service.ImageService
 import io.krugosvet.dailydish.android.service.KeyboardService
 import io.krugosvet.dailydish.android.service.SnackbarService
-import org.koin.androidx.experimental.dsl.viewModel
 import org.koin.androidx.scope.lifecycleScope
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
-import org.koin.experimental.builder.scoped
-import org.koin.experimental.builder.single
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-@Suppress("RemoveExplicitTypeArguments")
 val module = module {
 
   scope<ContainerActivity> {
-    scoped<SnackbarService>()
-    scoped<ImageService>()
-    scoped<KeyboardService>()
+    scoped {
+      SnackbarService(get())
+    }
+
+    scoped {
+      ImageService(get(), get())
+    }
+
+    scoped {
+      KeyboardService(get())
+    }
   }
 
-  single<MealVisualFactory>()
+  single {
+    MealVisualFactory(get(), get())
+  }
 
-  viewModel<AddMealViewModel>()
-  viewModel<MealListViewModel>()
+  viewModel {
+    AddMealViewModel(get(), get(), get())
+  }
+
+  viewModel {
+    MealListViewModel(get(), get(), get(), get())
+  }
 }
 
 inline fun <reified T : Any> GenericBaseActivity.activityInject() =
