@@ -4,9 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import io.krugosvet.bindingcomponent.IBindingContainer
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.aspect.DisposableAspect
+import io.krugosvet.dailydish.android.architecture.aspect.IBindingContainer
 import io.krugosvet.dailydish.android.architecture.aspect.IStorageAspect
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
 import io.reactivex.Observable

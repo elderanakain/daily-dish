@@ -4,9 +4,9 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
-import io.krugosvet.bindingcomponent.BindingComponent
 import io.krugosvet.dailydish.android.BR
 import io.krugosvet.dailydish.android.R
+import io.krugosvet.dailydish.android.architecture.aspect.BindingComponent
 import io.krugosvet.dailydish.android.architecture.extension.subscribeOnIoThread
 import io.krugosvet.dailydish.android.architecture.injection.activityInject
 import io.krugosvet.dailydish.android.architecture.view.BaseFragment

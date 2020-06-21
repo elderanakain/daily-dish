@@ -1,4 +1,3 @@
 include ':core'
 include ':repository'
 include ':app'
-include ':bindingcomponent'

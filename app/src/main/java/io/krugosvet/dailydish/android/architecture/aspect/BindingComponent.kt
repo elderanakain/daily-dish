@@ -1,4 +1,4 @@
-package io.krugosvet.bindingcomponent
+package io.krugosvet.dailydish.android.architecture.aspect
 
 import android.content.Context
 import android.view.LayoutInflater
