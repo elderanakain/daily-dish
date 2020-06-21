@@ -7,8 +7,8 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment.findNavController
-import io.krugosvet.bindingcomponent.IBindingContainer
 import io.krugosvet.dailydish.android.architecture.aspect.DisposableAspect
+import io.krugosvet.dailydish.android.architecture.aspect.IBindingContainer
 import io.krugosvet.dailydish.android.architecture.aspect.IStorageAspect
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
 import io.reactivex.disposables.Disposable

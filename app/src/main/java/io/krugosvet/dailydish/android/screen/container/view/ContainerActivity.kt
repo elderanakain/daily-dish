@@ -6,9 +6,9 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
-import io.krugosvet.bindingcomponent.BindingComponent
 import io.krugosvet.dailydish.android.BR
 import io.krugosvet.dailydish.android.R
+import io.krugosvet.dailydish.android.architecture.aspect.BindingComponent
 import io.krugosvet.dailydish.android.architecture.extension.setVisibility
 import io.krugosvet.dailydish.android.architecture.injection.activityInject
 import io.krugosvet.dailydish.android.architecture.view.BaseActivity
