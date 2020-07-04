@@ -1,5 +1,6 @@
 package io.krugosvet.dailydish.android.architecture.extension
 
+import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
@@ -24,12 +25,15 @@ fun View.setVisibility(isVisible: Boolean) {
 }
 
 @BindingAdapter("srcUri")
-fun ImageView.srcUri(image: String?) {
+fun ImageView.srcUri(image: Uri?) {
   Glide.with(this)
     .applyDefaultRequestOptions(emptyMainImage)
-    .load(image)
+    .load(if (image.isEmpty) null else image)
     .into(this)
 }
+
+val Uri?.isEmpty: Boolean
+  get() = this == Uri.EMPTY
 
 private val emptyMainImage by lazy {
   RequestOptions()

@@ -1,4 +1,4 @@
-package io.krugosvet.dailydish.android.screen.settings.view
+package io.krugosvet.dailydish.android.ui.settings.view
 
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat

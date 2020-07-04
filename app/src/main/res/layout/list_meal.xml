@@ -6,7 +6,7 @@
     >
     <data>
         <import type="androidx.lifecycle.LiveData" />
-        <import type="io.krugosvet.dailydish.android.screen.mealList.view.MealVisual" />
+        <import type="io.krugosvet.dailydish.android.ui.mealList.view.MealVisual" />
         <variable
             name="visual"
             type="LiveData&lt;MealVisual>"
@@ -15,7 +15,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:elevation="4dp"
         >
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -26,13 +26,13 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@color/meal_image_placeholder"
-                android:scaleType="centerInside"
                 android:onClick="@{visual.onImageClick}"
-                app:srcUri="@{visual.image}"
+                android:scaleType="centerInside"
                 app:layout_constraintDimensionRatio="H,16:9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:srcUri="@{visual.image}"
                 tools:ignore="ContentDescription"
                 />
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -82,9 +82,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:fontFamily="@font/roboto_medium"
+                android:onClick="@{visual.onDelete}"
                 android:text="@string/meal_card_delete_button"
                 android:textColor="@color/button"
-                android:onClick="@{visual.onDelete}"
                 app:layout_constraintEnd_toStartOf="@+id/cookedButton"
                 app:layout_constraintTop_toBottomOf="@id/innerLayout"
                 />
@@ -94,11 +94,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:enabled="@{visual.cookTodayButtonEnabled}"
                 android:fontFamily="@font/roboto_medium"
+                android:onClick="@{visual.onCookTodayClick}"
                 android:text="@string/meal_card_cooked_button"
                 android:textColor="@color/white"
-                android:onClick="@{visual.onCookTodayClick}"
-                android:enabled="@{visual.cookTodayButtonEnabled}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/innerLayout"
                 />

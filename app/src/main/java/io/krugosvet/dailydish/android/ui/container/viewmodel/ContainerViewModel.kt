@@ -1,7 +1,7 @@
-package io.krugosvet.dailydish.android.screen.container.viewmodel
+package io.krugosvet.dailydish.android.ui.container.viewmodel
 
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
-import io.krugosvet.dailydish.android.screen.container.viewmodel.ContainerViewModel.Event
+import io.krugosvet.dailydish.android.ui.container.viewmodel.ContainerViewModel.Event
 
 class ContainerViewModel :
   ViewModel<Event>() {

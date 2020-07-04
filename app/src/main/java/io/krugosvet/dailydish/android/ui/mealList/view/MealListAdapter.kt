@@ -1,4 +1,4 @@
-package io.krugosvet.dailydish.android.screen.mealList.view
+package io.krugosvet.dailydish.android.ui.mealList.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

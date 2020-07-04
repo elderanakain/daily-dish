@@ -6,7 +6,9 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.*
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModel
 
 interface IBindingContainer<TBinding : ViewDataBinding, TViewModel : ViewModel> : LifecycleOwner {
 
@@ -17,6 +19,9 @@ interface IBindingContainer<TBinding : ViewDataBinding, TViewModel : ViewModel> 
   val parentContext: Context
 
   val viewModel: TViewModel
+
+  val binding: TBinding
+    get() = bindingComponent.binding
 }
 
 /**

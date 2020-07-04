@@ -35,6 +35,7 @@ internal class ReminderWorker(
       ?.also { meal ->
         reminderNotificationService.sendReminderNotification(meal)
       }
+      ?: return Result.failure()
 
     return Result.success()
   }

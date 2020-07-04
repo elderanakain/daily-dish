@@ -14,8 +14,10 @@ import com.mlsdev.rximagepicker.Sources
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.extension.sealedObjects
 import io.krugosvet.dailydish.android.architecture.view.GenericBaseActivity
-import io.krugosvet.dailydish.android.service.ImageService.DialogSource.Action
-import io.krugosvet.dailydish.android.service.ImageService.DialogSource.Source
+import io.krugosvet.dailydish.android.service.ImagePickerService.DialogSource.Action
+import io.krugosvet.dailydish.android.service.ImagePickerService.DialogSource.Action.Remove
+import io.krugosvet.dailydish.android.service.ImagePickerService.DialogSource.Action.Update
+import io.krugosvet.dailydish.android.service.ImagePickerService.DialogSource.Source
 import io.krugosvet.dailydish.core.service.ResourceService
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -24,19 +26,19 @@ import io.reactivex.disposables.Disposable
 
 const val REQUEST_PERMISSION_CAMERA = 2
 
-class ImageService(
+class ImagePickerService(
   private val activity: GenericBaseActivity,
   private val resources: ResourceService
 ) {
 
   sealed class DialogSource(@StringRes val text: Int) {
 
-    sealed class Source(text: Int): DialogSource(text) {
+    sealed class Source(text: Int) : DialogSource(text) {
       object Camera : Source(R.string.take_a_picture)
       object Gallery : Source(R.string.pick_from_gallery)
     }
 
-    sealed class Action(text: Int): DialogSource(text) {
+    sealed class Action(text: Int) : DialogSource(text) {
       object Update : Action(R.string.update_picture)
       object Remove : Action(R.string.remove_picture)
     }
@@ -72,8 +74,8 @@ class ImageService(
       .showDialog(Action::class.sealedObjects.toTypedArray())
       .flatMap {
         when (it) {
-          Action.Update -> openImageProviderChooser()
-          Action.Remove -> Single.just(Uri.EMPTY)
+          Update -> openImageProviderChooser()
+          Remove -> Single.just(Uri.EMPTY)
         }
       }
 
