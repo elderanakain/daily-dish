@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="io.krugosvet.dailydish.android.screen.addMeal.viewmodel.AddMealViewModel"
+            type="io.krugosvet.dailydish.android.ui.addMeal.viewmodel.AddMealViewModel"
             />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout

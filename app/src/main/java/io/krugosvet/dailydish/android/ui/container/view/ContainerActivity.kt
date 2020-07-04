@@ -1,4 +1,4 @@
-package io.krugosvet.dailydish.android.screen.container.view
+package io.krugosvet.dailydish.android.ui.container.view
 
 import android.content.Context
 import android.os.Bundle
@@ -13,9 +13,9 @@ import io.krugosvet.dailydish.android.architecture.extension.setVisibility
 import io.krugosvet.dailydish.android.architecture.injection.activityInject
 import io.krugosvet.dailydish.android.architecture.view.BaseActivity
 import io.krugosvet.dailydish.android.databinding.ActivityContainerBinding
-import io.krugosvet.dailydish.android.screen.container.viewmodel.ContainerViewModel
-import io.krugosvet.dailydish.android.screen.mealList.view.MealListFragmentDirections
 import io.krugosvet.dailydish.android.service.KeyboardService
+import io.krugosvet.dailydish.android.ui.container.viewmodel.ContainerViewModel
+import io.krugosvet.dailydish.android.ui.mealList.view.MealListFragmentDirections
 
 class ContainerActivity :
   BaseActivity<ActivityContainerBinding, ContainerViewModel>() {
@@ -40,18 +40,18 @@ class ContainerActivity :
   override fun onBind() {
     super.onBind()
 
-    setupActionBarWithNavController(navController, bindingComponent.binding.drawerLayout)
-    NavigationUI.setupWithNavController(bindingComponent.binding.navView, navController)
+    setupActionBarWithNavController(navController, binding.drawerLayout)
+    NavigationUI.setupWithNavController(binding.navView, navController)
 
     navController.addOnDestinationChangedListener { _, destination, _ ->
-      bindingComponent.binding.floatingButton.setVisibility(destination.id == R.id.mealListFragment)
+      binding.floatingButton.setVisibility(destination.id == R.id.mealListFragment)
 
       keyboardService.hideKeyboard()
     }
   }
 
   override fun onSupportNavigateUp() =
-    NavigationUI.navigateUp(navController, bindingComponent.binding.drawerLayout)
+    NavigationUI.navigateUp(navController, binding.drawerLayout)
 
   private fun showAddMeal() {
     navController.navigate(MealListFragmentDirections.actionMealListFragmentToDialogAddMeal())

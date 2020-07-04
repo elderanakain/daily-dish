@@ -5,7 +5,7 @@
             app:startDestination="@id/mealListFragment">
     <fragment
         android:id="@+id/mealListFragment"
-        android:name="io.krugosvet.dailydish.android.screen.mealList.view.MealListFragment"
+        android:name="io.krugosvet.dailydish.android.ui.mealList.view.MealListFragment"
         android:label="MealListFragment" >
         <action
             android:id="@+id/action_mealListFragment_to_dialogAddMeal"
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/dialogAddMeal"
-        android:name="io.krugosvet.dailydish.android.screen.addMeal.view.AddMealFragment"
+        android:name="io.krugosvet.dailydish.android.ui.addMeal.view.AddMealFragment"
         android:label="DialogAddMeal" >
         <action
             android:id="@+id/action_dialogAddMeal_to_mealListFragment"
@@ -23,6 +23,6 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="io.krugosvet.dailydish.android.screen.settings.view.SettingsFragment"
+        android:name="io.krugosvet.dailydish.android.ui.settings.view.SettingsFragment"
         android:label="SettingsFragment" />
 </navigation>

@@ -3,14 +3,15 @@ package io.krugosvet.dailydish.android.architecture.injection
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import io.krugosvet.dailydish.android.architecture.view.GenericBaseActivity
-import io.krugosvet.dailydish.android.screen.addMeal.viewmodel.AddMealViewModel
-import io.krugosvet.dailydish.android.screen.container.view.ContainerActivity
-import io.krugosvet.dailydish.android.screen.mealList.view.MealVisualFactory
-import io.krugosvet.dailydish.android.screen.mealList.viewmodel.MealListViewModel
-import io.krugosvet.dailydish.android.service.ImageService
+import io.krugosvet.dailydish.android.service.ImagePickerService
 import io.krugosvet.dailydish.android.service.KeyboardService
 import io.krugosvet.dailydish.android.service.PreferenceService
 import io.krugosvet.dailydish.android.service.SnackbarService
+import io.krugosvet.dailydish.android.ui.addMeal.viewmodel.AddMealViewModel
+import io.krugosvet.dailydish.android.ui.container.view.ContainerActivity
+import io.krugosvet.dailydish.android.ui.mealList.view.MealListDecorator
+import io.krugosvet.dailydish.android.ui.mealList.view.MealVisualFactory
+import io.krugosvet.dailydish.android.ui.mealList.viewmodel.MealListViewModel
 import org.koin.androidx.scope.lifecycleScope
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.parameter.parametersOf
@@ -26,7 +27,7 @@ val module = module {
     }
 
     scoped {
-      ImageService(get(), get())
+      ImagePickerService(get(), get())
     }
 
     scoped {
@@ -43,6 +44,10 @@ val module = module {
       PreferenceManager.getDefaultSharedPreferences(get()),
       get()
     )
+  }
+
+  factory {
+    MealListDecorator(get())
   }
 
   viewModel {

@@ -25,7 +25,7 @@ abstract class BaseFragment<TBinding : ViewDataBinding, TViewModel : ViewModel<*
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
   ) =
-    bindingComponent.binding.root
+    binding.root
 
   override fun onDestroy() {
     super.onDestroy()

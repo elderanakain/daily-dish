@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/mealListFragment"
-        android:icon="@android:drawable/btn_plus"
+        android:icon="@drawable/ic_calendar_today_black_18dp"
         android:title="@string/what_to_cook_today" />
 
     <item
