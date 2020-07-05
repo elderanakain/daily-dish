@@ -15,35 +15,14 @@
         android:layout_height="wrap_content"
         android:padding="24dp"
         >
-        <TextView
-            android:id="@+id/dialogTitle"
-            style="@style/TitleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/add_meal_dialog_title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
-        <Button
-            android:id="@+id/addMealButton"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:onClick="@{viewModel::onAddMeal}"
-            android:text="@string/dialog_add_meal_button_add_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/dialogTitle"
-            />
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:tag="title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dialogTitle"
+            app:layout_constraintTop_toTopOf="parent"
             >
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -91,8 +70,8 @@
                 android:hint="@string/dialog_add_meal_date_field_hint"
                 android:inputType="none"
                 android:minWidth="129dp"
-                android:text="@{viewModel.formattedDate}"
                 android:onClick="@{viewModel::showDatePicker}"
+                android:text="@{viewModel.formattedDate}"
                 tools:text="November 2, 2018"
                 />
         </com.google.android.material.textfield.TextInputLayout>
@@ -108,6 +87,31 @@
             app:layout_constraintTop_toTopOf="@id/dateEditText"
             app:srcUri="@{viewModel.mainImage.uri}"
             tools:src="@drawable/meal_empty_image"
+            />
+        <Button
+            android:id="@+id/addMealButton"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="28dp"
+            android:onClick="@{viewModel::onAddMeal}"
+            android:text="@string/dialog_add_meal_button_add_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addMealImage"
+            />
+        <Button
+            android:id="@+id/cancel_button"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="8dp"
+            android:onClick="@{viewModel::onCancel}"
+            android:text="@string/dialog_cancel_button"
+            app:layout_constraintEnd_toStartOf="@id/addMealButton"
+            app:layout_constraintTop_toBottomOf="@id/addMealImage"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
