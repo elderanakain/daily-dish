@@ -6,7 +6,7 @@
     <fragment
         android:id="@+id/mealListFragment"
         android:name="io.krugosvet.dailydish.android.ui.mealList.view.MealListFragment"
-        android:label="MealListFragment" >
+        android:label="@string/what_to_cook_today" >
         <action
             android:id="@+id/action_mealListFragment_to_dialogAddMeal"
             app:destination="@id/dialogAddMeal"
@@ -16,7 +16,7 @@
     <fragment
         android:id="@+id/dialogAddMeal"
         android:name="io.krugosvet.dailydish.android.ui.addMeal.view.AddMealFragment"
-        android:label="DialogAddMeal" >
+        android:label="@string/add_meal_dialog_title" >
         <action
             android:id="@+id/action_dialogAddMeal_to_mealListFragment"
             app:destination="@id/mealListFragment" />
@@ -24,5 +24,5 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="io.krugosvet.dailydish.android.ui.settings.view.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="@string/settings" />
 </navigation>

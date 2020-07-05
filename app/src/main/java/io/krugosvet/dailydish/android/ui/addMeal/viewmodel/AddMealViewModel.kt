@@ -65,6 +65,10 @@ class AddMealViewModel(
     }
   }
 
+  fun onCancel() {
+    navigate(Event.Close)
+  }
+
   private fun validate(): Boolean {
     val titleValidation = title.value!!.isNotEmpty()
     val descriptionValidation = description.value!!.isNotEmpty()
