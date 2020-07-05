@@ -19,7 +19,7 @@ class ReminderNotificationReceiver(
 
     runBlocking {
       val updatedMeal = mealRepository.meals.first()
-        .firstOrNull { it.id == mealId }
+        .firstOrNull { it.id.value == mealId }
         ?.copy(lastCookingDate = Date())
         ?: return@runBlocking
 

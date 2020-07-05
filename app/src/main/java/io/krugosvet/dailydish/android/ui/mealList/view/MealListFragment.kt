@@ -7,11 +7,11 @@ import androidx.lifecycle.Observer
 import io.krugosvet.dailydish.android.BR
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.aspect.BindingComponent
-import io.krugosvet.dailydish.android.architecture.extension.isEmpty
 import io.krugosvet.dailydish.android.architecture.extension.subscribeOnIoThread
 import io.krugosvet.dailydish.android.architecture.injection.activityInject
 import io.krugosvet.dailydish.android.architecture.view.BaseFragment
 import io.krugosvet.dailydish.android.databinding.FragmentMealListBinding
+import io.krugosvet.dailydish.android.repository.meal.MealImage
 import io.krugosvet.dailydish.android.service.ImagePickerService
 import io.krugosvet.dailydish.android.ui.mealList.viewmodel.MealListViewModel
 import org.koin.android.ext.android.inject
@@ -55,7 +55,9 @@ class MealListFragment :
 
   private fun showImagePicker(event: MealListViewModel.Event.ShowImagePicker) {
     imagePickerService.showImagePicker(event.meal.image.isEmpty)
-      .subscribeOnIoThread(onSuccess = { image -> viewModel.changeImage(event.meal, image) })
+      .subscribeOnIoThread(onSuccess = { image ->
+        viewModel.changeImage(event.meal, MealImage(image))
+      })
       .store()
   }
 }

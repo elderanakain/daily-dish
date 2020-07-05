@@ -47,6 +47,6 @@ class MealRepository(
   }
 
   override suspend fun delete(meal: Meal) = withContext(Dispatchers.IO) {
-    mealDao.delete(mealDao.get(meal.id))
+    mealDao.delete(mealDao.get(meal.id.value))
   }
 }

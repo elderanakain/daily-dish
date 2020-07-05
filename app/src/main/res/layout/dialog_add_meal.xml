@@ -106,7 +106,7 @@
             android:scaleType="centerInside"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/dateEditText"
-            app:srcUri="@{viewModel.mainImage}"
+            app:srcUri="@{viewModel.mainImage.uri}"
             tools:src="@drawable/meal_empty_image"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,18 +1,19 @@
 package io.krugosvet.dailydish.android.ui.mealList.view
 
-import android.net.Uri
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.extension.OnClick
 import io.krugosvet.dailydish.android.repository.meal.Meal
+import io.krugosvet.dailydish.android.repository.meal.MealId
+import io.krugosvet.dailydish.android.repository.meal.MealImage
 import io.krugosvet.dailydish.core.service.DateService
 import io.krugosvet.dailydish.core.service.ResourceService
 
 data class MealVisual(
-  val id: Long,
+  val id: MealId,
   val title: String,
   val description: String,
   val lastDateOfCooking: String,
-  val image: Uri,
+  val image: MealImage,
   val isCookTodayButtonEnabled: Boolean,
   val onDelete: OnClick,
   val onImageClick: OnClick,

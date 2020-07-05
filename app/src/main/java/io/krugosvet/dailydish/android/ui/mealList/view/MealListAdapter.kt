@@ -25,7 +25,7 @@ class MealListAdapter(
     holder.visualLiveData.value = getItem(position)
   }
 
-  override fun getItemId(position: Int) = getItem(position).id
+  override fun getItemId(position: Int) = getItem(position).id.value
 
   class MealViewHolder private constructor(binding: ListMealBinding) :
     RecyclerView.ViewHolder(binding.root) {

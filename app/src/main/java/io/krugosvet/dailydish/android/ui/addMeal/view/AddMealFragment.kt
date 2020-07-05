@@ -14,6 +14,7 @@ import io.krugosvet.dailydish.android.architecture.extension.subscribeOnIoThread
 import io.krugosvet.dailydish.android.architecture.injection.activityInject
 import io.krugosvet.dailydish.android.architecture.view.BaseFragment
 import io.krugosvet.dailydish.android.databinding.DialogAddMealBinding
+import io.krugosvet.dailydish.android.repository.meal.MealImage
 import io.krugosvet.dailydish.android.service.ImagePickerService
 import io.krugosvet.dailydish.android.service.KeyboardService
 import io.krugosvet.dailydish.android.ui.addMeal.viewmodel.AddMealViewModel
@@ -81,8 +82,10 @@ class AddMealFragment :
   }
 
   private fun showImagePicker() {
-    imagePickerService.showImagePicker(isImageEmpty = viewModel.mainImage.value.isEmpty)
-      .subscribeOnIoThread(onSuccess = { image -> viewModel.mainImage.postValue(image) })
+    imagePickerService.showImagePicker(isImageEmpty = viewModel.mainImage.value?.uri.isEmpty)
+      .subscribeOnIoThread(onSuccess = { image ->
+        viewModel.mainImage.postValue(MealImage(image))
+      })
       .store()
   }
 
