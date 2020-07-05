@@ -18,6 +18,13 @@ fun <T> ViewModel<*>.liveData(initialValue: T) =
     override fun getValue(thisRef: Any, property: KProperty<*>) = liveData
   }
 
+fun <T> ViewModel<*>.stateLiveData(initialValue: T) =
+  object : ReadOnlyProperty<Any, MutableLiveData<T>> {
+
+    override fun getValue(thisRef: Any, property: KProperty<*>) =
+      this@stateLiveData.savedStateHandle.getLiveData(property.name, initialValue)
+  }
+
 open class NonNullMutableLiveData<T>(
   private val initialValue: T
 ) :

@@ -22,13 +22,13 @@ import io.krugosvet.dailydish.core.service.day
 import io.krugosvet.dailydish.core.service.month
 import io.krugosvet.dailydish.core.service.year
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class AddMealFragment :
   BaseFragment<DialogAddMealBinding, AddMealViewModel>(),
   DatePickerDialog.OnDateSetListener {
 
-  override val viewModel: AddMealViewModel by viewModel()
+  override val viewModel: AddMealViewModel by stateViewModel()
   override val bindingComponent = BindingComponent(R.layout.dialog_add_meal, this, BR.viewModel)
 
   private val dateService: DateService by inject()

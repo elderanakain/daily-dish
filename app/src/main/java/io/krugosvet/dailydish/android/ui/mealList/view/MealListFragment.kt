@@ -15,7 +15,7 @@ import io.krugosvet.dailydish.android.databinding.FragmentMealListBinding
 import io.krugosvet.dailydish.android.service.ImagePickerService
 import io.krugosvet.dailydish.android.ui.mealList.viewmodel.MealListViewModel
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class MealListFragment :
   BaseFragment<FragmentMealListBinding, MealListViewModel>() {
@@ -23,7 +23,7 @@ class MealListFragment :
   override val parentContext: Context
     get() = requireContext()
 
-  override val viewModel by viewModel<MealListViewModel>()
+  override val viewModel by stateViewModel<MealListViewModel>()
   override val bindingComponent = BindingComponent(R.layout.fragment_meal_list, this, BR.viewModel)
 
   private val imagePickerService: ImagePickerService by activityInject()

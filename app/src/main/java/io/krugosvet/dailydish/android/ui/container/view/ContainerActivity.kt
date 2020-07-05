@@ -2,7 +2,6 @@ package io.krugosvet.dailydish.android.ui.container.view
 
 import android.content.Context
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -16,11 +15,12 @@ import io.krugosvet.dailydish.android.databinding.ActivityContainerBinding
 import io.krugosvet.dailydish.android.service.KeyboardService
 import io.krugosvet.dailydish.android.ui.container.viewmodel.ContainerViewModel
 import io.krugosvet.dailydish.android.ui.mealList.view.MealListFragmentDirections
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class ContainerActivity :
   BaseActivity<ActivityContainerBinding, ContainerViewModel>() {
 
-  override val viewModel: ContainerViewModel by viewModels()
+  override val viewModel: ContainerViewModel by stateViewModel()
   override val bindingComponent = BindingComponent(R.layout.activity_container, this, BR.viewModel)
 
   override val parentContext: Context = this

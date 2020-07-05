@@ -2,6 +2,7 @@ package io.krugosvet.dailydish.android.ui.mealList.viewmodel
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import io.krugosvet.dailydish.android.architecture.extension.OnClick
@@ -16,12 +17,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class MealListViewModel(
+  savedStateHandle: SavedStateHandle,
   private val mealVisualFactory: MealVisualFactory,
   private val mealRepository: MealRepository,
   private val dateService: DateService,
   private val reminderNotificationService: ReminderNotificationService
 ) :
-  ViewModel<MealListViewModel.Event>() {
+  ViewModel<MealListViewModel.Event>(savedStateHandle) {
 
   sealed class Event : NavigationEvent() {
     class ShowImagePicker(val meal: Meal) : Event()

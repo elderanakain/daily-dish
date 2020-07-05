@@ -1,14 +1,14 @@
 package io.krugosvet.dailydish.android.architecture.viewmodel
 
 import androidx.lifecycle.LiveData
-import io.krugosvet.dailydish.android.architecture.aspect.CoroutineJobAspect
-import io.krugosvet.dailydish.android.architecture.aspect.IStorageAspect
+import androidx.lifecycle.SavedStateHandle
 import io.krugosvet.dailydish.android.architecture.extension.LiveEvent
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel.NavigationEvent
-import kotlinx.coroutines.Job
 import androidx.lifecycle.ViewModel as JetpackViewModel
 
-abstract class ViewModel<TNavigation : NavigationEvent> :
+abstract class ViewModel<TNavigation : NavigationEvent>(
+  val savedStateHandle: SavedStateHandle
+) :
   JetpackViewModel() {
 
   abstract class NavigationEvent
