@@ -21,10 +21,10 @@ class MealEntityFactory {
 
   fun from(meal: Meal) =
     MealEntity(
-      id = meal.id,
+      id = meal.id.value,
       title = meal.title,
       description = meal.description,
-      imageUri = meal.image.toString(),
+      imageUri = meal.image.uri.toString(),
       lastCookingDate = meal.lastCookingDate.time
     )
 

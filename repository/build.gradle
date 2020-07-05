@@ -21,6 +21,10 @@ android {
             }
         }
     }
+
+    kotlinOptions {
+        freeCompilerArgs = ["-XXLanguage:+InlineClasses"]
+    }
 }
 
 dependencies {

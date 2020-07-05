@@ -1,6 +1,5 @@
 package io.krugosvet.dailydish.android.ui.mealList.viewmodel
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.asLiveData
@@ -9,6 +8,7 @@ import io.krugosvet.dailydish.android.architecture.extension.OnClick
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotificationService
 import io.krugosvet.dailydish.android.repository.meal.Meal
+import io.krugosvet.dailydish.android.repository.meal.MealImage
 import io.krugosvet.dailydish.android.repository.meal.MealRepository
 import io.krugosvet.dailydish.android.ui.mealList.view.MealVisual
 import io.krugosvet.dailydish.android.ui.mealList.view.MealVisualFactory
@@ -41,7 +41,7 @@ class MealListViewModel(
       }
       .asLiveData()
 
-  fun changeImage(meal: Meal, image: Uri) {
+  fun changeImage(meal: Meal, image: MealImage) {
     viewModelScope.launch {
       mealRepository.update(meal.copy(image = image))
     }

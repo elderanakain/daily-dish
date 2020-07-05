@@ -7,12 +7,24 @@ import io.krugosvet.dailydish.core.service.IdGenerator
 import java.util.*
 
 data class Meal internal constructor(
-  val id: Long,
+  val id: MealId,
   val title: String,
   val description: String,
-  val image: Uri,
+  val image: MealImage,
   val lastCookingDate: Date
 )
+
+inline class MealId(
+  val value: Long
+)
+
+inline class MealImage(
+  val uri: Uri = Uri.EMPTY
+) {
+
+  val isEmpty: Boolean
+    get() = uri == Uri.EMPTY
+}
 
 class MealFactory(
   private val dateService: DateService,
@@ -23,10 +35,10 @@ class MealFactory(
     title: String,
     description: String,
     date: String,
-    mainImage: Uri
+    mainImage: MealImage
   ) =
     Meal(
-      id = idGenerator.generate(),
+      id = MealId(idGenerator.generate()),
       title = title,
       description = description,
       lastCookingDate = dateService.defaultFormatDate(date),
@@ -35,10 +47,10 @@ class MealFactory(
 
   fun from(mealEntity: MealEntity) =
     Meal(
-      id = mealEntity.id,
+      id = MealId(mealEntity.id),
       title = mealEntity.title,
       description = mealEntity.description,
-      image = Uri.parse(mealEntity.imageUri),
+      image = MealImage(Uri.parse(mealEntity.imageUri)),
       lastCookingDate = dateService.toDate(mealEntity.lastCookingDate)
     )
 }

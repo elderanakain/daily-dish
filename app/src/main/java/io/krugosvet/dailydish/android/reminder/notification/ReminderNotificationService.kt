@@ -9,6 +9,7 @@ import android.content.Intent
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotification.CookedTodayAction
 import io.krugosvet.dailydish.android.repository.meal.Meal
+import io.krugosvet.dailydish.android.repository.meal.MealId
 import io.krugosvet.dailydish.android.ui.container.view.ContainerActivity
 import io.krugosvet.dailydish.core.service.ResourceService
 
@@ -71,11 +72,11 @@ class ReminderNotificationService(
     notificationManager.cancel(ReminderNotification.ID)
   }
 
-  private fun createOnCookedTodayAction(mealId: Long): PendingIntent =
+  private fun createOnCookedTodayAction(mealId: MealId): PendingIntent =
     PendingIntent.getBroadcast(
       context, ReminderNotification.ID,
       Intent(CookedTodayAction.INTENT).apply {
-        putExtra(CookedTodayAction.MEAL_ID_KEY, mealId)
+        putExtra(CookedTodayAction.MEAL_ID_KEY, mealId.value)
       },
       PendingIntent.FLAG_ONE_SHOT
     )
