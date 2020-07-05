@@ -28,7 +28,6 @@ class DateService {
     try {
       getSimpleDefaultDateFormat().parse(date)!!
     } catch (e: ParseException) {
-      e.printStackTrace()
       currentDate.time
     }
 

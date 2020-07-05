@@ -6,8 +6,12 @@ import androidx.work.WorkManager
 import io.krugosvet.dailydish.android.reminder.ReminderService
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotificationReceiver
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotificationService
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import org.koin.dsl.module
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 val reminderModule = module {
 
   single {
