@@ -41,13 +41,6 @@ android {
             resValue "string", "app_name", "DailyDish Debug"
             manifestPlaceholders = ['appIdRedirectScheme': android.defaultConfig.applicationId + applicationIdSuffix]
         }
-
-        beta {
-            applicationIdSuffix ".beta"
-            debuggable true
-            resValue "string", "app_name", "DailyDish Beta"
-            manifestPlaceholders = ['appIdRedirectScheme': android.defaultConfig.applicationId + applicationIdSuffix]
-        }
     }
 
     sourceSets {
@@ -62,6 +55,10 @@ android {
         unitTests {
             includeAndroidResources = true
         }
+    }
+
+    lintOptions {
+        checkDependencies true
     }
 
     useLibrary 'android.test.runner'
