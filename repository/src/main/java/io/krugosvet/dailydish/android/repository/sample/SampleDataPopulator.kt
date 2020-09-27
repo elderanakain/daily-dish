@@ -56,5 +56,4 @@ class SampleDataPopulator(
       get<MealRepository>().add(sampleData)
     }
   }
-
 }
