@@ -11,7 +11,9 @@ interface IMealRepository {
 
   val meals: Flow<List<Meal>>
 
-  suspend fun add(vararg meal: Meal)
+  suspend fun add(meal: Meal)
+
+  suspend fun add(mealList: List<Meal>)
 
   suspend fun update(meal: Meal)
 
@@ -31,12 +33,16 @@ class MealRepository(
     }
   }
 
-  override suspend fun add(vararg meal: Meal) = withContext(Dispatchers.IO) {
-    mealDao.insert(
-      *meal
-        .map { mealEntityFactory.from(it) }
-        .toTypedArray()
-    )
+  override suspend fun add(meal: Meal) = withContext(Dispatchers.IO) {
+    val entity = mealEntityFactory.from(meal)
+
+    mealDao.insert(entity)
+  }
+
+  override suspend fun add(mealList: List<Meal>) {
+    val entities = mealList.map { mealEntityFactory.from(it) }
+
+    mealDao.insert(entities)
   }
 
   override suspend fun update(meal: Meal) {

@@ -53,7 +53,7 @@ class SampleDataPopulator(
     super.onCreate(db)
 
     GlobalScope.launch(Dispatchers.IO) {
-      get<MealRepository>().add(*sampleData.toTypedArray())
+      get<MealRepository>().add(sampleData)
     }
   }
 

@@ -1,13 +1,21 @@
 package io.krugosvet.dailydish.android.repository.db.meal
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MealDao {
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insert(vararg mealEntity: MealEntity)
+  suspend fun insert(mealEntityList: List<MealEntity>)
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun insert(mealEntity: MealEntity)
 
   @Update(onConflict = OnConflictStrategy.REPLACE)
   suspend fun update(vararg mealEntity: MealEntity)
