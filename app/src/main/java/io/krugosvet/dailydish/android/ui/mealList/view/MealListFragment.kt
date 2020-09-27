@@ -3,7 +3,6 @@ package io.krugosvet.dailydish.android.ui.mealList.view
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
 import io.krugosvet.dailydish.android.BR
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.aspect.BindingComponent
@@ -29,7 +28,7 @@ class MealListFragment :
   private val imagePickerService: ImagePickerService by activityInject()
   private val mealListDecorator: MealListDecorator by inject()
 
-  private val adapter: MealListAdapter by lazy { MealListAdapter(this) }
+  private val adapter: MealListAdapter by lazy { MealListAdapter() }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -42,11 +41,11 @@ class MealListFragment :
       }
     }
 
-    viewModel.mealList.observe(viewLifecycleOwner, Observer { mealList ->
+    viewModel.mealList.observe(viewLifecycleOwner, { mealList ->
       adapter.submitList(mealList)
     })
 
-    viewModel.navigationEvent.observe(viewLifecycleOwner, Observer { event ->
+    viewModel.navigationEvent.observe(viewLifecycleOwner, { event ->
       when (event) {
         is MealListViewModel.Event.ShowImagePicker -> showImagePicker(event)
       }

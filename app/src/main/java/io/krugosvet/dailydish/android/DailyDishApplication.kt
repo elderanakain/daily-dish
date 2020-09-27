@@ -30,7 +30,7 @@ class DailyDishApplication :
 
     startKoin {
       androidContext(this@DailyDishApplication)
-      androidLogger(Level.INFO)
+      androidLogger(Level.ERROR)
 
       modules(
         module,
