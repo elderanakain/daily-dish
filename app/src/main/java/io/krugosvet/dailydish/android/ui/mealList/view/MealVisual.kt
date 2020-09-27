@@ -1,10 +1,10 @@
 package io.krugosvet.dailydish.android.ui.mealList.view
 
+import android.net.Uri
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.extension.OnClick
 import io.krugosvet.dailydish.android.repository.meal.Meal
 import io.krugosvet.dailydish.android.repository.meal.MealId
-import io.krugosvet.dailydish.android.repository.meal.MealImage
 import io.krugosvet.dailydish.core.service.DateService
 import io.krugosvet.dailydish.core.service.ResourceService
 
@@ -13,7 +13,7 @@ data class MealVisual(
   val title: String,
   val description: String,
   val lastDateOfCooking: String,
-  val image: MealImage,
+  val image: Uri,
   val isCookTodayButtonEnabled: Boolean,
   val onDelete: OnClick,
   val onImageClick: OnClick,
@@ -35,7 +35,7 @@ class MealVisualFactory(
       id = meal.id,
       title = meal.title,
       description = meal.description,
-      image = meal.image,
+      image = meal.image.uri,
       lastDateOfCooking = resourceService.getString(
         R.string.cooked_on, dateService.getLongFormattedDate(meal.lastCookingDate)
       ),

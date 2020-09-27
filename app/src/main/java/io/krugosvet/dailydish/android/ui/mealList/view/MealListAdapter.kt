@@ -2,16 +2,12 @@ package io.krugosvet.dailydish.android.ui.mealList.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.krugosvet.dailydish.android.databinding.ListMealBinding
 
-class MealListAdapter(
-  private val lifecycleOwner: LifecycleOwner
-) :
+class MealListAdapter :
   ListAdapter<MealVisual, MealListAdapter.MealViewHolder>(MealDiffUtilCallback) {
 
   init {
@@ -19,32 +15,27 @@ class MealListAdapter(
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    MealViewHolder.from(parent, lifecycleOwner)
+    MealViewHolder.from(parent)
 
   override fun onBindViewHolder(holder: MealViewHolder, position: Int) {
-    holder.visualLiveData.value = getItem(position)
+    holder.bind(getItem(position))
   }
 
   override fun getItemId(position: Int) = getItem(position).id.value
 
-  class MealViewHolder private constructor(binding: ListMealBinding) :
+  class MealViewHolder private constructor(private val binding: ListMealBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     companion object {
 
-      fun from(parent: ViewGroup, lifecycleOwner: LifecycleOwner): MealViewHolder {
-        return MealViewHolder(
-          ListMealBinding.inflate(LayoutInflater.from(parent.context), parent, false).apply {
-            this.lifecycleOwner = lifecycleOwner
-          }
+      fun from(parent: ViewGroup): MealViewHolder =
+        MealViewHolder(
+          ListMealBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
-      }
     }
 
-    val visualLiveData = MutableLiveData<MealVisual>()
-
-    init {
-      binding.visual = visualLiveData
+    fun bind(visual: MealVisual) {
+      binding.visual = visual
     }
   }
 }

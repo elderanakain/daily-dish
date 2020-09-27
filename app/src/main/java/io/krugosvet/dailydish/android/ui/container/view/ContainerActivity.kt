@@ -2,7 +2,6 @@ package io.krugosvet.dailydish.android.ui.container.view
 
 import android.content.Context
 import android.os.Bundle
-import androidx.lifecycle.Observer
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import io.krugosvet.dailydish.android.BR
@@ -30,7 +29,7 @@ class ContainerActivity :
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    viewModel.navigationEvent.observe(this, Observer {
+    viewModel.navigationEvent.observe(this, {
       when (it) {
         ContainerViewModel.Event.ShowAddMeal -> showAddMeal()
       }

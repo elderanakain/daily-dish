@@ -44,7 +44,10 @@ class BindingComponent<TBinding : ViewDataBinding, TViewModel : ViewModel>(
   IBindingComponent<TBinding>,
   DefaultLifecycleObserver {
 
-  override lateinit var binding: TBinding
+  override val binding: TBinding
+    get() = _binding ?: throw IllegalStateException("Binding is not ready")
+
+  private var _binding: TBinding? = null
 
   init {
     container.lifecycle.addObserver(this)
@@ -55,7 +58,7 @@ class BindingComponent<TBinding : ViewDataBinding, TViewModel : ViewModel>(
 
     val context = container.parentContext
 
-    binding = DataBindingUtil.inflate(LayoutInflater.from(context), layoutId, null, false)
+    _binding = DataBindingUtil.inflate(LayoutInflater.from(context), layoutId, null, false)
     binding.lifecycleOwner = container
 
     if (container is AppCompatActivity) {
@@ -69,5 +72,11 @@ class BindingComponent<TBinding : ViewDataBinding, TViewModel : ViewModel>(
     super.onStart(owner)
 
     binding.setVariable(viewModelVar, container.viewModel)
+  }
+
+  override fun onDestroy(owner: LifecycleOwner) {
+    super.onDestroy(owner)
+
+    _binding = null
   }
 }
