@@ -5,7 +5,8 @@ on:
     branches: [ dev ]
 
 jobs:
-  pipeline:
+  build:
+    name: Build App
     runs-on: ubuntu-latest
 
     steps:
@@ -20,5 +21,48 @@ jobs:
       - name: Build
         run:  ./gradlew :app:assembleDebug
 
-      - name: Detekt
-        uses: natiginfo/action-detekt-all@1.14.0
+      - name: Upload APK
+        uses: actions/upload-artifact@v1
+        with:
+          name: build-output
+          path: app/build/outputs/apk/debug/app-debug.apk
+
+  test:
+    name: Test App
+    runs-on: macos-latest
+    needs:
+      - build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Unit tests
+        run: ./gradlew testDebugUnitTest
+
+      - name: Instrumentation tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          arch: x86
+          profile: Nexus 6
+          avd-name: test
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: ./gradlew connectedCheck
+
+      - name: Upload reports
+        uses: actions/upload-artifact@v1
+        with:
+          name: reports
+          path: app/build/reports
+
+  static_analysis:
+      name: Static Analysis
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+
+        - name: Detekt
+          uses: natiginfo/action-detekt-all@1.14.0
