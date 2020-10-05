@@ -6,11 +6,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.DatePicker
 import androidx.lifecycle.Observer
+import androidx.lifecycle.coroutineScope
 import io.krugosvet.dailydish.android.BR
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.aspect.BindingComponent
 import io.krugosvet.dailydish.android.architecture.extension.isEmpty
-import io.krugosvet.dailydish.android.architecture.extension.subscribeOnIoThread
 import io.krugosvet.dailydish.android.architecture.injection.activityInject
 import io.krugosvet.dailydish.android.architecture.view.BaseFragment
 import io.krugosvet.dailydish.android.databinding.DialogAddMealBinding
@@ -22,6 +22,8 @@ import io.krugosvet.dailydish.core.service.DateService
 import io.krugosvet.dailydish.core.service.day
 import io.krugosvet.dailydish.core.service.month
 import io.krugosvet.dailydish.core.service.year
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
@@ -83,10 +85,10 @@ class AddMealFragment :
 
   private fun showImagePicker() {
     imagePickerService.showImagePicker(isImageEmpty = viewModel.mainImage.value?.uri.isEmpty)
-      .subscribeOnIoThread(onSuccess = { image ->
+      .onEach { image ->
         viewModel.mainImage.postValue(MealImage(image))
-      })
-      .store()
+      }
+      .launchIn(viewLifecycleOwner.lifecycle.coroutineScope)
   }
 
   private fun showDatePicker() {

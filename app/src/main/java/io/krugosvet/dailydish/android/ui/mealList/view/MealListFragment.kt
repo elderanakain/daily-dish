@@ -3,16 +3,18 @@ package io.krugosvet.dailydish.android.ui.mealList.view
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.coroutineScope
 import io.krugosvet.dailydish.android.BR
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.aspect.BindingComponent
-import io.krugosvet.dailydish.android.architecture.extension.subscribeOnIoThread
 import io.krugosvet.dailydish.android.architecture.injection.activityInject
 import io.krugosvet.dailydish.android.architecture.view.BaseFragment
 import io.krugosvet.dailydish.android.databinding.FragmentMealListBinding
 import io.krugosvet.dailydish.android.repository.meal.MealImage
 import io.krugosvet.dailydish.android.service.ImagePickerService
 import io.krugosvet.dailydish.android.ui.mealList.viewmodel.MealListViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
@@ -54,10 +56,10 @@ class MealListFragment :
 
   private fun showImagePicker(event: MealListViewModel.Event.ShowImagePicker) {
     imagePickerService.showImagePicker(event.meal.image.isEmpty)
-      .subscribeOnIoThread(onSuccess = { image ->
+      .onEach { image ->
         viewModel.changeImage(event.meal, MealImage(image))
-      })
-      .store()
+      }
+      .launchIn(viewLifecycleOwner.lifecycle.coroutineScope)
   }
 }
 
