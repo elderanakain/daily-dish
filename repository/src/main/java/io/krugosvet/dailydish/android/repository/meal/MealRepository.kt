@@ -7,52 +7,37 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-interface IMealRepository {
-
-  val meals: Flow<List<Meal>>
-
-  suspend fun add(meal: Meal)
-
-  suspend fun add(mealList: List<Meal>)
-
-  suspend fun update(meal: Meal)
-
-  suspend fun delete(meal: Meal)
-}
-
 class MealRepository(
   private val mealDao: MealDao,
   private val mealFactory: MealFactory,
   private val mealEntityFactory: MealEntityFactory
-) :
-  IMealRepository {
+) {
 
-  override val meals: Flow<List<Meal>> by lazy {
+  val meals: Flow<List<Meal>> by lazy {
     mealDao.getAll().map { mealEntities ->
-      mealEntities.map { mealFactory.from(it) }
+      mealEntities.map(mealFactory::from)
     }
   }
 
-  override suspend fun add(meal: Meal) = withContext(Dispatchers.IO) {
+  suspend fun add(meal: Meal): Unit = withContext(Dispatchers.IO) {
     val entity = mealEntityFactory.from(meal)
 
     mealDao.insert(entity)
   }
 
-  override suspend fun add(mealList: List<Meal>) {
+  suspend fun add(mealList: List<Meal>): Unit = withContext(Dispatchers.IO) {
     val entities = mealList.map { mealEntityFactory.from(it) }
 
     mealDao.insert(entities)
   }
 
-  override suspend fun update(meal: Meal) {
-    withContext(Dispatchers.IO) {
-      mealEntityFactory.from(meal)
-        .also { mealDao.update(it) }
-    }
+  suspend fun update(meal: Meal): Unit = withContext(Dispatchers.IO) {
+    val entity = mealEntityFactory.from(meal)
+
+    mealDao.update(entity)
   }
 
-  override suspend fun delete(meal: Meal) = withContext(Dispatchers.IO) {
+  suspend fun delete(meal: Meal): Unit = withContext(Dispatchers.IO) {
     mealDao.delete(mealDao.get(meal.id.value))
   }
 }
