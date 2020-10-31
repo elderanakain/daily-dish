@@ -1,45 +1,44 @@
 package io.krugosvet.dailydish.android.service
 
-import android.Manifest.permission.CAMERA
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-import android.app.Activity
-import android.app.AlertDialog
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import androidx.annotation.StringRes
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
+import androidx.core.content.ContextCompat.checkSelfPermission
 import com.mlsdev.rximagepicker.RxImagePicker
 import com.mlsdev.rximagepicker.Sources
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.extension.sealedObjects
-import io.krugosvet.dailydish.android.architecture.view.GenericBaseActivity
 import io.krugosvet.dailydish.android.service.ImagePickerService.DialogSource.Action
 import io.krugosvet.dailydish.android.service.ImagePickerService.DialogSource.Action.Remove
 import io.krugosvet.dailydish.android.service.ImagePickerService.DialogSource.Action.Update
-import io.krugosvet.dailydish.android.service.ImagePickerService.DialogSource.Source
-import io.krugosvet.dailydish.core.service.ResourceService
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.channels.sendBlocking
+import io.krugosvet.dailydish.android.service.permission.Permission
+import io.krugosvet.dailydish.android.ui.container.view.ContainerActivity
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.rx2.asFlow
-import java.util.concurrent.CancellationException
 
 class ImagePickerService(
-  private val activity: GenericBaseActivity,
-  private val resources: ResourceService
+  private val activity: ContainerActivity,
+  private val dialogService: DialogService
 ) {
 
-  sealed class DialogSource(@StringRes val text: Int) {
+  data class Source(
+    val permission: Permission,
+    val pickerSource: Sources,
+    override val text: Int
+  ):
+    IDialogSource
 
-    sealed class Source(text: Int) : DialogSource(text) {
-      object Camera : Source(R.string.take_a_picture)
-      object Gallery : Source(R.string.pick_from_gallery)
-    }
+  interface IDialogSource {
+    val text: Int
+  }
+
+  sealed class DialogSource(@StringRes override val text: Int):
+    IDialogSource{
 
     sealed class Action(text: Int) : DialogSource(text) {
       object Update : Action(R.string.update_picture)
@@ -47,13 +46,18 @@ class ImagePickerService(
     }
   }
 
+  private val imageSources = listOf(
+    Source(Permission.Camera, Sources.CAMERA, R.string.take_a_picture),
+    Source(Permission.Gallery, Sources.GALLERY, R.string.pick_from_gallery)
+  )
+
   fun showImagePicker(isImageEmpty: Boolean): Flow<Uri> = when {
     isImageEmpty -> openImageProviderPicker()
     else -> openActionDialog()
   }
 
   private fun openActionDialog(): Flow<Uri> =
-    showDialog(Action::class.sealedObjects.toTypedArray())
+    dialogService.showImagePickerDialog(Action::class.sealedObjects.toList())
       .flatMapConcat { source ->
         when (source) {
           Update -> openImageProviderPicker()
@@ -61,68 +65,30 @@ class ImagePickerService(
         }
       }
 
-  private fun getImageFromCamera(): Flow<Uri> =
-    checkPermission(Permission.Camera)
-      .flatMapLatest {
-        RxImagePicker.with(activity)
-          .requestImage(Sources.CAMERA)
-          .asFlow()
-      }
-
-  private fun getImageFromGallery(): Flow<Uri> =
-    checkPermission(Permission.Gallery)
-      .flatMapLatest {
-        RxImagePicker.with(activity)
-          .requestImage(Sources.GALLERY)
-          .asFlow()
-      }
-
-  private fun checkPermission(permission: Permission): Flow<Int> =
-    activity.permissionsObservable
-      .drop(if (permission.assertGranted(activity)) 0 else 1)
-
   private fun openImageProviderPicker(): Flow<Uri> =
-    showDialog(Source::class.sealedObjects.toTypedArray())
+    dialogService.showImagePickerDialog(imageSources)
       .flatMapConcat { source ->
-        when (source) {
-          Source.Camera -> getImageFromCamera()
-          Source.Gallery -> getImageFromGallery()
-        }
+        assertGranted(source.permission)
+          .filter { isGranted -> isGranted }
+          .map { source }
+      }
+      .flatMapConcat {
+        RxImagePicker.with(activity)
+          .requestImage(it.pickerSource)
+          .asFlow()
       }
 
-  private fun <T : DialogSource> showDialog(source: Array<T>): Flow<T> =
-    callbackFlow {
-      val dialog = AlertDialog.Builder(activity)
-        .setItems(source.map { resources.getString(it.text) }.toTypedArray()) { dialog, which ->
-          sendBlocking(source[which])
-          dialog.dismiss()
-        }
-        .setNegativeButton(resources.getString(R.string.dialog_cancel_button)) { dialog, _ ->
-          cancel(CancellationException("Dialog is closed"))
-          dialog.dismiss()
-        }
-        .create()
-
-      dialog.show()
-
-      awaitClose { dialog.dismiss() }
+  private fun assertGranted(permission: Permission): Flow<Boolean> =
+    when {
+      checkSelfPermission(activity, permission.id) == PERMISSION_GRANTED -> flowOf(true)
+      shouldShowRequestPermissionRationale(activity, permission.id) -> {
+        dialogService.showPermissionExplanationDialog(permission)
+        flowOf(false)
+      }
+      else -> {
+        activity.requestPermission(permission)
+        activity.permissionsObservable
+      }
     }
 
-}
-
-private sealed class Permission(val id: String, val requestCode: Int) {
-
-  object Camera : Permission(CAMERA, 2)
-
-  object Gallery : Permission(WRITE_EXTERNAL_STORAGE, 3)
-
-  fun assertGranted(activity: Activity): Boolean {
-    if (activity.checkSelfPermission(id) != PERMISSION_GRANTED) {
-      activity.requestPermissions(arrayOf(id), requestCode)
-
-      return false
-    }
-
-    return true
-  }
 }
