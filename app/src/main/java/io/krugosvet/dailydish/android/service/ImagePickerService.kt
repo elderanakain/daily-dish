@@ -1,12 +1,12 @@
 package io.krugosvet.dailydish.android.service
 
 import android.Manifest.permission.CAMERA
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.app.Activity
 import android.app.AlertDialog
-import android.content.pm.PackageManager
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import androidx.annotation.StringRes
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.mlsdev.rximagepicker.RxImagePicker
 import com.mlsdev.rximagepicker.Sources
 import io.krugosvet.dailydish.android.R
@@ -29,8 +29,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.rx2.asFlow
 import java.util.concurrent.CancellationException
 
-private const val REQUEST_PERMISSION_CAMERA = 2
-
 class ImagePickerService(
   private val activity: GenericBaseActivity,
   private val resources: ResourceService
@@ -49,10 +47,6 @@ class ImagePickerService(
     }
   }
 
-  private val isCameraPermissionGranted: Boolean
-    get() = ContextCompat.checkSelfPermission(activity, CAMERA) ==
-      PackageManager.PERMISSION_GRANTED
-
   fun showImagePicker(isImageEmpty: Boolean): Flow<Uri> = when {
     isImageEmpty -> openImageProviderPicker()
     else -> openActionDialog()
@@ -68,31 +62,31 @@ class ImagePickerService(
       }
 
   private fun getImageFromCamera(): Flow<Uri> =
-    activity.permissionsObservable
-      .drop(when {
-        isCameraPermissionGranted -> 0
-        else -> {
-          requestCameraPermission(); 1
-        }
-      })
+    checkPermission(Permission.Camera)
       .flatMapLatest {
         RxImagePicker.with(activity)
           .requestImage(Sources.CAMERA)
           .asFlow()
       }
 
-  private fun requestCameraPermission() {
-    ActivityCompat.requestPermissions(activity, arrayOf(CAMERA), REQUEST_PERMISSION_CAMERA)
-  }
+  private fun getImageFromGallery(): Flow<Uri> =
+    checkPermission(Permission.Gallery)
+      .flatMapLatest {
+        RxImagePicker.with(activity)
+          .requestImage(Sources.GALLERY)
+          .asFlow()
+      }
+
+  private fun checkPermission(permission: Permission): Flow<Int> =
+    activity.permissionsObservable
+      .drop(if (permission.assertGranted(activity)) 0 else 1)
 
   private fun openImageProviderPicker(): Flow<Uri> =
     showDialog(Source::class.sealedObjects.toTypedArray())
       .flatMapConcat { source ->
         when (source) {
           Source.Camera -> getImageFromCamera()
-          Source.Gallery -> RxImagePicker.with(activity)
-            .requestImage(Sources.GALLERY)
-            .asFlow()
+          Source.Gallery -> getImageFromGallery()
         }
       }
 
@@ -114,4 +108,21 @@ class ImagePickerService(
       awaitClose { dialog.dismiss() }
     }
 
+}
+
+private sealed class Permission(val id: String, val requestCode: Int) {
+
+  object Camera : Permission(CAMERA, 2)
+
+  object Gallery : Permission(WRITE_EXTERNAL_STORAGE, 3)
+
+  fun assertGranted(activity: Activity): Boolean {
+    if (activity.checkSelfPermission(id) != PERMISSION_GRANTED) {
+      activity.requestPermissions(arrayOf(id), requestCode)
+
+      return false
+    }
+
+    return true
+  }
 }
