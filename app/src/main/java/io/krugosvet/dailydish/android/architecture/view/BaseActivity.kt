@@ -1,5 +1,6 @@
 package io.krugosvet.dailydish.android.architecture.view
 
+import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.NavController
@@ -9,6 +10,7 @@ import io.krugosvet.dailydish.android.architecture.aspect.DisposableAspect
 import io.krugosvet.dailydish.android.architecture.aspect.IBindingContainer
 import io.krugosvet.dailydish.android.architecture.aspect.IStorageAspect
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
+import io.krugosvet.dailydish.android.service.permission.Permission
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,20 +22,20 @@ abstract class BaseActivity<TBinding : ViewDataBinding, TViewModel : ViewModel<*
   IBindingContainer<TBinding, TViewModel>,
   IStorageAspect<Disposable> by DisposableAspect() {
 
-  val permissionsObservable: StateFlow<Int> by lazy { _permissionChangeSignal }
+  val permissionsObservable: StateFlow<Boolean> by lazy { _permissionChangeSignal }
 
   abstract override val viewModel: TViewModel
 
   protected val navController: NavController by lazy { findNavController(R.id.hostFragment) }
 
-  private val _permissionChangeSignal = MutableStateFlow(-1)
+  private val _permissionChangeSignal = MutableStateFlow(false)
 
-  override fun onRequestPermissionsResult(
-    requestCode: Int, permissions: Array<out String>, grantResults: IntArray
-  ) {
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+  private val permissionRequester = registerForActivityResult(RequestPermission()) { isGranted ->
+    _permissionChangeSignal.value = isGranted
+  }
 
-    _permissionChangeSignal.value = requestCode
+  fun requestPermission(permission: Permission) {
+    permissionRequester.launch(permission.id)
   }
 
   override fun onDestroy() {

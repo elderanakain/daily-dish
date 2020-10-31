@@ -9,9 +9,7 @@
         android:label="@string/what_to_cook_today" >
         <action
             android:id="@+id/action_mealListFragment_to_dialogAddMeal"
-            app:destination="@id/dialogAddMeal"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/dialogAddMeal"/>
     </fragment>
     <fragment
         android:id="@+id/dialogAddMeal"

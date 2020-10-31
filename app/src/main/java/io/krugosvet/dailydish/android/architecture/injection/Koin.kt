@@ -1,9 +1,10 @@
 package io.krugosvet.dailydish.android.architecture.injection
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.SavedStateHandle
 import androidx.preference.PreferenceManager
-import io.krugosvet.dailydish.android.architecture.view.GenericBaseActivity
+import io.krugosvet.dailydish.android.service.DialogService
 import io.krugosvet.dailydish.android.service.ImagePickerService
 import io.krugosvet.dailydish.android.service.KeyboardService
 import io.krugosvet.dailydish.android.service.PreferenceService
@@ -21,7 +22,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 import kotlin.properties.ReadOnlyProperty
-import kotlin.reflect.KProperty
 
 @ExperimentalCoroutinesApi
 @FlowPreview
@@ -38,6 +38,10 @@ val module = module {
 
     scoped {
       KeyboardService(get())
+    }
+
+    scoped {
+      DialogService(get(), get())
     }
   }
 
@@ -69,16 +73,14 @@ val module = module {
   }
 }
 
-inline fun <reified T : Any> GenericBaseActivity.activityInject() =
+inline fun <reified T : Any> AppCompatActivity.activityInject() =
   lifecycleScope.inject<T> {
     parametersOf(this)
   }
 
 inline fun <reified T : Any> Fragment.activityInject() =
-  object : ReadOnlyProperty<Any, T> {
-
-    override fun getValue(thisRef: Any, property: KProperty<*>): T =
-      with(requireActivity()) {
-        lifecycleScope.get { parametersOf(this) }
-      }
+  ReadOnlyProperty<Any, T> { _, _ ->
+    with(requireActivity()) {
+      lifecycleScope.get { parametersOf(this) }
+    }
   }
