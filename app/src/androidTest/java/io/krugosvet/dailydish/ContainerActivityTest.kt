@@ -50,7 +50,6 @@ class ContainerActivityTest {
 
     onView(withText(R.string.take_a_picture))
       .check(matches(isDisplayed()))
-      .perform(click())
   }
 
   @Test
@@ -68,6 +67,5 @@ class ContainerActivityTest {
 
     onView(withText(R.string.pick_from_gallery))
       .check(matches(isDisplayed()))
-      .perform(click())
   }
 }
