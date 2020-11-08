@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
 import io.krugosvet.dailydish.android.BR
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.aspect.BindingComponent
@@ -14,6 +15,7 @@ import io.krugosvet.dailydish.android.repository.meal.MealImage
 import io.krugosvet.dailydish.android.service.ImagePickerService
 import io.krugosvet.dailydish.android.ui.mealList.viewmodel.MealListViewModel
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
@@ -52,6 +54,13 @@ class MealListFragment :
         is MealListViewModel.Event.ShowImagePicker -> showImagePicker(event)
       }
     })
+
+    adapter.loadStateFlow
+      .map { it.refresh }
+      .onEach { state ->
+        viewModel.onPagingStateChange(state)
+      }
+      .launchIn(lifecycleScope)
   }
 
   private fun showImagePicker(event: MealListViewModel.Event.ShowImagePicker) {

@@ -18,6 +18,7 @@ import java.time.temporal.ChronoUnit.MILLIS
 import kotlin.random.Random
 
 private const val FIVE_YEARS = 157784760000L
+private const val RANDOM_DATE_SEED = 42
 
 class SampleDataPopulator(
   private val mealFactory: MealFactory,
@@ -26,7 +27,7 @@ class SampleDataPopulator(
   RoomDatabase.Callback(),
   KoinComponent {
 
-  private val random = Random(42)
+  private val random = Random(RANDOM_DATE_SEED)
 
   private val randomDate: String
     get() = LocalDateTime.now().minus(random.nextLong(FIVE_YEARS), MILLIS).format(ISO_DATE)

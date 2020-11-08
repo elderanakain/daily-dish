@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
@@ -42,6 +43,15 @@ class MealListViewModel(
     viewModelScope.launch {
       mealRepository.update(meal.copy(image = image))
     }
+  }
+
+  fun onPagingStateChange(state: LoadState) {
+    val newState = when (state) {
+      is LoadState.NotLoading, is LoadState.Error -> State.Inert
+      LoadState.Loading -> State.Loading
+    }
+
+    setState(newState)
   }
 
   private fun onDelete(meal: Meal): OnClick = {
