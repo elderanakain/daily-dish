@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
 import io.krugosvet.dailydish.android.architecture.extension.OnClick
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotificationService
@@ -29,16 +32,10 @@ class MealListViewModel(
     class ShowImagePicker(val meal: Meal) : Event()
   }
 
-  val mealList: LiveData<List<MealVisual>> =
-    mealRepository.meals
-      .map { meals ->
-        meals.sortedBy { it.lastCookingDate }
-      }
-      .map { meals ->
-        meals.map {
-          mealVisualFactory.from(it, onDelete(it), onImageClick(it), onCookTodayClick(it))
-        }
-      }
+  val mealList: LiveData<PagingData<MealVisual>> =
+    mealRepository.mealsPaged
+      .map { paging -> paging.map(::mapToVisual) }
+      .cachedIn(viewModelScope)
       .asLiveData()
 
   fun changeImage(meal: Meal, image: MealImage) {
@@ -66,4 +63,7 @@ class MealListViewModel(
       mealRepository.update(meal.copy(lastCookingDate = dateService.currentDate.time))
     }
   }
+
+  private fun mapToVisual(it: Meal): MealVisual =
+    mealVisualFactory.from(it, onDelete(it), onImageClick(it), onCookTodayClick(it))
 }

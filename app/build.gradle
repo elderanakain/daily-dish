@@ -120,6 +120,10 @@ dependencies {
 
     implementation "androidx.work:work-runtime-ktx:$work_manager"
 
+    // Jetpack Pagination
+
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+
     // Testing
 
     testImplementation "org.hamcrest:hamcrest-all:1.3"

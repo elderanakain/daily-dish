@@ -44,7 +44,7 @@ class MealListFragment :
     }
 
     viewModel.mealList.observe(viewLifecycleOwner, { mealList ->
-      adapter.submitList(mealList)
+      adapter.submitData(lifecycle, mealList)
     })
 
     viewModel.navigationEvent.observe(viewLifecycleOwner, { event ->

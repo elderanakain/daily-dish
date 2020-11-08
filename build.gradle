@@ -6,6 +6,7 @@ buildscript {
         lifecycle_version = "2.2.0"
         coroutines_version = "1.4.0"
         work_manager = "2.4.0"
+        paging_version = "3.0.0-alpha08"
     }
     repositories {
         google()

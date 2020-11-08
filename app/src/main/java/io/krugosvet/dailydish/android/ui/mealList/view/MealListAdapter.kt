@@ -2,26 +2,20 @@ package io.krugosvet.dailydish.android.ui.mealList.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.krugosvet.dailydish.android.databinding.ListMealBinding
 
 class MealListAdapter :
-  ListAdapter<MealVisual, MealListAdapter.MealViewHolder>(MealDiffUtilCallback) {
-
-  init {
-    setHasStableIds(true)
-  }
+  PagingDataAdapter<MealVisual, MealListAdapter.MealViewHolder>(MealDiffUtilCallback) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     MealViewHolder.from(parent)
 
   override fun onBindViewHolder(holder: MealViewHolder, position: Int) {
-    holder.bind(getItem(position))
+    holder.bind(getItem(position)?: return)
   }
-
-  override fun getItemId(position: Int) = getItem(position).id.value
 
   class MealViewHolder private constructor(private val binding: ListMealBinding) :
     RecyclerView.ViewHolder(binding.root) {

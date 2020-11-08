@@ -1,5 +1,6 @@
 package io.krugosvet.dailydish.android.repository.db.meal
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -28,4 +29,7 @@ interface MealDao {
 
   @Query(value = "select * from meal_list_table")
   fun getAll(): Flow<List<MealEntity>>
+
+  @Query(value = "select * from meal_list_table order by last_cooking_date")
+  fun getAllPaged(): PagingSource<Int, MealEntity>
 }
