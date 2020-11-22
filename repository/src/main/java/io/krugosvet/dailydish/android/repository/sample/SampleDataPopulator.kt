@@ -4,7 +4,6 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import io.krugosvet.dailydish.android.repository.R
 import io.krugosvet.dailydish.android.repository.meal.MealFactory
-import io.krugosvet.dailydish.android.repository.meal.MealImage
 import io.krugosvet.dailydish.android.repository.meal.MealRepository
 import io.krugosvet.dailydish.core.service.ResourceService
 import kotlinx.coroutines.Dispatchers
@@ -38,91 +37,91 @@ class SampleDataPopulator(
         title = resourceService.getString(R.string.sample_caesar_title),
         description = resourceService.getString(R.string.sample_caesar_description),
         date = randomDate,
-        mainImage = MealImage(resourceService.createUri(R.drawable.sample_caesar_salad_image))
+        mainImage = resourceService.createUri(R.drawable.sample_caesar_salad_image)
       ),
       mealFactory.create(
         title = resourceService.getString(R.string.sample_mushroom_soup_title),
         description = resourceService.getString(R.string.sample_mushroom_soup_description),
         date = randomDate,
-        mainImage = MealImage(resourceService.createUri(R.drawable.sample_mushroom_soup_image))
+        mainImage = resourceService.createUri(R.drawable.sample_mushroom_soup_image)
       ),
       mealFactory.create(
         title = resourceService.getString(R.string.sample_caramel_rolls_title),
         description = resourceService.getString(R.string.sample_caramel_rolls_description),
         date = randomDate,
-        mainImage = MealImage(resourceService.createUri(R.drawable.sample_caramel_rolls_image))
+        mainImage = resourceService.createUri(R.drawable.sample_caramel_rolls_image)
       ),
       mealFactory.create(
         title = resourceService.getString(R.string.sample_grilled_pizza_title),
         description = resourceService.getString(R.string.sample_grilled_pizza_description),
         date = randomDate,
-        mainImage = MealImage(resourceService.createUri(R.drawable.sample_grilled_pizza_image))
+        mainImage = resourceService.createUri(R.drawable.sample_grilled_pizza_image)
       ),
       mealFactory.create(
         title = resourceService.getString(R.string.sample_burrito_title),
         description = resourceService.getString(R.string.sample_burrito_description),
         date = randomDate,
-        mainImage = MealImage(resourceService.createUri(R.drawable.sample_grilled_pizza_image))
+        mainImage = resourceService.createUri(R.drawable.sample_grilled_pizza_image)
       ),
       mealFactory.create(
         title = resourceService.getString(R.string.sample_cheesecake_title),
         description = resourceService.getString(R.string.sample_cheesecake_description),
         date = randomDate,
-        mainImage = MealImage(resourceService.createUri(R.drawable.sample_cheesecake_image))
+        mainImage = resourceService.createUri(R.drawable.sample_cheesecake_image)
       ),
       mealFactory.create(
         title = resourceService.getString(R.string.sample_chili_title),
         description = resourceService.getString(R.string.sample_cheesecake_description),
         date = randomDate,
-        mainImage = MealImage(resourceService.createUri(R.drawable.sample_chili_image))
+        mainImage = resourceService.createUri(R.drawable.sample_chili_image)
       ),
       mealFactory.create(
         title = resourceService.getString(R.string.sample_french_dip_title),
         description = resourceService.getString(R.string.sample_french_dip_description),
         date = randomDate,
-        mainImage = MealImage(resourceService.createUri(R.drawable.sample_french_dip_image))
+        mainImage = resourceService.createUri(R.drawable.sample_french_dip_image)
       ),
       mealFactory.create(
         title = resourceService.getString(R.string.sample_loin_roast_title),
         description = resourceService.getString(R.string.sample_loin_roast_description),
         date = randomDate,
-        mainImage = MealImage(resourceService.createUri(R.drawable.sample_loin_roast_image))
+        mainImage = resourceService.createUri(R.drawable.sample_loin_roast_image)
       ),
       mealFactory.create(
         title = resourceService.getString(R.string.sample_meatloaf_title),
         description = resourceService.getString(R.string.sample_meatloaf_description),
         date = randomDate,
-        mainImage = MealImage(resourceService.createUri(R.drawable.sample_meatloaf_image))
+        mainImage = resourceService.createUri(R.drawable.sample_meatloaf_image)
       ),
       mealFactory.create(
         title = resourceService.getString(R.string.sample_pork_chop_title),
         description = resourceService.getString(R.string.sample_pork_chop_description),
         date = randomDate,
-        mainImage = MealImage(resourceService.createUri(R.drawable.sample_pork_chop_image))
+        mainImage = resourceService.createUri(R.drawable.sample_pork_chop_image)
       ),
       mealFactory.create(
         title = resourceService.getString(R.string.sample_ramen_title),
         description = resourceService.getString(R.string.sample_ramen_description),
         date = randomDate,
-        mainImage = MealImage(resourceService.createUri(R.drawable.sample_ramen_image))
+        mainImage = resourceService.createUri(R.drawable.sample_ramen_image)
       ),
       mealFactory.create(
         title = resourceService.getString(R.string.sample_shrimp_skillet_title),
         description = resourceService.getString(R.string.sample_shrimp_skillet_description),
         date = randomDate,
-        mainImage = MealImage(resourceService.createUri(R.drawable.sample_shrimp_skillet_image))
+        mainImage = resourceService.createUri(R.drawable.sample_shrimp_skillet_image)
       ),
       mealFactory.create(
         title = resourceService.getString(R.string.sample_tacos_title),
         description = resourceService.getString(R.string.sample_tacos_description),
         date = randomDate,
-        mainImage = MealImage(resourceService.createUri(R.drawable.sample_tacos_image))
+        mainImage = resourceService.createUri(R.drawable.sample_tacos_image)
       ),
       mealFactory.create(
         title = resourceService.getString(R.string.sample_teriyaki_title),
         description = resourceService.getString(R.string.sample_teriyaki_description),
         date = randomDate,
-        mainImage = MealImage(resourceService.createUri(R.drawable.sample_teriyaki_image))
+        mainImage = resourceService.createUri(R.drawable.sample_teriyaki_image)
       ),
     )
   }

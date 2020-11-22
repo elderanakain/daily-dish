@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
-            android:onClick="@{viewModel::onOpenAddMealScreen}"
+            android:onClick="@{() -> viewModel.onOpenAddMealScreen()}"
             android:src="@drawable/ic_add_white_24dp"
             app:fabSize="normal"
             />

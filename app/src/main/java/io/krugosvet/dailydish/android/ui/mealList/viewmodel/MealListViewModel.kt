@@ -1,5 +1,6 @@
 package io.krugosvet.dailydish.android.ui.mealList.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.asLiveData
@@ -12,20 +13,21 @@ import io.krugosvet.dailydish.android.architecture.extension.OnClick
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotificationService
 import io.krugosvet.dailydish.android.repository.meal.Meal
-import io.krugosvet.dailydish.android.repository.meal.MealImage
 import io.krugosvet.dailydish.android.repository.meal.MealRepository
 import io.krugosvet.dailydish.android.ui.mealList.view.MealVisual
 import io.krugosvet.dailydish.android.ui.mealList.view.MealVisualFactory
-import io.krugosvet.dailydish.core.service.DateService
+import io.krugosvet.dailydish.android.usecase.DeleteMealUseCase
+import io.krugosvet.dailydish.android.usecase.UpdateMealUseCase
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class MealListViewModel(
   savedStateHandle: SavedStateHandle,
+  mealRepository: MealRepository,
   private val mealVisualFactory: MealVisualFactory,
-  private val mealRepository: MealRepository,
-  private val dateService: DateService,
-  private val reminderNotificationService: ReminderNotificationService
+  private val reminderNotificationService: ReminderNotificationService,
+  private val deleteMealUseCase: DeleteMealUseCase,
+  private val updateMealUseCase: UpdateMealUseCase,
 ) :
   ViewModel<MealListViewModel.Event>(savedStateHandle) {
 
@@ -39,9 +41,9 @@ class MealListViewModel(
       .cachedIn(viewModelScope)
       .asLiveData()
 
-  fun changeImage(meal: Meal, image: MealImage) {
+  fun changeImage(meal: Meal, imageUri: Uri) {
     viewModelScope.launch {
-      mealRepository.update(meal.copy(image = image))
+      updateMealUseCase.execute(meal.copy(image = imageUri))
     }
   }
 
@@ -56,21 +58,19 @@ class MealListViewModel(
 
   private fun onDelete(meal: Meal): OnClick = {
     viewModelScope.launch {
-      mealRepository.delete(meal)
+      deleteMealUseCase.execute(meal)
     }
   }
 
   private fun onImageClick(meal: Meal): OnClick = {
-    viewModelScope.launch {
-      navigate(Event.ShowImagePicker(meal))
-    }
+    navigate(Event.ShowImagePicker(meal))
   }
 
   private fun onCookTodayClick(meal: Meal): OnClick = {
     reminderNotificationService.closeReminder()
 
     viewModelScope.launch {
-      mealRepository.update(meal.copy(lastCookingDate = dateService.currentDate.time))
+      updateMealUseCase.execute(meal)
     }
   }
 

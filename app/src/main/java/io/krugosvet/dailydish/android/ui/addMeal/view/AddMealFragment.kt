@@ -5,19 +5,17 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.DatePicker
-import androidx.lifecycle.Observer
-import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
 import io.krugosvet.dailydish.android.BR
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.aspect.BindingComponent
-import io.krugosvet.dailydish.android.architecture.extension.isEmpty
 import io.krugosvet.dailydish.android.architecture.injection.activityInject
 import io.krugosvet.dailydish.android.architecture.view.BaseFragment
 import io.krugosvet.dailydish.android.databinding.DialogAddMealBinding
-import io.krugosvet.dailydish.android.repository.meal.MealImage
 import io.krugosvet.dailydish.android.service.ImagePickerService
 import io.krugosvet.dailydish.android.service.KeyboardService
 import io.krugosvet.dailydish.android.ui.addMeal.viewmodel.AddMealViewModel
+import io.krugosvet.dailydish.android.ui.addMeal.viewmodel.AddMealViewModel.Event
 import io.krugosvet.dailydish.core.service.DateService
 import io.krugosvet.dailydish.core.service.day
 import io.krugosvet.dailydish.core.service.month
@@ -47,55 +45,36 @@ class AddMealFragment :
 
     keyboardService.showKeyboard(binding.title.editText!!)
 
-    viewModel.navigationEvent
-      .observe(viewLifecycleOwner, Observer {
-        when (it) {
-          AddMealViewModel.Event.Close -> close()
-          AddMealViewModel.Event.ShowImagePicker -> showImagePicker()
-          AddMealViewModel.Event.ShowDatePicker -> showDatePicker()
-        }
-      })
+    viewModel.navigationEvent.observe {
+      when (val event = it) {
+        is Event.Close -> close()
+        is Event.ShowImagePicker -> showImagePicker(event)
+        is Event.ShowDatePicker -> showDatePicker()
+      }
+    }
 
-    viewModel.isTitleValid
-      .observe(viewLifecycleOwner, Observer { isValid ->
-        binding.title.apply {
-          if (!isValid) {
-            error = getString(R.string.dialog_add_meal_empty_form_error, tag)
-          } else {
-            isErrorEnabled = false
-          }
-        }
-      })
-
-    viewModel.isDescriptionValid
-      .observe(viewLifecycleOwner, Observer { isValid ->
-        binding.description.apply {
-          if (!isValid) {
-            error = getString(R.string.dialog_add_meal_empty_form_error, tag)
-          } else {
-            isErrorEnabled = false
-          }
-        }
-      })
+    with(dateService.currentDate) {
+      onDateSet(null, year, month, day)
+    }
   }
 
   override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-    viewModel.date.value = dateService.format(year, month + 1, dayOfMonth)
+    val newDate = dateService.format(year, month + 1, dayOfMonth)
+
+    viewModel.onDateChange(newDate)
   }
 
-  private fun showImagePicker() {
-    imagePickerService.showImagePicker(isImageEmpty = viewModel.mainImage.value?.uri.isEmpty)
-      .onEach { image ->
-        viewModel.mainImage.postValue(MealImage(image))
-      }
-      .launchIn(viewLifecycleOwner.lifecycle.coroutineScope)
+  private fun showImagePicker(event: Event.ShowImagePicker) {
+    imagePickerService.showImagePicker(event.isImageEmpty)
+      .onEach { image -> viewModel.onImageChange(image) }
+      .launchIn(lifecycleScope)
   }
 
   private fun showDatePicker() {
-    val currentDate = dateService.currentDate
-
-    DatePickerDialog(requireContext(), this, currentDate.year, currentDate.month, currentDate.day)
-      .show()
+    with(dateService.currentDate) {
+      DatePickerDialog(requireContext(), this@AddMealFragment, year, month, day)
+        .show()
+    }
   }
 
   private fun close() {

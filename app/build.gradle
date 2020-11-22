@@ -24,6 +24,7 @@ android {
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
+        freeCompilerArgs = ["-Xallow-result-return-type"]
     }
 
     buildTypes {
@@ -44,6 +45,10 @@ android {
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+
+        main.res.srcDirs += [
+                'src/main/java/io/krugosvet/dailydish/android/ui/addMeal/view/res'
+        ]
     }
 
     buildFeatures {

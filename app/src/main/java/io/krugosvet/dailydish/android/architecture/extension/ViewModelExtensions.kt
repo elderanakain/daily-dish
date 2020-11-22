@@ -5,25 +5,15 @@ import androidx.annotation.Nullable
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import java.io.Serializable
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
-
-fun <T> ViewModel<*>.liveData(initialValue: T) =
-  object : ReadOnlyProperty<Any, NonNullMutableLiveData<T>> {
-
-    private val liveData = NonNullMutableLiveData(initialValue)
-
-    override fun getValue(thisRef: Any, property: KProperty<*>) = liveData
-  }
-
-fun <T> ViewModel<*>.stateLiveData(initialValue: T) =
-  object : ReadOnlyProperty<Any, MutableLiveData<T>> {
-
-    override fun getValue(thisRef: Any, property: KProperty<*>): MutableLiveData<T> =
-      this@stateLiveData.savedStateHandle.getLiveData(property.name, initialValue)
-  }
 
 open class NonNullMutableLiveData<T>(
   private val initialValue: T
@@ -43,7 +33,7 @@ class LiveEvent<T> : MutableLiveData<T>() {
       throw IllegalStateException("Already have one observer")
     }
 
-    super.observe(owner, Observer {
+    super.observe(owner, {
       if (isPending.compareAndSet(true, false)) {
         observer.onChanged(it)
       }
@@ -55,4 +45,35 @@ class LiveEvent<T> : MutableLiveData<T>() {
     isPending.set(true)
     super.setValue(t)
   }
+}
+
+@Suppress("unused")
+fun <T : Serializable> ViewModel<*>.savedStateFlow(initialValue: T): SavedStateFlow<T> =
+  SavedStateFlow(initialValue)
+
+class SavedStateFlow<T : Serializable>(
+  private val initialValue: T
+) :
+  ReadOnlyProperty<ViewModel<*>, MutableStateFlow<T>> {
+
+  private lateinit var _field: MutableStateFlow<T>
+
+  override fun getValue(thisRef: ViewModel<*>, property: KProperty<*>): MutableStateFlow<T> =
+    synchronized(this) {
+      _field = when {
+        ::_field.isInitialized -> _field
+        else -> thisRef.createStateFlow(property)
+      }
+
+      return@synchronized _field
+    }
+
+  private fun ViewModel<*>.createStateFlow(property: KProperty<*>) =
+    MutableStateFlow(savedStateHandle.get<T>(property.name) ?: initialValue)
+      .also { flow ->
+        flow
+          .onEach { newValue -> savedStateHandle[property.name] = newValue }
+          .launchIn(viewModelScope)
+      }
+
 }

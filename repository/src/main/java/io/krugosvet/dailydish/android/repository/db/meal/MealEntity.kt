@@ -24,7 +24,7 @@ class MealEntityFactory {
       id = meal.id.value,
       title = meal.title,
       description = meal.description,
-      imageUri = meal.image.uri.toString(),
+      imageUri = meal.image.toString(),
       lastCookingDate = meal.lastCookingDate.time
     )
 

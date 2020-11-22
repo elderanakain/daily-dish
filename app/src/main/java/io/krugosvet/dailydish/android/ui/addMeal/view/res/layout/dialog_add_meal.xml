@@ -20,6 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:tag="title"
+            app:errorEnabled="@{viewModel.visual.title.error != null}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -27,10 +28,12 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:afterTextChanged="@{(text) -> viewModel.onTitleChange(text.toString())}"
                 android:hint="@string/dialog_add_meal_name_field_hint"
                 android:inputType="text|textCapSentences"
                 android:lines="1"
-                android:text="@={viewModel.title}"
+                android:text="@{viewModel.visual.title.value}"
+                app:error="@{viewModel.visual.title.error}"
                 />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
@@ -39,6 +42,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:tag="description"
+            app:errorEnabled="@{viewModel.visual.title.error != null}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title"
@@ -46,10 +50,12 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:afterTextChanged="@{(text) -> viewModel.onDescriptionChange(text.toString())}"
                 android:hint="@string/dialog_add_meal_description_field_hint"
                 android:inputType="text|textCapSentences|textAutoCorrect|textMultiLine"
                 android:maxLines="5"
-                android:text="@={viewModel.description}"
+                android:text="@{viewModel.visual.description.value}"
+                app:error="@{viewModel.visual.description.error}"
                 />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
@@ -57,7 +63,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
-            app:errorEnabled="false"
+            app:errorEnabled="@{viewModel.visual.title.error != null}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/description"
@@ -70,8 +76,9 @@
                 android:hint="@string/dialog_add_meal_date_field_hint"
                 android:inputType="none"
                 android:minWidth="129dp"
-                android:onClick="@{viewModel::showDatePicker}"
-                android:text="@{viewModel.formattedDate}"
+                android:onClick="@{() -> viewModel.showDatePicker()}"
+                android:text="@{viewModel.visual.date.value}"
+                app:error="@{viewModel.visual.date.error}"
                 tools:text="November 2, 2018"
                 />
         </com.google.android.material.textfield.TextInputLayout>
@@ -85,8 +92,20 @@
             android:scaleType="centerInside"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/dateEditText"
-            app:srcUri="@{viewModel.mainImage.uri}"
+            app:srcUri="@{viewModel.visual.image.value}"
             tools:src="@drawable/meal_empty_image"
+            />
+        <TextView
+            android:id="@+id/imageError"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.visual.image.error}"
+            android:textAlignment="center"
+            android:textColor="@android:color/holo_red_dark"
+            app:layout_constraintEnd_toEndOf="@+id/addMealImage"
+            app:layout_constraintStart_toStartOf="@+id/addMealImage"
+            app:layout_constraintTop_toBottomOf="@+id/addMealImage"
+            tools:text="No image"
             />
         <Button
             android:id="@+id/addMealButton"
@@ -95,10 +114,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="28dp"
-            android:onClick="@{viewModel::onAddMeal}"
+            android:onClick="@{() -> viewModel.onAddMeal()}"
             android:text="@string/dialog_add_meal_button_add_text"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/addMealImage"
+            app:layout_constraintTop_toBottomOf="@id/imageError"
             />
         <Button
             android:id="@+id/cancel_button"
@@ -108,10 +127,10 @@
             android:layout_gravity="center"
             android:layout_marginTop="28dp"
             android:layout_marginEnd="8dp"
-            android:onClick="@{viewModel::onCancel}"
+            android:onClick="@{() -> viewModel.onCancel()}"
             android:text="@string/dialog_cancel_button"
             app:layout_constraintEnd_toStartOf="@id/addMealButton"
-            app:layout_constraintTop_toBottomOf="@id/addMealImage"
+            app:layout_constraintTop_toBottomOf="@id/imageError"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

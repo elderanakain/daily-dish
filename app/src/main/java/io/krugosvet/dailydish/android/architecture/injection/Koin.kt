@@ -9,6 +9,9 @@ import io.krugosvet.dailydish.android.service.ImagePickerService
 import io.krugosvet.dailydish.android.service.KeyboardService
 import io.krugosvet.dailydish.android.service.PreferenceService
 import io.krugosvet.dailydish.android.service.SnackbarService
+import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealFormValidator
+import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisualFactory
+import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisualValidator
 import io.krugosvet.dailydish.android.ui.addMeal.viewmodel.AddMealViewModel
 import io.krugosvet.dailydish.android.ui.container.view.ContainerActivity
 import io.krugosvet.dailydish.android.ui.container.viewmodel.ContainerViewModel
@@ -60,12 +63,24 @@ val module = module {
     MealListDecorator(get())
   }
 
-  viewModel { (savedState: SavedStateHandle) ->
-    AddMealViewModel(savedState, get(), get(), get())
+  factory {
+    AddMealVisualFactory(get(), get())
+  }
+
+  factory {
+    AddMealVisualValidator()
+  }
+
+  factory {
+    AddMealFormValidator()
   }
 
   viewModel { (savedState: SavedStateHandle) ->
-    MealListViewModel(savedState, get(), get(), get(), get())
+    AddMealViewModel(savedState, get(), get())
+  }
+
+  viewModel { (savedState: SavedStateHandle) ->
+    MealListViewModel(savedState, get(), get(), get(), get(), get())
   }
 
   viewModel { (savedState: SavedStateHandle) ->

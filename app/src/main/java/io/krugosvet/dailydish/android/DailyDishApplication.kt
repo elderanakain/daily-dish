@@ -8,6 +8,7 @@ import io.krugosvet.dailydish.android.reminder.injection.reminderModule
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotification
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotificationReceiver
 import io.krugosvet.dailydish.android.repository.injection.repositoryModule
+import io.krugosvet.dailydish.android.usecase.injection.useCaseModule
 import io.krugosvet.dailydish.core.injection.coreModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -36,7 +37,8 @@ class DailyDishApplication :
         module,
         repositoryModule,
         coreModule,
-        reminderModule
+        reminderModule,
+        useCaseModule,
       )
     }
 

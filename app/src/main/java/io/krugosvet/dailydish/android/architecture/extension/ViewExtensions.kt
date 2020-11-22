@@ -2,6 +2,7 @@ package io.krugosvet.dailydish.android.architecture.extension
 
 import android.net.Uri
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
@@ -9,15 +10,6 @@ import com.bumptech.glide.request.RequestOptions
 import io.krugosvet.dailydish.android.R
 
 typealias OnClick = () -> Unit
-
-@BindingAdapter("android:onClick")
-fun View.setOnClickListener(listener: (() -> Unit)?) {
-  listener ?: return
-
-  setOnClickListener {
-    listener.invoke()
-  }
-}
 
 @BindingAdapter("android:visibility")
 fun View.setVisibility(isVisible: Boolean) {
@@ -39,4 +31,11 @@ private val emptyMainImage by lazy {
   RequestOptions()
     .placeholder(R.drawable.meal_empty_image)
     .centerCrop()
+}
+
+@BindingAdapter("error")
+fun EditText.setError(error: Int?) {
+  val errorText = if (error == null) null else resources.getString(error)
+
+  setError(errorText)
 }

@@ -5,7 +5,7 @@
     <string name="dialog_add_meal_button_add_text">Add</string>
     <string name="dialog_add_meal_empty_title_error">Please, enter a title</string>
     <string name="dialog_add_meal_empty_description_error">Please, enter a description</string>
-    <string name="dialog_add_meal_empty_form_error">Please, enter a %s</string>
+    <string name="incorrect_value">Incorrect value</string>
     <string name="meal_card_delete_button">Delete</string>
     <string name="meal_card_cooked_button">Cooked today</string>
     <string name="add_meal_dialog_title">Add a new meal</string>
@@ -44,4 +44,7 @@
 
     <string name="permission_explanation_camera">We need to access your camera to be able to make photos of your cooked meals.</string>
     <string name="permission_explanation_gallery">We need to access your gallery to let you pick photos of your cooked meals.</string>
+
+    <!--suppress CheckTagEmptyBody -->
+    <string name="empty"></string>
 </resources>

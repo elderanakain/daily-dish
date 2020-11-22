@@ -16,9 +16,9 @@ abstract class ViewModel<TNavigation : NavigationEvent>(
 
   sealed class State {
 
-    object Loading: State()
+    object Loading : State()
 
-    object Inert: State()
+    object Inert : State()
   }
 
   val navigationEvent: LiveData<TNavigation> by lazy { _navigationEvent }
@@ -30,6 +30,6 @@ abstract class ViewModel<TNavigation : NavigationEvent>(
   private val _state = MutableLiveData<State>()
 
   protected fun navigate(event: TNavigation) = _navigationEvent.postValue(event)
-  
+
   protected fun setState(state: State) = _state.postValue(state)
 }

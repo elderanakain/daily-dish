@@ -2,49 +2,43 @@ package io.krugosvet.dailydish.android.ui.addMeal.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.map
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import io.krugosvet.dailydish.android.architecture.extension.liveData
-import io.krugosvet.dailydish.android.architecture.extension.stateLiveData
+import io.krugosvet.dailydish.android.architecture.extension.savedStateFlow
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
-import io.krugosvet.dailydish.android.repository.meal.MealFactory
 import io.krugosvet.dailydish.android.repository.meal.MealImage
-import io.krugosvet.dailydish.android.repository.meal.MealRepository
+import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealForm
+import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisual
+import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisualFactory
 import io.krugosvet.dailydish.android.ui.addMeal.viewmodel.AddMealViewModel.Event
-import io.krugosvet.dailydish.core.service.DateService
+import io.krugosvet.dailydish.android.usecase.AddMealUseCase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class AddMealViewModel(
   savedStateHandle: SavedStateHandle,
-  private val mealRepository: MealRepository,
-  private val dateService: DateService,
-  private val mealFactory: MealFactory
+  private val visualFactory: AddMealVisualFactory,
+  private val addMealUseCase: AddMealUseCase,
 ) :
   ViewModel<Event>(savedStateHandle) {
 
-  val title by stateLiveData("")
-  val isTitleValid by liveData(false)
-
-  val description by stateLiveData("")
-  val isDescriptionValid by liveData(false)
-
-  val date by stateLiveData("")
-
-  val formattedDate: LiveData<String> =
-    date.map {
-      dateService.getLongFormattedDate(it)
-    }
-
-  val mainImage by stateLiveData(MealImage())
-
-  sealed class Event : NavigationEvent() {
-    object Close : Event()
-    object ShowImagePicker : Event()
-    object ShowDatePicker : Event()
+  val visual: LiveData<AddMealVisual> by lazy {
+    form
+      .combine(shouldValidate) { visual, shouldValidate ->
+        visualFactory.from(visual, shouldValidate)
+      }
+      .asLiveData()
   }
 
+  private val form by savedStateFlow(AddMealForm())
+
+  private val shouldValidate = MutableStateFlow(false)
+
   fun showImagePicker() {
-    navigate(Event.ShowImagePicker)
+    val event = Event.ShowImagePicker(form.value.image.isEmpty())
+
+    navigate(event)
   }
 
   fun showDatePicker() {
@@ -52,16 +46,14 @@ class AddMealViewModel(
   }
 
   fun onAddMeal() {
-    if (!validate()) {
-      return
-    }
-
     viewModelScope.launch {
-      mealRepository.add(
-        mealFactory.create(title.value!!, description.value!!, date.value!!, mainImage.value!!)
-      )
-
-      navigate(Event.Close)
+      addMealUseCase.execute(form.value)
+        .onSuccess {
+          navigate(Event.Close)
+        }
+        .onFailure {
+          shouldValidate.value = true
+        }
     }
   }
 
@@ -69,13 +61,30 @@ class AddMealViewModel(
     navigate(Event.Close)
   }
 
-  private fun validate(): Boolean {
-    val titleValidation = title.value!!.isNotEmpty()
-    val descriptionValidation = description.value!!.isNotEmpty()
+  fun onTitleChange(title: String) {
+    form.value = form.value.copy(title = title)
+  }
 
-    isTitleValid.value = titleValidation
-    isDescriptionValid.value = descriptionValidation
+  fun onDescriptionChange(description: String) {
+    form.value = form.value.copy(description = description)
+  }
 
-    return titleValidation && descriptionValidation
+  fun onDateChange(date: String) {
+    form.value = form.value.copy(date = date)
+  }
+
+  fun onImageChange(image: MealImage) {
+    form.value = form.value.copy(image = image.toString())
+  }
+
+  sealed class Event : NavigationEvent() {
+    object Close : Event()
+
+    data class ShowImagePicker(
+      val isImageEmpty: Boolean
+    ) :
+      Event()
+
+    object ShowDatePicker : Event()
   }
 }

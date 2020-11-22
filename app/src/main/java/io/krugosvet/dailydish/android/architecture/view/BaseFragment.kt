@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import io.krugosvet.dailydish.android.architecture.aspect.DisposableAspect
@@ -45,5 +46,11 @@ abstract class BaseFragment<TBinding : ViewDataBinding, TViewModel : ViewModel<*
     super.onDestroy()
 
     clear()
+  }
+
+  protected inline fun <T> LiveData<T>.observe(crossinline block: (value: T) -> Unit) {
+    observe(viewLifecycleOwner) {
+      block(it)
+    }
   }
 }

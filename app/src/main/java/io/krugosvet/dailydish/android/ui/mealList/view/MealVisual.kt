@@ -35,7 +35,7 @@ class MealVisualFactory(
       id = meal.id,
       title = meal.title,
       description = meal.description,
-      image = meal.image.uri,
+      image = meal.image,
       lastDateOfCooking = resourceService.getString(
         R.string.cooked_on, dateService.getLongFormattedDate(meal.lastCookingDate)
       ),
