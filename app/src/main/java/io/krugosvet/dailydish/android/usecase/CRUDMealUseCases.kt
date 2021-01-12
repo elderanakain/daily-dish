@@ -23,7 +23,7 @@ class AddMealUseCase(
 
     val meal = factory.from(input)
 
-    return runCatching { repository.add(meal) }
+    return runCatching { repository.add(meal, input.image) }
   }
 }
 
@@ -32,22 +32,44 @@ class DeleteMealUseCase(
 ) :
   IUseCase<Meal, Unit> {
 
-  override suspend fun execute(input: Meal): Result<Unit> =
-    runCatching {
-      repository.delete(input)
-    }
+  override suspend fun execute(input: Meal): Result<Unit> = runCatching {
+    repository.delete(input)
+  }
 
 }
 
-class UpdateMealUseCase(
+class ChangeMealImageUseCase(
+  private val repository: MealRepository,
+) :
+  IUseCase<ChangeMealImageUseCase.Input, Unit> {
+
+  class Input(
+    val meal: Meal,
+    val image: ByteArray?,
+  )
+
+  override suspend fun execute(input: Input): Result<Unit> = runCatching {
+    val meal = when (input.image) {
+      null -> input.meal.copy(image = null)
+      else -> input.meal
+    }
+
+    repository.update(meal, input.image)
+  }
+
+}
+
+class SetCurrentTimeToCookedDateMealUseCase(
   private val repository: MealRepository,
   private val dateService: DateService,
 ) :
   IUseCase<Meal, Unit> {
 
-  override suspend fun execute(input: Meal): Result<Unit> =
-    runCatching {
-      repository.update(input.copy(lastCookingDate = dateService.currentDate.time))
-    }
+  override suspend fun execute(input: Meal): Result<Unit> = runCatching {
+    val currentDate = dateService.currentDateFormatted
+    val updatedMeal = input.copy(lastCookingDate = currentDate)
+
+    repository.update(updatedMeal, null)
+  }
 
 }

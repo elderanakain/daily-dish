@@ -4,5 +4,5 @@ import java.util.*
 
 class IdGenerator {
 
-  fun generate(): Long = UUID.randomUUID().hashCode().toLong()
+  fun generate(): String = UUID.randomUUID().toString()
 }

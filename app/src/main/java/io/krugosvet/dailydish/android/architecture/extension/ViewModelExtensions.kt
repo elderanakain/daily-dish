@@ -15,14 +15,6 @@ import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-open class NonNullMutableLiveData<T>(
-  private val initialValue: T
-) :
-  MutableLiveData<T>() {
-
-  override fun getValue() = super.getValue() ?: initialValue
-}
-
 class LiveEvent<T> : MutableLiveData<T>() {
 
   private val isPending: AtomicBoolean = AtomicBoolean(false)

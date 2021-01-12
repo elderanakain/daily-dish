@@ -2,19 +2,20 @@ package io.krugosvet.dailydish.android.service
 
 import android.app.AlertDialog
 import io.krugosvet.dailydish.android.R
-import io.krugosvet.dailydish.android.architecture.view.GenericBaseActivity
 import io.krugosvet.dailydish.android.service.permission.Permission
+import io.krugosvet.dailydish.android.ui.container.view.ContainerActivity
 import io.krugosvet.dailydish.core.service.ResourceService
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.channels.sendBlocking
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import java.util.concurrent.CancellationException
+import kotlin.coroutines.resume
 
 class DialogService(
-  private val activity: GenericBaseActivity,
+  private val activity: ContainerActivity,
   private val resources: ResourceService,
+  private val mainDispatcher: CoroutineDispatcher = Dispatchers.Main,
 ) {
 
   fun showPermissionExplanationDialog(permission: Permission) {
@@ -26,21 +27,25 @@ class DialogService(
       .show()
   }
 
-  fun <T : ImagePickerService.IDialogSource> showImagePickerDialog(source: List<T>): Flow<T> =
-    callbackFlow {
-      val dialog = AlertDialog.Builder(activity)
-        .setItems(source.map { resources.getString(it.text) }.toTypedArray()) { dialog, which ->
-          sendBlocking(source[which])
+  suspend fun <T : ImagePickerService.IDialogSource> showImagePickerDialog(source: List<T>): T =
+    withContext(mainDispatcher) {
+      suspendCancellableCoroutine {
+        val dialog = AlertDialog.Builder(activity)
+          .setItems(source.map { resources.getString(it.text) }.toTypedArray()) { dialog, which ->
+            it.resume(source[which])
+            dialog.dismiss()
+          }
+          .setNegativeButton(resources.getString(R.string.dialog_cancel_button)) { dialog, _ ->
+            it.cancel(CancellationException("Dialog is closed"))
+            dialog.dismiss()
+          }
+          .create()
+
+        dialog.show()
+
+        it.invokeOnCancellation {
           dialog.dismiss()
         }
-        .setNegativeButton(resources.getString(R.string.dialog_cancel_button)) { dialog, _ ->
-          cancel(CancellationException("Dialog is closed"))
-          dialog.dismiss()
-        }
-        .create()
-
-      dialog.show()
-
-      awaitClose { dialog.dismiss() }
+      }
     }
 }

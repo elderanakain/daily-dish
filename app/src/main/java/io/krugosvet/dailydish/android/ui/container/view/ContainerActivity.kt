@@ -8,23 +8,19 @@ import io.krugosvet.dailydish.android.BR
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.aspect.BindingComponent
 import io.krugosvet.dailydish.android.architecture.extension.setVisibility
-import io.krugosvet.dailydish.android.architecture.injection.activityInject
 import io.krugosvet.dailydish.android.architecture.view.BaseActivity
 import io.krugosvet.dailydish.android.databinding.ActivityContainerBinding
-import io.krugosvet.dailydish.android.service.KeyboardService
 import io.krugosvet.dailydish.android.ui.container.viewmodel.ContainerViewModel
 import io.krugosvet.dailydish.android.ui.mealList.view.MealListFragmentDirections
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ContainerActivity :
   BaseActivity<ActivityContainerBinding, ContainerViewModel>() {
 
-  override val viewModel: ContainerViewModel by stateViewModel()
+  override val viewModel: ContainerViewModel by viewModel()
   override val bindingComponent = BindingComponent(R.layout.activity_container, this, BR.viewModel)
 
   override val parentContext: Context = this
-
-  private val keyboardService: KeyboardService by activityInject()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -44,8 +40,6 @@ class ContainerActivity :
 
     navController.addOnDestinationChangedListener { _, destination, _ ->
       binding.floatingButton.setVisibility(destination.id == R.id.mealListFragment)
-
-      keyboardService.hideKeyboard()
     }
   }
 

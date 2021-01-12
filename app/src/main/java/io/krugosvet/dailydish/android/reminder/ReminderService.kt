@@ -7,8 +7,6 @@ import androidx.work.WorkManager
 import io.krugosvet.dailydish.android.reminder.worker.ReminderWorker
 import io.krugosvet.dailydish.android.service.PreferenceService
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -16,8 +14,6 @@ import java.util.concurrent.TimeUnit
 
 private const val REMINDER_WORK_ID = "reminder_work_id"
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 class ReminderService(
   private val workManager: WorkManager,
   private val preferenceService: PreferenceService

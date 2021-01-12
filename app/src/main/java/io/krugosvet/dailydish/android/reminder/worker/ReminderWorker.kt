@@ -5,9 +5,10 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotificationService
 import io.krugosvet.dailydish.android.repository.meal.MealRepository
+import io.krugosvet.dailydish.core.service.DateService
 import kotlinx.coroutines.flow.first
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.*
 
 internal class ReminderWorker(
@@ -19,6 +20,7 @@ internal class ReminderWorker(
 
   private val mealRepository: MealRepository by inject()
   private val reminderNotificationService: ReminderNotificationService by inject()
+  private val dateString: DateService by inject()
 
   private val oneMonthAgo: Date
     get() = Calendar.getInstance()
@@ -30,7 +32,9 @@ internal class ReminderWorker(
     mealRepository.meals
       .first()
       .firstOrNull { meal ->
-        meal.lastCookingDate.before(oneMonthAgo)
+        with(dateString) {
+          meal.lastCookingDate.defaultFormatDate().before(oneMonthAgo)
+        }
       }
       ?.also { meal ->
         reminderNotificationService.sendReminderNotification(meal)

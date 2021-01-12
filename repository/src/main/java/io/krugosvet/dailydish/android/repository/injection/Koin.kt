@@ -5,7 +5,8 @@ import io.krugosvet.dailydish.android.repository.db.DatabaseService
 import io.krugosvet.dailydish.android.repository.db.meal.MealEntityFactory
 import io.krugosvet.dailydish.android.repository.meal.MealFactory
 import io.krugosvet.dailydish.android.repository.meal.MealRepository
-import io.krugosvet.dailydish.android.repository.sample.SampleDataPopulator
+import io.krugosvet.dailydish.android.repository.network.MealService
+import io.krugosvet.dailydish.android.repository.network.createHttpClient
 import org.koin.dsl.module
 
 val repositoryModule = module {
@@ -14,7 +15,6 @@ val repositoryModule = module {
     Room
       .databaseBuilder(get(), DatabaseService::class.java, "dd_database")
       .fallbackToDestructiveMigration()
-      .addCallback(SampleDataPopulator(get(), get()))
       .build()
   }
 
@@ -23,7 +23,15 @@ val repositoryModule = module {
   }
 
   single {
-    MealRepository(get(), get(), get())
+    MealRepository(get(), get(), get(), get())
+  }
+
+  single {
+    createHttpClient()
+  }
+
+  single {
+    MealService(get())
   }
 
   // Factories
@@ -33,6 +41,6 @@ val repositoryModule = module {
   }
 
   factory {
-    MealFactory(get(), get())
+    MealFactory()
   }
 }

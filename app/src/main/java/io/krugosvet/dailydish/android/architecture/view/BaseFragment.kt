@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import io.krugosvet.dailydish.android.architecture.aspect.DisposableAspect
@@ -17,6 +18,8 @@ import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel.State
 import io.krugosvet.dailydish.android.ui.container.view.ContainerActivity
 import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 abstract class BaseFragment<TBinding : ViewDataBinding, TViewModel : ViewModel<*>> :
   Fragment(),
@@ -51,6 +54,12 @@ abstract class BaseFragment<TBinding : ViewDataBinding, TViewModel : ViewModel<*
   protected inline fun <T> LiveData<T>.observe(crossinline block: (value: T) -> Unit) {
     observe(viewLifecycleOwner) {
       block(it)
+    }
+  }
+
+  protected inline fun launch(crossinline block: suspend CoroutineScope.() -> Unit) {
+    viewLifecycleOwner.lifecycleScope.launch {
+      block()
     }
   }
 }

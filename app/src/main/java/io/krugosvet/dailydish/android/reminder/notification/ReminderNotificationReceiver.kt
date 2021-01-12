@@ -15,15 +15,15 @@ class ReminderNotificationReceiver(
   BroadcastReceiver() {
 
   override fun onReceive(context: Context, intent: Intent) {
-    val mealId = intent.getLongExtra(ReminderNotification.CookedTodayAction.MEAL_ID_KEY, -1)
+    val mealId = intent.getStringExtra(ReminderNotification.CookedTodayAction.MEAL_ID_KEY)
 
     runBlocking {
       val updatedMeal = mealRepository.meals.first()
-        .firstOrNull { it.id.value == mealId }
-        ?.copy(lastCookingDate = Date())
+        .firstOrNull { it.id == mealId }
+        ?.copy(lastCookingDate = Date().toString())
         ?: return@runBlocking
 
-      mealRepository.update(updatedMeal)
+      mealRepository.update(updatedMeal, null)
     }
 
     reminderNotificationService.closeReminder()

@@ -6,7 +6,6 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import io.krugosvet.dailydish.android.architecture.extension.savedStateFlow
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
-import io.krugosvet.dailydish.android.repository.meal.MealImage
 import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealForm
 import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisual
 import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisualFactory
@@ -36,7 +35,7 @@ class AddMealViewModel(
   private val shouldValidate = MutableStateFlow(false)
 
   fun showImagePicker() {
-    val event = Event.ShowImagePicker(form.value.image.isEmpty())
+    val event = Event.ShowImagePicker(form.value.image == null)
 
     navigate(event)
   }
@@ -45,16 +44,14 @@ class AddMealViewModel(
     navigate(Event.ShowDatePicker)
   }
 
-  fun onAddMeal() {
-    viewModelScope.launch {
-      addMealUseCase.execute(form.value)
-        .onSuccess {
-          navigate(Event.Close)
-        }
-        .onFailure {
-          shouldValidate.value = true
-        }
-    }
+  fun onAddMeal() = viewModelScope.launch {
+    addMealUseCase.execute(form.value)
+      .onSuccess {
+        navigate(Event.Close)
+      }
+      .onFailure {
+        shouldValidate.value = true
+      }
   }
 
   fun onCancel() {
@@ -73,8 +70,8 @@ class AddMealViewModel(
     form.value = form.value.copy(date = date)
   }
 
-  fun onImageChange(image: MealImage) {
-    form.value = form.value.copy(image = image.toString())
+  fun onImageChange(image: ByteArray?) {
+    form.value = form.value.copy(image = image)
   }
 
   sealed class Event : NavigationEvent() {

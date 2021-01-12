@@ -14,10 +14,12 @@ class MealListAdapter :
     MealViewHolder.from(parent)
 
   override fun onBindViewHolder(holder: MealViewHolder, position: Int) {
-    holder.bind(getItem(position)?: return)
+    holder.bind(getItem(position) ?: return)
   }
 
-  class MealViewHolder private constructor(private val binding: ListMealBinding) :
+  class MealViewHolder private constructor(
+    val binding: ListMealBinding
+  ) :
     RecyclerView.ViewHolder(binding.root) {
 
     companion object {

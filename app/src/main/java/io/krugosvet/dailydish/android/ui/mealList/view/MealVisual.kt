@@ -4,12 +4,11 @@ import android.net.Uri
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.extension.OnClick
 import io.krugosvet.dailydish.android.repository.meal.Meal
-import io.krugosvet.dailydish.android.repository.meal.MealId
 import io.krugosvet.dailydish.core.service.DateService
 import io.krugosvet.dailydish.core.service.ResourceService
 
 data class MealVisual(
-  val id: MealId,
+  val id: String,
   val title: String,
   val description: String,
   val lastDateOfCooking: String,
@@ -35,11 +34,13 @@ class MealVisualFactory(
       id = meal.id,
       title = meal.title,
       description = meal.description,
-      image = meal.image,
+      image = if (meal.image == null) Uri.EMPTY else Uri.parse(meal.image),
       lastDateOfCooking = resourceService.getString(
         R.string.cooked_on, dateService.getLongFormattedDate(meal.lastCookingDate)
       ),
-      isCookTodayButtonEnabled = !dateService.isCurrentDate(meal.lastCookingDate),
+      isCookTodayButtonEnabled = with(dateService) {
+        !isCurrentDate(meal.lastCookingDate.defaultFormatDate())
+      },
       onDelete = onDelete,
       onImageClick = onImageClick,
       onCookTodayClick = onCookTodayClick

@@ -7,15 +7,21 @@ import androidx.paging.map
 import io.krugosvet.dailydish.android.repository.db.meal.MealDao
 import io.krugosvet.dailydish.android.repository.db.meal.MealEntity
 import io.krugosvet.dailydish.android.repository.db.meal.MealEntityFactory
+import io.krugosvet.dailydish.android.repository.network.MealService
+import io.krugosvet.dailydish.core.logError
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class MealRepository(
   private val mealDao: MealDao,
   private val mealFactory: MealFactory,
-  private val mealEntityFactory: MealEntityFactory
+  private val mealEntityFactory: MealEntityFactory,
+  private val mealService: MealService,
+  private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
   val meals: Flow<List<Meal>> by lazy {
@@ -28,32 +34,38 @@ class MealRepository(
     Pager(PagingConfig(PAGE_SIZE)) { mealDao.getAllPaged() }
       .flow
       .map(::mapToLogic)
+      .flowOn(ioDispatcher)
   }
 
-  suspend fun add(meal: Meal): Unit = withContext(Dispatchers.IO) {
-    val entity = mealEntityFactory.from(meal)
-
-    mealDao.insert(entity)
+  suspend fun add(meal: AddMeal, newImage: ByteArray?): Unit = withContext(Dispatchers.IO) {
+    runCatching { mealService.add(meal, newImage) }
+      .refreshData()
   }
 
-  suspend fun add(mealList: List<Meal>): Unit = withContext(Dispatchers.IO) {
-    val entities = mealList.map { mealEntityFactory.from(it) }
+  suspend fun update(meal: Meal, newImage: ByteArray?): Unit = withContext(Dispatchers.IO) {
+    runCatching { mealService.update(meal, newImage) }
+      .refreshData()
+  }
 
+  suspend fun delete(meal: Meal) {
+    runCatching { mealService.delete(meal) }
+      .refreshData()
+  }
+
+  suspend fun fetch() = withContext(Dispatchers.IO) {
+    val entities = mealService.getAll()
+      .map { mealEntityFactory.from(it) }
+
+    mealDao.clear()
     mealDao.insert(entities)
-  }
-
-  suspend fun update(meal: Meal): Unit = withContext(Dispatchers.IO) {
-    val entity = mealEntityFactory.from(meal)
-
-    mealDao.update(entity)
-  }
-
-  suspend fun delete(meal: Meal): Unit = withContext(Dispatchers.IO) {
-    mealDao.delete(mealDao.get(meal.id.value))
   }
 
   private fun mapToLogic(it: PagingData<MealEntity>): PagingData<Meal> =
     it.map { entity -> mealFactory.from(entity) }
+
+  private suspend fun <T> Result<T>.refreshData() =
+    onSuccess { fetch() }
+      .logError()
 
   private companion object {
     const val PAGE_SIZE = 5

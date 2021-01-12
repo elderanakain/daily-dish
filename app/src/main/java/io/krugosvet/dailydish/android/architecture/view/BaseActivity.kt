@@ -1,6 +1,5 @@
 package io.krugosvet.dailydish.android.architecture.view
 
-import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.NavController
@@ -9,33 +8,29 @@ import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.aspect.DisposableAspect
 import io.krugosvet.dailydish.android.architecture.aspect.IBindingContainer
 import io.krugosvet.dailydish.android.architecture.aspect.IStorageAspect
+import io.krugosvet.dailydish.android.architecture.extension.RequestPermissionWithCallback
+import io.krugosvet.dailydish.android.architecture.extension.RequestPermissionWithCallback.Input
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
 import io.krugosvet.dailydish.android.service.permission.Permission
 import io.reactivex.disposables.Disposable
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-
-typealias GenericBaseActivity = BaseActivity<*, *>
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 abstract class BaseActivity<TBinding : ViewDataBinding, TViewModel : ViewModel<*>> :
   AppCompatActivity(),
   IBindingContainer<TBinding, TViewModel>,
   IStorageAspect<Disposable> by DisposableAspect() {
 
-  val permissionsObservable: StateFlow<Boolean> by lazy { _permissionChangeSignal }
-
   abstract override val viewModel: TViewModel
 
   protected val navController: NavController by lazy { findNavController(R.id.hostFragment) }
 
-  private val _permissionChangeSignal = MutableStateFlow(false)
+  private val permissionRequester = registerForActivityResult(RequestPermissionWithCallback()) {}
 
-  private val permissionRequester = registerForActivityResult(RequestPermission()) { isGranted ->
-    _permissionChangeSignal.value = isGranted
-  }
+  suspend fun requestPermission(permission: Permission): Boolean = suspendCancellableCoroutine {
+    val input = Input(permission) { isGranted -> it.resume(isGranted) }
 
-  fun requestPermission(permission: Permission) {
-    permissionRequester.launch(permission.id)
+    permissionRequester.launch(input)
   }
 
   override fun onDestroy() {

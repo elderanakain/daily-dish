@@ -12,21 +12,28 @@ class DateService {
   val currentDate: Calendar
     get() = Calendar.getInstance()
 
-  fun toDate(millis: Long) = Date(millis)
+  val currentDateFormatted: String
+    get() = currentDate.time.defaultFormatDate()
+
+  val currentDateLongFormatted: String
+    get() = getLongFormattedDate(currentDate.time)
+
+  private fun Date.defaultFormatDate(): String =
+    getSimpleDefaultDateFormat().format(this)
 
   fun getLongFormattedDate(date: Date): String =
     DateFormat.getDateInstance(DateFormat.LONG).format(date)
 
   fun getLongFormattedDate(date: String): String =
-    DateFormat.getDateInstance(DateFormat.LONG).format(defaultFormatDate(date))
+    DateFormat.getDateInstance(DateFormat.LONG).format(date.defaultFormatDate())
 
   /**
    * @param date takes string in "yyyy-MM-dd" format
    * @return parsed date
    */
-  fun defaultFormatDate(date: String): Date =
+  fun String.defaultFormatDate(): Date =
     try {
-      getSimpleDefaultDateFormat().parse(date)!!
+      getSimpleDefaultDateFormat().parse(this)!!
     } catch (e: ParseException) {
       currentDate.time
     }
@@ -61,7 +68,7 @@ val Calendar.year: Int
   get() = this.get(Calendar.YEAR)
 
 val Calendar.month: Int
-  get() =  this.get(Calendar.MONTH)
+  get() = this.get(Calendar.MONTH)
 
 val Calendar.day: Int
-  get() =  this.get(Calendar.DAY_OF_MONTH)
+  get() = this.get(Calendar.DAY_OF_MONTH)

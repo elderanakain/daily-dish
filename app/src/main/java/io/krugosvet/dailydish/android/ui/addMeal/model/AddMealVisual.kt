@@ -1,9 +1,7 @@
 package io.krugosvet.dailydish.android.ui.addMeal.model
 
-import android.net.Uri
 import androidx.annotation.StringRes
 import io.krugosvet.dailydish.android.R
-import io.krugosvet.dailydish.android.repository.meal.MealImage
 import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisual.Date
 import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisual.Description
 import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisual.Image
@@ -34,12 +32,34 @@ data class AddMealVisual(
     ErrorHolder
 
   data class Image(
-    val value: MealImage = Uri.EMPTY,
+    val value: ByteArray? = null,
 
     @StringRes
     override val error: Int = R.string.empty,
   ) :
-    ErrorHolder
+    ErrorHolder {
+
+    override fun equals(other: Any?): Boolean {
+      if (this === other) return true
+      if (javaClass != other?.javaClass) return false
+
+      other as Image
+
+      if (value != null) {
+        if (other.value == null) return false
+        if (!value.contentEquals(other.value)) return false
+      } else if (other.value != null) return false
+      if (error != other.error) return false
+
+      return true
+    }
+
+    override fun hashCode(): Int {
+      var result = value?.contentHashCode() ?: 0
+      result = 31 * result + error
+      return result
+    }
+  }
 
   data class Date(
     val value: String = "",
@@ -87,16 +107,18 @@ class AddMealVisualFactory(
           else -> null
         }
       ),
-      image = Image(
-        value = Uri.parse(form.image),
-        error = when {
-          !shouldValidate -> R.string.empty
-          !validator.isImageValid(form.image) -> R.string.incorrect_value
-          else -> R.string.empty
-        }
-      )
+      image = getImage(form, shouldValidate)
     )
 
+  private fun getImage(form: AddMealForm, shouldValidate: Boolean): Image =
+    Image(
+      value = form.image,
+      error = when {
+        !shouldValidate -> R.string.empty
+        !validator.isImageValid(form.image) -> R.string.incorrect_value
+        else -> R.string.empty
+      }
+    )
 }
 
 class AddMealVisualValidator {
@@ -110,6 +132,6 @@ class AddMealVisualValidator {
   fun isDateValid(date: String): Boolean =
     date.isNotBlank()
 
-  fun isImageValid(image: String): Boolean =
-    image.isNotBlank()
+  fun isImageValid(image: ByteArray?): Boolean =
+    image?.isNotEmpty() == true
 }

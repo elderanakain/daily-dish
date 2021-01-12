@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 30
@@ -21,4 +20,8 @@ dependencies {
     // Koin
 
     implementation "org.koin:koin-core:$koin_version"
+
+    // Logging
+
+    implementation "com.jakewharton.timber:timber:$timberVersion"
 }

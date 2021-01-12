@@ -1,8 +1,9 @@
 package io.krugosvet.dailydish.android.usecase.injection
 
 import io.krugosvet.dailydish.android.usecase.AddMealUseCase
+import io.krugosvet.dailydish.android.usecase.ChangeMealImageUseCase
 import io.krugosvet.dailydish.android.usecase.DeleteMealUseCase
-import io.krugosvet.dailydish.android.usecase.UpdateMealUseCase
+import io.krugosvet.dailydish.android.usecase.SetCurrentTimeToCookedDateMealUseCase
 import org.koin.dsl.module
 
 val useCaseModule = module {
@@ -16,6 +17,10 @@ val useCaseModule = module {
   }
 
   factory {
-    UpdateMealUseCase(get(), get())
+    ChangeMealImageUseCase(get())
+  }
+
+  factory {
+    SetCurrentTimeToCookedDateMealUseCase(get(), get())
   }
 }

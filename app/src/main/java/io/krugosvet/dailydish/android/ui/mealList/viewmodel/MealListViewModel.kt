@@ -1,6 +1,5 @@
 package io.krugosvet.dailydish.android.ui.mealList.viewmodel
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.asLiveData
@@ -16,8 +15,9 @@ import io.krugosvet.dailydish.android.repository.meal.Meal
 import io.krugosvet.dailydish.android.repository.meal.MealRepository
 import io.krugosvet.dailydish.android.ui.mealList.view.MealVisual
 import io.krugosvet.dailydish.android.ui.mealList.view.MealVisualFactory
+import io.krugosvet.dailydish.android.usecase.ChangeMealImageUseCase
 import io.krugosvet.dailydish.android.usecase.DeleteMealUseCase
-import io.krugosvet.dailydish.android.usecase.UpdateMealUseCase
+import io.krugosvet.dailydish.android.usecase.SetCurrentTimeToCookedDateMealUseCase
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -27,12 +27,16 @@ class MealListViewModel(
   private val mealVisualFactory: MealVisualFactory,
   private val reminderNotificationService: ReminderNotificationService,
   private val deleteMealUseCase: DeleteMealUseCase,
-  private val updateMealUseCase: UpdateMealUseCase,
+  private val changeMealImageUseCase: ChangeMealImageUseCase,
+  private val setCurrentTimeToCookedDateMealUseCase: SetCurrentTimeToCookedDateMealUseCase,
 ) :
   ViewModel<MealListViewModel.Event>(savedStateHandle) {
 
-  sealed class Event : NavigationEvent() {
-    class ShowImagePicker(val meal: Meal) : Event()
+  sealed class Event :
+    NavigationEvent() {
+
+    class ShowImagePicker(val meal: Meal) :
+      Event()
   }
 
   val mealList: LiveData<PagingData<MealVisual>> =
@@ -41,10 +45,16 @@ class MealListViewModel(
       .cachedIn(viewModelScope)
       .asLiveData()
 
-  fun changeImage(meal: Meal, imageUri: Uri) {
+  init {
     viewModelScope.launch {
-      updateMealUseCase.execute(meal.copy(image = imageUri))
+      mealRepository.fetch()
     }
+  }
+
+  fun changeImage(meal: Meal, image: ByteArray?) = viewModelScope.launch {
+    val input = ChangeMealImageUseCase.Input(meal, image)
+
+    changeMealImageUseCase.execute(input)
   }
 
   fun onPagingStateChange(state: LoadState) {
@@ -70,7 +80,7 @@ class MealListViewModel(
     reminderNotificationService.closeReminder()
 
     viewModelScope.launch {
-      updateMealUseCase.execute(meal)
+      setCurrentTimeToCookedDateMealUseCase.execute(meal)
     }
   }
 
