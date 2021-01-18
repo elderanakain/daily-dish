@@ -1,8 +1,10 @@
 package io.krugosvet.dailydish.android.service
 
 import android.content.SharedPreferences
+import android.content.res.Resources
 import io.krugosvet.dailydish.android.R
-import io.krugosvet.dailydish.core.service.ResourceService
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.Flow
@@ -13,9 +15,10 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
+@OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class PreferenceService(
   private val sharedPreferences: SharedPreferences,
-  resourceService: ResourceService
+  resources: Resources,
 ) {
 
   val isReminderEnabled: Flow<Boolean> by lazy {
@@ -36,5 +39,5 @@ class PreferenceService(
       awaitClose()
     }
 
-  private val reminderKey: String = resourceService.getString(R.string.preference_reminder_key)
+  private val reminderKey: String = resources.getString(R.string.preference_reminder_key)
 }

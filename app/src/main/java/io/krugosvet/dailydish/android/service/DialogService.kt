@@ -1,10 +1,10 @@
 package io.krugosvet.dailydish.android.service
 
 import android.app.AlertDialog
+import android.content.res.Resources
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.service.permission.Permission
 import io.krugosvet.dailydish.android.ui.container.view.ContainerActivity
-import io.krugosvet.dailydish.core.service.ResourceService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -14,7 +14,7 @@ import kotlin.coroutines.resume
 
 class DialogService(
   private val activity: ContainerActivity,
-  private val resources: ResourceService,
+  private val resources: Resources,
   private val mainDispatcher: CoroutineDispatcher = Dispatchers.Main,
 ) {
 

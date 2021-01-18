@@ -2,23 +2,25 @@ buildscript {
     ext {
         kotlin_version = '1.4.21'
         nav_version = '2.3.2'
-        koin_version = '2.2.1'
+        koin_version = '3.0.0-alpha-4'
         lifecycle_version = "2.2.0"
         coroutines_version = "1.4.0"
         work_manager = "2.4.0"
-        paging_version = "3.0.0-alpha11"
         ktorVersion = "1.5.0"
-        room_version = "2.3.0-alpha03"
+        room_version = "2.3.0-alpha04"
         timberVersion = '4.7.1'
     }
+
     repositories {
+        mavenLocal()
         google()
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
         maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
     }
+
     dependencies {
-        classpath('com.android.tools.build:gradle:4.1.1')
+        classpath('com.android.tools.build:gradle:4.1.2')
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
         classpath "org.koin:koin-gradle-plugin:$koin_version"
@@ -28,6 +30,7 @@ buildscript {
 plugins {
     id "io.gitlab.arturbosch.detekt" version "1.14.0"
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.10'
+    id 'maven'
 }
 
 dependencies {
@@ -46,14 +49,22 @@ detekt {
 
 allprojects {
     repositories {
+        mavenLocal()
         mavenCentral()
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         maven { url 'https://maven.fabric.io/public' }
+        maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
+        maven { url 'https://kotlin.bintray.com/kotlinx/' }
+        maven { url "https://dl.bintray.com/ekito/koin" }
         maven {
-            url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
+            url = "https://maven.pkg.github.com/elderanakain/daily-dish-common"
+            credentials {
+                username = System.getenv("GITHUB_PUBLISH_USERNAME")
+                password = System.getenv("GITHUB_PUBLISH_TOKEN")
+            }
         }
     }
 }

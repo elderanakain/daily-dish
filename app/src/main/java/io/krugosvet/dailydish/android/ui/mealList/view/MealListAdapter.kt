@@ -2,13 +2,14 @@ package io.krugosvet.dailydish.android.ui.mealList.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.krugosvet.dailydish.android.databinding.ListMealBinding
+import io.krugosvet.dailydish.android.ui.mealList.view.MealListAdapter.MealViewHolder
 
 class MealListAdapter :
-  PagingDataAdapter<MealVisual, MealListAdapter.MealViewHolder>(MealDiffUtilCallback) {
+  ListAdapter<MealVisual, MealViewHolder>(MealDiffUtilCallback) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     MealViewHolder.from(parent)

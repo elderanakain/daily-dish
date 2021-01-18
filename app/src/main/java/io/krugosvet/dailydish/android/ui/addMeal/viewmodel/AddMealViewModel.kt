@@ -6,14 +6,17 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import io.krugosvet.dailydish.android.architecture.extension.savedStateFlow
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
-import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealForm
 import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisual
 import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisualFactory
 import io.krugosvet.dailydish.android.ui.addMeal.viewmodel.AddMealViewModel.Event
-import io.krugosvet.dailydish.android.usecase.AddMealUseCase
+import io.krugosvet.dailydish.common.dto.AddMealForm
+import io.krugosvet.dailydish.common.dto.NewImage
+import io.krugosvet.dailydish.common.usecase.AddMealUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
+import timber.log.Timber
 
 class AddMealViewModel(
   savedStateHandle: SavedStateHandle,
@@ -45,11 +48,12 @@ class AddMealViewModel(
   }
 
   fun onAddMeal() = viewModelScope.launch {
-    addMealUseCase.execute(form.value)
+    runCatching { addMealUseCase.execute(form.value) }
       .onSuccess {
         navigate(Event.Close)
       }
       .onFailure {
+        Timber.e(it)
         shouldValidate.value = true
       }
   }
@@ -66,11 +70,11 @@ class AddMealViewModel(
     form.value = form.value.copy(description = description)
   }
 
-  fun onDateChange(date: String) {
+  fun onDateChange(date: LocalDate) {
     form.value = form.value.copy(date = date)
   }
 
-  fun onImageChange(image: ByteArray?) {
+  fun onImageChange(image: NewImage?) {
     form.value = form.value.copy(image = image)
   }
 

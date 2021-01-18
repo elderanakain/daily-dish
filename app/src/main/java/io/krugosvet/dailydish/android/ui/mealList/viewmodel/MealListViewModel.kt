@@ -4,20 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.paging.LoadState
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import androidx.paging.map
 import io.krugosvet.dailydish.android.architecture.extension.OnClick
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotificationService
-import io.krugosvet.dailydish.android.repository.meal.Meal
-import io.krugosvet.dailydish.android.repository.meal.MealRepository
 import io.krugosvet.dailydish.android.ui.mealList.view.MealVisual
 import io.krugosvet.dailydish.android.ui.mealList.view.MealVisualFactory
-import io.krugosvet.dailydish.android.usecase.ChangeMealImageUseCase
-import io.krugosvet.dailydish.android.usecase.DeleteMealUseCase
-import io.krugosvet.dailydish.android.usecase.SetCurrentTimeToCookedDateMealUseCase
+import io.krugosvet.dailydish.common.dto.Meal
+import io.krugosvet.dailydish.common.dto.NewImage
+import io.krugosvet.dailydish.common.repository.MealRepository
+import io.krugosvet.dailydish.common.usecase.ChangeMealImageUseCase
+import io.krugosvet.dailydish.common.usecase.DeleteMealUseCase
+import io.krugosvet.dailydish.common.usecase.SetCurrentTimeToCookedDateMealUseCase
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -39,10 +36,9 @@ class MealListViewModel(
       Event()
   }
 
-  val mealList: LiveData<PagingData<MealVisual>> =
-    mealRepository.mealsPaged
-      .map { paging -> paging.map(::mapToVisual) }
-      .cachedIn(viewModelScope)
+  val mealList: LiveData<List<MealVisual>> =
+    mealRepository.mealsFlow
+      .map { meals -> meals.map(::mapToVisual) }
       .asLiveData()
 
   init {
@@ -51,19 +47,10 @@ class MealListViewModel(
     }
   }
 
-  fun changeImage(meal: Meal, image: ByteArray?) = viewModelScope.launch {
+  fun changeImage(meal: Meal, image: NewImage?) = viewModelScope.launch {
     val input = ChangeMealImageUseCase.Input(meal, image)
 
     changeMealImageUseCase.execute(input)
-  }
-
-  fun onPagingStateChange(state: LoadState) {
-    val newState = when (state) {
-      is LoadState.NotLoading, is LoadState.Error -> State.Inert
-      LoadState.Loading -> State.Loading
-    }
-
-    setState(newState)
   }
 
   private fun onDelete(meal: Meal): OnClick = {

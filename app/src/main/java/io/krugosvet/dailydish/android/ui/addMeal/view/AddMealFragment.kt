@@ -15,21 +15,17 @@ import io.krugosvet.dailydish.android.databinding.DialogAddMealBinding
 import io.krugosvet.dailydish.android.service.ImagePickerService
 import io.krugosvet.dailydish.android.ui.addMeal.viewmodel.AddMealViewModel
 import io.krugosvet.dailydish.android.ui.addMeal.viewmodel.AddMealViewModel.Event
-import io.krugosvet.dailydish.core.service.DateService
-import io.krugosvet.dailydish.core.service.day
-import io.krugosvet.dailydish.core.service.month
-import io.krugosvet.dailydish.core.service.year
-import org.koin.android.ext.android.inject
+import io.krugosvet.dailydish.common.core.currentDate
+import kotlinx.datetime.LocalDate
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddMealFragment :
   BaseFragment<DialogAddMealBinding, AddMealViewModel>(),
   DatePickerDialog.OnDateSetListener {
 
-  override val viewModel: AddMealViewModel by viewModel()
+  override val viewModel: AddMealViewModel by stateViewModel()
   override val bindingComponent = BindingComponent(R.layout.dialog_add_meal, this, BR.viewModel)
-
-  private val dateService: DateService by inject()
 
   private val imagePickerService: ImagePickerService by activityInject()
 
@@ -39,21 +35,26 @@ class AddMealFragment :
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
+    binding.addMealButton.setOnClickListener {
+      activity?.hideKeyboard()
+      viewModel.onAddMeal()
+    }
+
     viewModel.navigationEvent.observe {
       when (val event = it) {
-        is Event.Close -> close()
+        is Event.Close -> navController.popBackStack()
         is Event.ShowImagePicker -> showImagePicker(event)
         is Event.ShowDatePicker -> showDatePicker()
       }
     }
 
-    with(dateService.currentDate) {
-      onDateSet(null, year, month, day)
+    with(currentDate) {
+      onDateSet(null, year, monthNumber, dayOfMonth)
     }
   }
 
   override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-    val newDate = dateService.format(year, month + 1, dayOfMonth)
+    val newDate = LocalDate(year, month, dayOfMonth)
 
     viewModel.onDateChange(newDate)
   }
@@ -65,14 +66,9 @@ class AddMealFragment :
   }
 
   private fun showDatePicker() {
-    with(dateService.currentDate) {
-      DatePickerDialog(requireContext(), this@AddMealFragment, year, month, day)
+    with(currentDate) {
+      DatePickerDialog(requireContext(), this@AddMealFragment, year, monthNumber, dayOfMonth)
         .show()
     }
-  }
-
-  private fun close() {
-    activity?.hideKeyboard()
-    navController.popBackStack()
   }
 }

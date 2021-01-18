@@ -1,6 +1,6 @@
 package io.krugosvet.dailydish.android.ui.injection
 
-import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealFormValidator
+import androidx.lifecycle.SavedStateHandle
 import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisualFactory
 import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisualValidator
 import io.krugosvet.dailydish.android.ui.addMeal.viewmodel.AddMealViewModel
@@ -14,7 +14,7 @@ import org.koin.dsl.module
 val uiModule = module {
 
   single {
-    MealVisualFactory(get(), get())
+    MealVisualFactory(get())
   }
 
   factory {
@@ -22,26 +22,22 @@ val uiModule = module {
   }
 
   factory {
-    AddMealVisualFactory(get(), get())
+    AddMealVisualFactory(get())
   }
 
   factory {
     AddMealVisualValidator()
   }
 
-  factory {
-    AddMealFormValidator()
+  viewModel { (savedStateHandle: SavedStateHandle) ->
+    AddMealViewModel(savedStateHandle, get(), get())
   }
 
-  viewModel {
-    AddMealViewModel(get(), get(), get())
+  viewModel { (savedStateHandle: SavedStateHandle) ->
+    MealListViewModel(savedStateHandle, get(), get(), get(), get(), get(), get())
   }
 
-  viewModel {
-    MealListViewModel(get(), get(), get(), get(), get(), get(), get())
-  }
-
-  viewModel {
-    ContainerViewModel(get())
+  viewModel { (savedStateHandle: SavedStateHandle) ->
+    ContainerViewModel(savedStateHandle)
   }
 }

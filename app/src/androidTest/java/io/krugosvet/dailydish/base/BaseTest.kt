@@ -28,7 +28,7 @@ import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
 import org.junit.Rule
-import org.koin.core.component.KoinComponent
+import org.koin.core.KoinComponent
 
 abstract class BaseTest :
   KoinComponent {

@@ -1,13 +1,13 @@
 package io.krugosvet.dailydish.android.ui.mealList.view
 
+import android.content.res.Resources
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import io.krugosvet.dailydish.android.R
-import io.krugosvet.dailydish.core.service.ResourceService
 
 class MealListDecorator(
-  private val resourceService: ResourceService
+  private val resources: Resources,
 ) :
   RecyclerView.ItemDecoration() {
 
@@ -24,9 +24,9 @@ class MealListDecorator(
 
     outRect.set(
       0,
-      resourceService.getDimension(R.dimen.meal_list_offset),
+      resources.getDimensionPixelSize(R.dimen.meal_list_offset),
       0,
-      if (isLast(position, parent)) resourceService.getDimension(R.dimen.meal_list_offset) else 0
+      if (isLast(position, parent)) resources.getDimensionPixelSize(R.dimen.meal_list_offset) else 0
     )
   }
 

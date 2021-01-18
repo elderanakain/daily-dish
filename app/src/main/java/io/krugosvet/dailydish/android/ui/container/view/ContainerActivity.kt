@@ -12,12 +12,12 @@ import io.krugosvet.dailydish.android.architecture.view.BaseActivity
 import io.krugosvet.dailydish.android.databinding.ActivityContainerBinding
 import io.krugosvet.dailydish.android.ui.container.viewmodel.ContainerViewModel
 import io.krugosvet.dailydish.android.ui.mealList.view.MealListFragmentDirections
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class ContainerActivity :
   BaseActivity<ActivityContainerBinding, ContainerViewModel>() {
 
-  override val viewModel: ContainerViewModel by viewModel()
+  override val viewModel: ContainerViewModel by stateViewModel()
   override val bindingComponent = BindingComponent(R.layout.activity_container, this, BR.viewModel)
 
   override val parentContext: Context = this

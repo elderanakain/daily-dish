@@ -5,12 +5,13 @@ import androidx.annotation.Nullable
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import java.io.Serializable
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
@@ -40,10 +41,12 @@ class LiveEvent<T> : MutableLiveData<T>() {
 }
 
 @Suppress("unused")
-fun <T : Serializable> ViewModel<*>.savedStateFlow(initialValue: T): SavedStateFlow<T> =
+fun <T> ViewModel<*>.savedStateFlow(initialValue: T): SavedStateFlow<T> =
   SavedStateFlow(initialValue)
 
-class SavedStateFlow<T : Serializable>(
+private val gson = Gson()
+
+class SavedStateFlow<T>(
   private val initialValue: T
 ) :
   ReadOnlyProperty<ViewModel<*>, MutableStateFlow<T>> {
@@ -61,11 +64,15 @@ class SavedStateFlow<T : Serializable>(
     }
 
   private fun ViewModel<*>.createStateFlow(property: KProperty<*>) =
-    MutableStateFlow(savedStateHandle.get<T>(property.name) ?: initialValue)
+    MutableStateFlow(savedStateHandle.get(property) ?: initialValue)
       .also { flow ->
         flow
-          .onEach { newValue -> savedStateHandle[property.name] = newValue }
+          .onEach { newValue ->
+            savedStateHandle[property.name] = Gson().toJson(newValue)
+          }
           .launchIn(viewModelScope)
       }
 
+  private fun SavedStateHandle.get(property: KProperty<*>): T =
+    gson.fromJson(get<String>(property.name), initialValue!!::class.java)
 }

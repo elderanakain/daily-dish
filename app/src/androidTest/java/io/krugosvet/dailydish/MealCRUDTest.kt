@@ -20,12 +20,12 @@ import androidx.test.rule.GrantPermissionRule
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.R.drawable
 import io.krugosvet.dailydish.base.BaseTest
-import io.krugosvet.dailydish.core.service.DateService
+import io.krugosvet.dailydish.common.core.currentDate
+import io.krugosvet.dailydish.common.core.toDisplayString
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.core.component.inject
 
 @RunWith(AndroidJUnit4::class)
 class MealCRUDTest :
@@ -34,8 +34,6 @@ class MealCRUDTest :
   @JvmField
   @Rule
   val permissions: GrantPermissionRule = GrantPermissionRule.grant(WRITE_EXTERNAL_STORAGE)
-
-  private val dateService: DateService by inject()
 
   @Test
   fun whenCreateUpdateDeleteMeal_thenActionsArePropagatedCorrectly() {
@@ -123,7 +121,7 @@ class MealCRUDTest :
       .perform(click())
 
     dateField
-      .check(matches(withText(dateService.currentDateLongFormatted)))
+      .check(matches(withText(currentDate.toDisplayString())))
   }
 
   private fun takePhoto() {

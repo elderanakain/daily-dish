@@ -15,6 +15,7 @@ import io.krugosvet.dailydish.android.service.ImagePickerService.DialogSource.Ac
 import io.krugosvet.dailydish.android.service.ImagePickerService.DialogSource.Action.Update
 import io.krugosvet.dailydish.android.service.permission.Permission
 import io.krugosvet.dailydish.android.ui.container.view.ContainerActivity
+import io.krugosvet.dailydish.common.dto.NewImage
 import kotlinx.coroutines.rx2.awaitFirst
 
 class ImagePickerService(
@@ -49,7 +50,7 @@ class ImagePickerService(
   private val dialogService: DialogService by activity.activityInject()
 
   @Suppress("BlockingMethodInNonBlockingContext")
-  suspend fun showImagePicker(isImageEmpty: Boolean): ByteArray? {
+  suspend fun showImagePicker(isImageEmpty: Boolean): NewImage? {
     val imageUri = when {
       isImageEmpty -> openImageProviderPicker()
       else -> openActionDialog()
@@ -57,7 +58,18 @@ class ImagePickerService(
 
     return when (imageUri) {
       Uri.EMPTY -> null
-      else -> activity.contentResolver.openInputStream(imageUri)?.readBytes()
+      else -> {
+        val content = activity.contentResolver
+        val imageStream = content.openInputStream(imageUri) ?: return null
+
+        val imageBytes = imageStream.use {
+          it.readBytes()
+        }
+
+        val extension = content.getType(imageUri) ?: ""
+
+        NewImage(imageBytes, extension)
+      }
     }
   }
 

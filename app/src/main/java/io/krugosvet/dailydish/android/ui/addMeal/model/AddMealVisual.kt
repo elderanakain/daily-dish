@@ -6,7 +6,10 @@ import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisual.Date
 import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisual.Description
 import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisual.Image
 import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisual.Title
-import io.krugosvet.dailydish.core.service.DateService
+import io.krugosvet.dailydish.common.core.toDisplayString
+import io.krugosvet.dailydish.common.dto.AddMealForm
+import io.krugosvet.dailydish.common.dto.NewImage
+import kotlinx.datetime.LocalDate
 
 data class AddMealVisual(
   val title: Title = Title(),
@@ -78,7 +81,6 @@ data class AddMealVisual(
 
 class AddMealVisualFactory(
   private val validator: AddMealVisualValidator,
-  private val dateService: DateService,
 ) {
 
   fun from(form: AddMealForm, shouldValidate: Boolean): AddMealVisual =
@@ -100,7 +102,7 @@ class AddMealVisualFactory(
         }
       ),
       date = Date(
-        value = dateService.getLongFormattedDate(form.date),
+        value = form.date.toDisplayString(),
         error = when {
           !shouldValidate -> null
           !validator.isDateValid(form.date) -> R.string.incorrect_value
@@ -112,7 +114,7 @@ class AddMealVisualFactory(
 
   private fun getImage(form: AddMealForm, shouldValidate: Boolean): Image =
     Image(
-      value = form.image,
+      value = form.image?.data,
       error = when {
         !shouldValidate -> R.string.empty
         !validator.isImageValid(form.image) -> R.string.incorrect_value
@@ -129,9 +131,9 @@ class AddMealVisualValidator {
   fun isDescriptionValid(description: String): Boolean =
     description.isNotBlank()
 
-  fun isDateValid(date: String): Boolean =
-    date.isNotBlank()
+  fun isDateValid(date: LocalDate?): Boolean =
+    date != null
 
-  fun isImageValid(image: ByteArray?): Boolean =
-    image?.isNotEmpty() == true
+  fun isImageValid(image: NewImage?): Boolean =
+    image != null
 }

@@ -4,12 +4,11 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotificationService
-import io.krugosvet.dailydish.android.repository.meal.MealRepository
-import io.krugosvet.dailydish.core.service.DateService
-import kotlinx.coroutines.flow.first
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import java.util.*
+import io.krugosvet.dailydish.common.core.currentDate
+import io.krugosvet.dailydish.common.repository.MealRepository
+import kotlinx.datetime.monthsUntil
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 internal class ReminderWorker(
   context: Context,
@@ -20,28 +19,16 @@ internal class ReminderWorker(
 
   private val mealRepository: MealRepository by inject()
   private val reminderNotificationService: ReminderNotificationService by inject()
-  private val dateString: DateService by inject()
 
-  private val oneMonthAgo: Date
-    get() = Calendar.getInstance()
-      .apply { add(Calendar.MONTH, -1) }
-      .time
-
-  override suspend fun doWork(): Result {
-
+  override suspend fun doWork(): Result =
     mealRepository.meals
-      .first()
       .firstOrNull { meal ->
-        with(dateString) {
-          meal.lastCookingDate.defaultFormatDate().before(oneMonthAgo)
-        }
+        meal.lastCookingDate.monthsUntil(currentDate) > 1
       }
-      ?.also { meal ->
+      ?.let { meal ->
         reminderNotificationService.sendReminderNotification(meal)
+        Result.success()
       }
-      ?: return Result.failure()
-
-    return Result.success()
-  }
+      ?: Result.failure()
 
 }
