@@ -55,3 +55,7 @@ listOf(
 }
 ```
 - Time to time `kotlin std-lib` becomes unavailable and break syntax highlighting in IDEA. Only build&gradle clear helps.
+
+## Tech info
+
+[Kotlin Multiplatform Libraries](https://github.com/AAkira/Kotlin-Multiplatform-Libraries)
