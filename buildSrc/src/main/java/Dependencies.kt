@@ -15,6 +15,8 @@ object Versions {
 }
 
 object Android {
+  const val gradlePlugin = "com.android.tools.build:gradle:7.0.0-alpha04"
+
   const val min = 28
   const val compile = 30
   const val target = compile
@@ -36,10 +38,14 @@ object Ktor {
 }
 
 object Serialization {
+  const val gradlePlugin = "org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}"
+
   const val core = "org.jetbrains.kotlinx:kotlinx-serialization-core:${Versions.kotlinxSerialization}"
 }
 
 object SqlDelight {
+  const val gradlePlugin = "com.squareup.sqldelight:gradle-plugin:${Versions.sqlDelight}"
+
   const val runtime = "com.squareup.sqldelight:runtime:${Versions.sqlDelight}"
   const val coroutineExtensions = "com.squareup.sqldelight:coroutines-extensions:${Versions.sqlDelight}"
 
@@ -67,8 +73,11 @@ object Koin {
   const val extended = "org.koin:koin-core-ext:${Versions.koin}"
 
   const val android = "org.koin:koin-android:${Versions.koin}"
-  const val androidScope = "org.koin:koin-androidx-scope:${Versions.koin}"
-  const val androidViewModel = "org.koin:koin-androidx-viewmodel:${Versions.koin}"
 
   const val ktor = "org.koin:koin-ktor:${Versions.koin}"
+}
+
+object Kotlin {
+
+  const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
 }

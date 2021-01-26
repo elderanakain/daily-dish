@@ -6,7 +6,7 @@ plugins {
   id("maven-publish")
 }
 
-version = "1.0.6"
+version = "1.0.8"
 group = "io.krugosvet.dailydish"
 
 android {
@@ -53,7 +53,7 @@ kotlin {
   explicitApiWarning()
 
   android {
-    publishLibraryVariants("release")
+    publishLibraryVariants("release", "debug")
     publishLibraryVariantsGroupedByFlavor = true
   }
   jvm()
