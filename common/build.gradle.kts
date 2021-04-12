@@ -25,28 +25,6 @@ android {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
   }
-
-//  buildTypes {
-//    release {
-//      isMinifyEnabled = false
-//      setMatchingFallbacks(listOf("release"))
-//    }
-//
-//    debug {
-//      isDebuggable = true
-//      setMatchingFallbacks(listOf("release"))
-//    }
-//  }
-
-//  // workaround for https://youtrack.jetbrains.com/issue/KT-43944
-//  configurations {
-//    create("androidTestApi")
-//    create("androidTestDebugApi")
-//    create("androidTestReleaseApi")
-//    create("testApi")
-//    create("testDebugApi")
-//    create("testReleaseApi")
-//  }
 }
 
 kotlin {
@@ -55,6 +33,14 @@ kotlin {
     publishLibraryVariantsGroupedByFlavor = true
   }
   jvm()
+
+  // Revert to just ios() when gradle plugin can properly resolve it
+  val onPhone = System.getenv("SDK_NAME")?.startsWith("iphoneos") ?: false
+  if (onPhone) {
+    iosArm64("ios")
+  } else {
+    iosX64("ios")
+  }
 
   explicitApiWarning()
 
@@ -75,32 +61,13 @@ kotlin {
 
         implementation(DateTime.common)
 
-        implementation(Logging.common)
-
         implementation(Koin.core)
-        implementation(Koin.extended)
       }
     }
     val commonTest by getting {
       dependencies {
         implementation(kotlin("test-junit"))
         implementation(Test.junit)
-      }
-    }
-
-    val androidMain by getting {
-      sourceSets.apply {
-        kotlin.setSrcDirs(listOf("src/androidMain/kotlin"))
-        resources.setSrcDirs(listOf("src/androidMain/resources"))
-      }
-
-      dependencies {
-        implementation(Ktor.clientAndroid)
-        api(Ktor.slf4j)
-
-        implementation(SqlDelight.androidDriver)
-        implementation(Coroutines.android)
-        implementation(Koin.android)
       }
     }
 
@@ -112,6 +79,39 @@ kotlin {
 
         implementation(SqlDelight.jdbcDriver)
         implementation(SqlDelight.connectionPooling)
+      }
+    }
+
+    // Mobile
+    val mobileMain by creating {
+      dependsOn(commonMain)
+    }
+
+    val iosMain by getting {
+      dependsOn(mobileMain)
+
+      dependencies {
+        implementation(Ktor.clientIOS)
+
+        implementation(SqlDelight.nativeDriver)
+      }
+    }
+
+    val androidMain by getting {
+      sourceSets.apply {
+        kotlin.setSrcDirs(listOf("src/androidMain/kotlin"))
+        resources.setSrcDirs(listOf("src/androidMain/resources"))
+      }
+
+      dependsOn(mobileMain)
+
+      dependencies {
+        implementation(Ktor.clientAndroid)
+        api(Ktor.slf4j)
+
+        implementation(SqlDelight.androidDriver)
+        implementation(Coroutines.android)
+        implementation(Koin.android)
       }
     }
   }
