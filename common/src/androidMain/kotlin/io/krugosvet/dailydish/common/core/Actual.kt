@@ -7,10 +7,3 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 internal actual val environment: Environment = Environment.valueOf(if (BuildConfig.DEBUG) "DEV" else "PROD")
-
-internal actual val platformModule: Module = module {
-
-  single<MealRepository> {
-    MealRepositoryImpl(get(), get(), get(), get())
-  }
-}

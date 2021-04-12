@@ -1,17 +1,15 @@
 object Versions {
-  const val kotlin = "1.4.21"
+  const val kotlin = "1.4.30"
   const val kotlinCoroutines = "1.4.2-native-mt"
   const val ktor = "1.5.0"
   const val kotlinxSerialization = "1.0.1"
-  const val sqlDelight = "1.4.3"
+  const val sqlDelight = "1.4.4"
   const val kotlinxDatetime = "0.1.1"
 
   const val sqliteJdbcDriver = "1.4.2"
   const val slf4j = "1.7.30"
 
-  const val kotlinLogging = "2.0.4"
-
-  const val koin = "3.0.0-alpha-4"
+  const val koin = "3.0.1-beta-2"
 }
 
 object Android {
@@ -35,6 +33,8 @@ object Ktor {
   const val clientAndroid = "io.ktor:ktor-client-android:${Versions.ktor}"
   const val clientApache = "io.ktor:ktor-client-apache:${Versions.ktor}"
   const val slf4j = "org.slf4j:slf4j-api:${Versions.slf4j}"
+
+  const val clientIOS = "io.ktor:ktor-client-ios:${Versions.ktor}"
 }
 
 object Serialization {
@@ -52,15 +52,13 @@ object SqlDelight {
   const val androidDriver = "com.squareup.sqldelight:android-driver:${Versions.sqlDelight}"
   const val jdbcDriver = "com.squareup.sqldelight:jdbc-driver:${Versions.sqliteJdbcDriver}"
 
+  const val nativeDriver = "com.squareup.sqldelight:native-driver:${Versions.sqlDelight}"
+
   const val connectionPooling = "com.zaxxer:HikariCP:3.4.5"
 }
 
 object DateTime {
   const val common = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.kotlinxDatetime}"
-}
-
-object Logging {
-  const val common = "io.github.microutils:kotlin-logging:${Versions.kotlinLogging}"
 }
 
 object Coroutines {
@@ -69,12 +67,10 @@ object Coroutines {
 }
 
 object Koin {
-  const val core = "org.koin:koin-core:${Versions.koin}"
-  const val extended = "org.koin:koin-core-ext:${Versions.koin}"
+  const val core = "io.insert-koin:koin-core:${Versions.koin}"
+  const val ktor = "io.insert-koin:koin-ktor:${Versions.koin}"
 
-  const val android = "org.koin:koin-android:${Versions.koin}"
-
-  const val ktor = "org.koin:koin-ktor:${Versions.koin}"
+  const val android = "io.insert-koin:koin-android:${Versions.koin}"
 }
 
 object Kotlin {
