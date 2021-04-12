@@ -26,37 +26,37 @@ android {
     targetCompatibility = JavaVersion.VERSION_1_8
   }
 
-  buildTypes {
-    release {
-      isMinifyEnabled = false
-      setMatchingFallbacks(listOf("release"))
-    }
+//  buildTypes {
+//    release {
+//      isMinifyEnabled = false
+//      setMatchingFallbacks(listOf("release"))
+//    }
+//
+//    debug {
+//      isDebuggable = true
+//      setMatchingFallbacks(listOf("release"))
+//    }
+//  }
 
-    debug {
-      isDebuggable = true
-      setMatchingFallbacks(listOf("release"))
-    }
-  }
-
-  // workaround for https://youtrack.jetbrains.com/issue/KT-43944
-  configurations {
-    create("androidTestApi")
-    create("androidTestDebugApi")
-    create("androidTestReleaseApi")
-    create("testApi")
-    create("testDebugApi")
-    create("testReleaseApi")
-  }
+//  // workaround for https://youtrack.jetbrains.com/issue/KT-43944
+//  configurations {
+//    create("androidTestApi")
+//    create("androidTestDebugApi")
+//    create("androidTestReleaseApi")
+//    create("testApi")
+//    create("testDebugApi")
+//    create("testReleaseApi")
+//  }
 }
 
 kotlin {
-  explicitApiWarning()
-
   android {
     publishLibraryVariants("release", "debug")
     publishLibraryVariantsGroupedByFlavor = true
   }
   jvm()
+
+  explicitApiWarning()
 
   sourceSets {
     val commonMain by getting {
@@ -89,6 +89,11 @@ kotlin {
     }
 
     val androidMain by getting {
+      sourceSets.apply {
+        kotlin.setSrcDirs(listOf("src/androidMain/kotlin"))
+        resources.setSrcDirs(listOf("src/androidMain/resources"))
+      }
+
       dependencies {
         implementation(Ktor.clientAndroid)
         api(Ktor.slf4j)
@@ -96,18 +101,6 @@ kotlin {
         implementation(SqlDelight.androidDriver)
         implementation(Coroutines.android)
         implementation(Koin.android)
-      }
-    }
-
-    listOf(
-      "androidAndroidTest", "androidAndroidTestDebug", "androidAndroidTestRelease", "androidDebug", "androidRelease",
-      "androidTest", "androidTestDebug", "androidTestRelease"
-    ).forEach {
-      sourceSets[it].apply {
-        dependsOn(androidMain)
-
-        kotlin.setSrcDirs(listOf("src/$it/kotlin"))
-        resources.setSrcDirs(listOf("src/$it/resources"))
       }
     }
 
