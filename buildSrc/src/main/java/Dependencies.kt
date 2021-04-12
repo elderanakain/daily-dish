@@ -15,7 +15,7 @@ object Versions {
 }
 
 object Android {
-  const val gradlePlugin = "com.android.tools.build:gradle:7.0.0-alpha04"
+  const val gradlePlugin = "com.android.tools.build:gradle:4.0.1"
 
   const val min = 28
   const val compile = 30
