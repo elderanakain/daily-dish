@@ -39,23 +39,10 @@ Overview of spaces:
 
 - Some libraries require to be redefined in common module consumers (e.g. datetime library); [ticket](https://youtrack.jetbrains.com/issue/KT-24309)
 - There is no convenient way to have jvm along with android targets; [ticket](https://youtrack.jetbrains.com/issue/KT-28194)
-- Naming clashes for android instrumentation tests directory; [ticket](https://youtrack.jetbrains.com/issue/KT-34650)
-
-  It is better to provide source directories explicitly.
-```groovy
-listOf(
-        "androidAndroidTest", "androidAndroidTestDebug", "androidAndroidTestRelease", "androidDebug", "androidRelease",
-        "androidTest", "androidTestDebug", "androidTestRelease"
-).forEach {
-  sourceSets[it].apply {
-    dependsOn(sourceSets["androidMain"])
-    kotlin.setSrcDirs(listOf("src/$it/kotlin"))
-    resources.setSrcDirs(listOf("src/$it/resources"))
-  }
-}
-```
 - Time to time `kotlin std-lib` becomes unavailable and break syntax highlighting in IDEA. Only build&gradle clear helps.
 
 ## Tech info
 
-[Kotlin Multiplatform Libraries](https://github.com/AAkira/Kotlin-Multiplatform-Libraries)
+Kotlin Multiplatform Libraries:
+- https://github.com/AAkira/Kotlin-Multiplatform-Libraries
+- https://moko.icerock.dev/
