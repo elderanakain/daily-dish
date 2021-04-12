@@ -1,6 +1,6 @@
 # DailyDish
 
-## Installation
+## Download
 
 1. Add maven plugin:
 ```groovy
@@ -28,6 +28,10 @@ implementation("io.krugosvet.dailydish:common-jvm:version")
 
 implementation("io.krugosvet.dailydish:common-android:version")
 ```
+
+## Usage
+
+1) Make sure that 1.8 JDK is used for Gradle JVM;
 
 ## Structure
 
