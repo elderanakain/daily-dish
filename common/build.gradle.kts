@@ -6,26 +6,8 @@ plugins {
   id("maven-publish")
 }
 
-version = "1.0.8"
+version = "1.0.9"
 group = "io.krugosvet.dailydish"
-
-android {
-  compileSdkVersion(Android.compile)
-  sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-  defaultConfig {
-    minSdkVersion(Android.min)
-    targetSdkVersion(Android.target)
-    versionCode = 1
-    versionName = project.version as String
-
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-  }
-
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-  }
-}
 
 kotlin {
   android {
@@ -34,12 +16,12 @@ kotlin {
   }
   jvm()
 
-  // Revert to just ios() when gradle plugin can properly resolve it
-  val onPhone = System.getenv("SDK_NAME")?.startsWith("iphoneos") ?: false
-  if (onPhone) {
-    iosArm64("ios")
-  } else {
-    iosX64("ios")
+  iosX64("ios") {
+    binaries {
+      framework {
+        baseName = "library"
+      }
+    }
   }
 
   explicitApiWarning()
@@ -114,6 +96,24 @@ kotlin {
         implementation(Koin.android)
       }
     }
+  }
+}
+
+android {
+  compileSdkVersion(Android.compile)
+  sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+  defaultConfig {
+    minSdkVersion(Android.min)
+    targetSdkVersion(Android.target)
+    versionCode = 1
+    versionName = project.version as String
+
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+  }
+
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
   }
 }
 
