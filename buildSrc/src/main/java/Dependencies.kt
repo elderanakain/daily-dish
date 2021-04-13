@@ -1,19 +1,18 @@
 object Versions {
-  const val kotlin = "1.4.30"
-  const val kotlinCoroutines = "1.4.2-native-mt"
-  const val ktor = "1.5.0"
-  const val kotlinxSerialization = "1.0.1"
-  const val sqlDelight = "1.4.4"
-  const val kotlinxDatetime = "0.1.1"
+  const val kotlin = "1.5.31"
+  const val kotlinCoroutines = "1.5.2-native-mt"
+  const val ktor = "1.6.4"
+  const val kotlinxSerialization = "1.3.0"
+  const val sqlDelight = "1.5.1"
+  const val kotlinxDatetime = "0.3.0"
 
-  const val sqliteJdbcDriver = "1.4.2"
   const val slf4j = "1.7.30"
 
-  const val koin = "3.0.1-beta-2"
+  const val koin = "3.1.2"
 }
 
 object Android {
-  const val gradlePlugin = "com.android.tools.build:gradle:4.0.1"
+  const val gradlePlugin = "com.android.tools.build:gradle:4.2.0"
 
   const val min = 28
   const val compile = 30
@@ -50,7 +49,7 @@ object SqlDelight {
   const val coroutineExtensions = "com.squareup.sqldelight:coroutines-extensions:${Versions.sqlDelight}"
 
   const val androidDriver = "com.squareup.sqldelight:android-driver:${Versions.sqlDelight}"
-  const val jdbcDriver = "com.squareup.sqldelight:jdbc-driver:${Versions.sqliteJdbcDriver}"
+  const val jdbcDriver = "com.squareup.sqldelight:jdbc-driver:${Versions.sqlDelight}"
 
   const val nativeDriver = "com.squareup.sqldelight:native-driver:${Versions.sqlDelight}"
 
