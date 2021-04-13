@@ -1,11 +1,9 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 buildscript {
   repositories {
     google()
     mavenCentral()
-    jcenter()
   }
+
   dependencies {
     classpath(Android.gradlePlugin)
     classpath(Kotlin.gradlePlugin)
@@ -18,7 +16,6 @@ allprojects {
   repositories {
     google()
     mavenCentral()
-    jcenter()
     maven(url = "https://dl.bintray.com/ekito/koin")
     maven(url = "https://kotlin.bintray.com/kotlin-js-wrappers/")
     maven(url = "https://jitpack.io")

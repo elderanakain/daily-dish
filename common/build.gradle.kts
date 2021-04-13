@@ -4,6 +4,10 @@ plugins {
   id("kotlinx-serialization")
   id("com.squareup.sqldelight")
   id("maven-publish")
+  // https://www.marcogomiero.com/posts/2021/kmp-existing-project/
+  // https://www.marcogomiero.com/posts/2021/build-xcframework-kmp/
+  // https://github.com/prof18/kmp-fatframework-cocoa
+  id("com.prof18.kmp.fatframework.cocoa") version "0.2.1"
 }
 
 version = "1.0.9"
@@ -15,12 +19,9 @@ kotlin {
     publishLibraryVariantsGroupedByFlavor = true
   }
   jvm()
-
-  iosX64("ios") {
-    binaries {
-      framework {
-        baseName = "library"
-      }
+  ios {
+    binaries.framework {
+      baseName = "common"
     }
   }
 
@@ -103,10 +104,8 @@ android {
   compileSdkVersion(Android.compile)
   sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
   defaultConfig {
-    minSdkVersion(Android.min)
-    targetSdkVersion(Android.target)
-    versionCode = 1
-    versionName = project.version as String
+    minSdk = Android.min
+    targetSdk = Android.target
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
@@ -134,5 +133,18 @@ publishing {
         password = System.getenv("GITHUB_PUBLISH_TOKEN")
       }
     }
+  }
+}
+
+fatFrameworkCocoaConfig {
+  frameworkName = project.name
+  outputPath = "/Users/arubailo/Documents/Projects/dailydish/daily-dish-framework"
+  versionName = version.toString()
+  useXCFramework = true
+
+  cocoaPodRepoInfo {
+    summary = "Provides Daily Dish common code"
+    homepage = "https://github.com/elderanakain/daily-dish-framework"
+    gitUrl = "git@github.com:elderanakain/daily-dish-framework.git"
   }
 }
