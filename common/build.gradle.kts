@@ -1,9 +1,14 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+
 plugins {
   id("com.android.library")
   kotlin("multiplatform")
   id("kotlinx-serialization")
   id("com.squareup.sqldelight")
   id("maven-publish")
+  // https://www.marcogomiero.com/posts/2021/kmp-existing-project/
+  // https://github.com/prof18/kmp-fatframework-cocoa
+  id("com.prof18.kmp.fatframework.cocoa") version "0.0.1"
 }
 
 version = "1.0.9"
@@ -16,12 +21,11 @@ kotlin {
   }
   jvm()
 
-  iosX64("ios") {
-    binaries {
-      framework {
-        baseName = "library"
-      }
-    }
+  val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget =
+    if (System.getenv("SDK_NAME")?.startsWith("iphoneos") == true) ::iosArm64 else ::iosX64
+
+  iosTarget("ios") {
+    binaries.framework(project.name)
   }
 
   explicitApiWarning()
@@ -134,5 +138,18 @@ publishing {
         password = System.getenv("GITHUB_PUBLISH_TOKEN")
       }
     }
+  }
+}
+
+fatFrameworkCocoaConfig {
+  fatFrameworkName = project.name
+  namePrefix = project.name
+  outputPath = "/Users/arubailo/Documents/daily-dish-framework"
+  versionName = version.toString()
+
+  cocoaPodRepoInfo {
+    summary = "Provide Daily Dish common code"
+    homepage = "https://github.com/elderanakain/daily-dish-framework"
+    gitUrl = "git@github.com:elderanakain/daily-dish-framework.git"
   }
 }

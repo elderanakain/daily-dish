@@ -1,5 +1,5 @@
 object Versions {
-  const val kotlin = "1.4.30"
+  const val kotlin = "1.4.32"
   const val kotlinCoroutines = "1.4.2-native-mt"
   const val ktor = "1.5.0"
   const val kotlinxSerialization = "1.0.1"
@@ -13,7 +13,7 @@ object Versions {
 }
 
 object Android {
-  const val gradlePlugin = "com.android.tools.build:gradle:4.0.1"
+  const val gradlePlugin = "com.android.tools.build:gradle:4.0.2"
 
   const val min = 28
   const val compile = 30
