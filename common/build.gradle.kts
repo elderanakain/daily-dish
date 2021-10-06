@@ -4,13 +4,10 @@ plugins {
   id("kotlinx-serialization")
   id("com.squareup.sqldelight")
   id("maven-publish")
-  // https://www.marcogomiero.com/posts/2021/kmp-existing-project/
-  // https://www.marcogomiero.com/posts/2021/build-xcframework-kmp/
-  // https://github.com/prof18/kmp-fatframework-cocoa
-  id("com.prof18.kmp.fatframework.cocoa") version "0.2.1"
+  id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
 }
 
-version = "1.0.9"
+version = "1.0.10"
 group = "io.krugosvet.dailydish"
 
 kotlin {
@@ -136,15 +133,12 @@ publishing {
   }
 }
 
-fatFrameworkCocoaConfig {
-  frameworkName = project.name
-  outputPath = "/Users/arubailo/Documents/Projects/dailydish/daily-dish-framework"
-  versionName = version.toString()
-  useXCFramework = true
-
-  cocoaPodRepoInfo {
-    summary = "Provides Daily Dish common code"
-    homepage = "https://github.com/elderanakain/daily-dish-framework"
-    gitUrl = "git@github.com:elderanakain/daily-dish-framework.git"
+multiplatformSwiftPackage {
+  packageName("common")
+  swiftToolsVersion("5.4")
+  targetPlatforms {
+    iOS { v("13") }
   }
+  distributionMode { local() }
+  outputDirectory(File("$projectDir/../../daily-dish-package", "/"))
 }
