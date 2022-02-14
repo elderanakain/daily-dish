@@ -5,7 +5,6 @@ pluginManagement {
     }
 }
 
-
 rootProject.name = "daily-dish-common"
 
 include(":common")
