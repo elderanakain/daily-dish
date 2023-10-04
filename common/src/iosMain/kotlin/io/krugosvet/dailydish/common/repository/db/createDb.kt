@@ -1,6 +1,6 @@
 package io.krugosvet.dailydish.common.repository.db
 
-import com.squareup.sqldelight.drivers.native.NativeSqliteDriver
+import app.cash.sqldelight.driver.native.NativeSqliteDriver
 
 internal actual fun createDb(): Database {
     val driver = NativeSqliteDriver(Database.Schema, "dailydish.db")

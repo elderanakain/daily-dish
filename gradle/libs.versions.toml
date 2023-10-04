@@ -1,0 +1,68 @@
+[versions]
+agp = "8.1.0"
+kotlin = "1.9.10"
+sqldelight = "2.0.0"
+coroutines = "1.7.3"
+koin = "3.5.0"
+ktor = "2.3.4"
+serialization = "1.6.0"
+datetime = "0.4.0"
+hikari = "5.0.1"
+slf4j = "1.7.32"
+
+[libraries]
+sqldelight = { module = "app.cash.sqldelight:runtime", version.ref = "sqldelight" }
+sqldelight-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
+sqldelight-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
+sqldelight-jvm = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }
+sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
+
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
+
+ktor = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-json = { module = "io.ktor:ktor-client-json", version.ref = "ktor" }
+ktor-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
+ktor-jsonx = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-native = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+
+serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+
+datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
+
+hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
+slf4j = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+
+[bundles]
+jvm = ["slf4j", "hikari", "ktor-cio", "koin-ktor", "sqldelight-jvm"]
+android = ["slf4j", "sqldelight-android", "koin-android", "coroutines-android"]
+native = ["ktor-native", "sqldelight-native"]
+common = [
+    "sqldelight",
+    "sqldelight-coroutines",
+    "ktor",
+    "serialization",
+    "koin-core",
+    "datetime",
+    "ktor-json",
+    "ktor-logging",
+    "coroutines-core",
+    "ktor-serialization",
+    "ktor-negotiation",
+    "ktor-jsonx"
+]
+
+[plugins]
+android = { id = "com.android.library", version.ref = "agp" }
+kotlin = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }

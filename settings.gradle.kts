@@ -1,15 +1,22 @@
 pluginManagement {
     repositories {
+        google()
         gradlePluginPortal()
         mavenCentral()
-        maven(url = "https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
+}
 
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+
+    repositories {
+        google()
+        gradlePluginPortal()
+        mavenCentral()
+    }
 }
 
 
 rootProject.name = "daily-dish-common"
-
-enableFeaturePreview("GRADLE_METADATA")
 
 include(":common")
