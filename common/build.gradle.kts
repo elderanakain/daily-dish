@@ -8,7 +8,7 @@ plugins {
     id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
 }
 
-version = "1.0.11"
+version = "1.1.0"
 group = "io.krugosvet.dailydish"
 
 kotlin {
