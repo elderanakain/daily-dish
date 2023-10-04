@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+
 plugins {
     alias(libs.plugins.android)
     alias(libs.plugins.kotlin)
@@ -8,17 +10,27 @@ plugins {
     id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
 }
 
-version = "1.1.0"
+version = "1.1.1"
 group = "io.krugosvet.dailydish"
 
+@OptIn(ExperimentalKotlinGradlePluginApi::class)
 kotlin {
-    androidTarget()
-    jvm()
-    ios {
-        binaries.framework {
-            baseName = "common"
-        }
+    targetHierarchy.default()
+
+    androidTarget {
+        publishAllLibraryVariants()
     }
+
+    jvm()
+
+    listOf(iosArm64(), iosX64(), iosSimulatorArm64())
+        .forEach {
+            it.binaries {
+                framework {
+                    baseName = "common"
+                }
+            }
+        }
 
     explicitApiWarning()
 
@@ -72,8 +84,8 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/elderanakain/daily-dish-common")
             credentials {
-                username = System.getenv("GITHUB_PUBLISH_USERNAME")
-                password = System.getenv("GITHUB_PUBLISH_TOKEN")
+                username = System.getenv("DD_PUBLISH_USERNAME")
+                password = "${System.getenv("DD_PUBLISH_TOKEN")}"
             }
         }
     }
