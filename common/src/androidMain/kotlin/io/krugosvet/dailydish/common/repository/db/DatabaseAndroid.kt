@@ -1,8 +1,7 @@
 package io.krugosvet.dailydish.common.repository.db
 
 import android.content.Context
-import com.squareup.sqldelight.android.AndroidSqliteDriver
-import io.krugosvet.dailydish.common.repository.db.Database
+import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 
 public lateinit var appContext: Context
 

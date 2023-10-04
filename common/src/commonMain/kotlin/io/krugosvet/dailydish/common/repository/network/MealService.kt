@@ -6,6 +6,7 @@ import io.krugosvet.dailydish.common.dto.IMeal
 import io.krugosvet.dailydish.common.dto.Meal
 import io.krugosvet.dailydish.common.dto.NewImage
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.request.delete
 import io.ktor.client.request.forms.FormBuilder
 import io.ktor.client.request.forms.MultiPartFormDataContent
@@ -14,6 +15,7 @@ import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.submitFormWithBinaryData
 import io.ktor.client.request.get
 import io.ktor.client.request.put
+import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.utils.io.core.writeFully
 import kotlinx.serialization.encodeToString
@@ -41,20 +43,20 @@ internal class MealServiceImpl(
   private val endpoint = "$baseEndpoint/meal"
 
   override suspend fun getAll(): List<Meal> =
-    httpClient.get(endpoint)
+    httpClient.get(endpoint).body()
 
   override suspend fun get(mealId: String): Meal =
-    httpClient.get("$endpoint/$mealId")
+    httpClient.get("$endpoint/$mealId").body()
 
   override suspend fun delete(mealId: String): Unit =
-    httpClient.delete("$endpoint/$mealId")
+    httpClient.delete("$endpoint/$mealId").body()
 
   override suspend fun add(meal: AddMeal, newImage: NewImage?): String =
-    httpClient.submitFormWithBinaryData(endpoint, createMealForm(meal, newImage))
+    httpClient.submitFormWithBinaryData(endpoint, createMealForm(meal, newImage)).body()
 
   override suspend fun update(meal: Meal, newImage: NewImage?) {
-    httpClient.put<Unit>(endpoint) {
-      body = MultiPartFormDataContent(createMealForm(meal, newImage))
+    httpClient.put(endpoint) {
+      setBody(MultiPartFormDataContent(createMealForm(meal, newImage)))
     }
   }
 
