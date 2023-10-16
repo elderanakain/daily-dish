@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="io.krugosvet.dailydish.android.ui.addMeal.viewmodel.AddMealViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="24dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:tag="title"
+                app:errorEnabled="@{viewModel.visual.title.error != null}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/title_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:afterTextChanged="@{(text) -> viewModel.onTitleChange(text.toString())}"
+                    android:hint="@string/dialog_add_meal_name_field_hint"
+                    android:inputType="text|textCapSentences"
+                    android:lines="1"
+                    android:text="@{viewModel.visual.title.value}"
+                    app:error="@{viewModel.visual.title.error}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:tag="description"
+                app:errorEnabled="@{viewModel.visual.title.error != null}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/description_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:afterTextChanged="@{(text) -> viewModel.onDescriptionChange(text.toString())}"
+                    android:hint="@string/dialog_add_meal_description_field_hint"
+                    android:inputType="text|textCapSentences|textAutoCorrect|textMultiLine"
+                    android:maxLines="5"
+                    android:text="@{viewModel.visual.description.value}"
+                    app:error="@{viewModel.visual.description.error}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/dateEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                app:errorEnabled="@{viewModel.visual.title.error != null}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/description">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/date_field"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center"
+                    android:hint="@string/dialog_add_meal_date_field_hint"
+                    android:inputType="none"
+                    android:minWidth="129dp"
+                    android:onClick="@{() -> viewModel.showDatePicker()}"
+                    android:text="@{viewModel.visual.date.value}"
+                    app:error="@{viewModel.visual.date.error}"
+                    tools:text="November 2, 2018" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageButton
+                android:id="@+id/addMealImage"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="@dimen/add_meal_image_size"
+                android:layout_height="@dimen/add_meal_image_size"
+                android:adjustViewBounds="true"
+                android:onClick="@{() -> viewModel.showImagePicker()}"
+                android:src="@{viewModel.visual.image.value}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/dateEditText"
+                tools:src="@drawable/meal_empty_image" />
+
+            <TextView
+                android:id="@+id/imageError"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.visual.image.error}"
+                android:textAlignment="center"
+                android:textColor="@android:color/holo_red_dark"
+                app:layout_constraintEnd_toEndOf="@+id/addMealImage"
+                app:layout_constraintStart_toStartOf="@+id/addMealImage"
+                app:layout_constraintTop_toBottomOf="@+id/addMealImage"
+                tools:text="No image" />
+
+            <Button
+                android:id="@+id/addMealButton"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="28dp"
+                android:text="@string/dialog_add_meal_button_add_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageError" />
+
+            <Button
+                android:id="@+id/cancel_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="8dp"
+                android:onClick="@{() -> viewModel.onCancel()}"
+                android:text="@string/dialog_cancel_button"
+                app:layout_constraintEnd_toStartOf="@id/addMealButton"
+                app:layout_constraintTop_toBottomOf="@id/imageError" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

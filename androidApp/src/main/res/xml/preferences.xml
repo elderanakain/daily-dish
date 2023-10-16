@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:key="@string/preference_reminder_key"
+        android:summary="@string/settings_reminder_summary"
+        android:title="@string/settings_reminder"
+        android:icon="@drawable/ic_event_available_black_36dp"/>
+</androidx.preference.PreferenceScreen>

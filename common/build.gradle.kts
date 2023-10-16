@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 plugins {
-    alias(libs.plugins.android)
+    id("com.android.library")
     alias(libs.plugins.kotlin)
     alias(libs.plugins.serialization)
     alias(libs.plugins.sqldelight)
@@ -78,16 +78,9 @@ sqldelight {
     }
 }
 
-publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/elderanakain/daily-dish-common")
-            credentials {
-                username = System.getenv("DD_PUBLISH_USERNAME")
-                password = "${System.getenv("DD_PUBLISH_TOKEN")}"
-            }
-        }
+gradle.settingsEvaluated {
+    publishing {
+        repositories.addLast(repositories.getByName("GitHubPackages"))
     }
 }
 

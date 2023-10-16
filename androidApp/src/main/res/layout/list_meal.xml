@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="visual"
+            type="io.krugosvet.dailydish.android.ui.mealList.MealVisual" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/meal_image"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/meal_image_placeholder"
+                android:onClick="@{() -> visual.onImageClick.invoke()}"
+                android:scaleType="centerInside"
+                android:src="@{visual.image}"
+                app:layout_constraintDimensionRatio="H,16:9"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/innerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                app:layout_constraintTop_toBottomOf="@id/meal_image">
+
+                <TextView
+                    android:id="@+id/title"
+                    style="@style/TitleTextView"
+                    android:paddingTop="8dp"
+                    android:text="@{visual.title}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/innerLayout"
+                    tools:text="Lorem ipsum" />
+
+                <TextView
+                    android:id="@+id/last_date_of_cooking"
+                    style="@style/SubheadTextView"
+                    android:fontFamily="@font/roboto_medium"
+                    android:paddingTop="12dp"
+                    android:text="@{visual.lastDateOfCooking}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/title"
+                    tools:text="February 13, 2018" />
+
+                <TextView
+                    android:id="@+id/description"
+                    style="@style/BodyTextView"
+                    android:layout_marginTop="16dp"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    android:text="@{visual.description}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/last_date_of_cooking"
+                    tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel sagittis dolor. Cras vulputate dictum urna id tincidunt. Mauris efficitur ligula orci, eget consequat nulla interdum nec." />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Button
+                android:id="@+id/deleteButton"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/roboto_medium"
+                android:onClick="@{() -> visual.onDelete.invoke()}"
+                android:text="@string/meal_card_delete_button"
+                android:textColor="@color/button"
+                app:layout_constraintEnd_toStartOf="@+id/cookedButton"
+                app:layout_constraintTop_toBottomOf="@id/innerLayout" />
+
+            <Button
+                android:id="@+id/cookedButton"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:enabled="@{visual.cookTodayButtonEnabled}"
+                android:fontFamily="@font/roboto_medium"
+                android:onClick="@{() -> visual.onCookTodayClick.invoke()}"
+                android:text="@string/meal_card_cooked_button"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/innerLayout" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

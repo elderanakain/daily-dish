@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dialog_add_meal_width">350dp</dimen>
+    <dimen name="meal_list_offset">16dp</dimen>
+</resources>

@@ -6,6 +6,7 @@ pluginManagement {
     }
 }
 
+@Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
 
@@ -13,10 +14,20 @@ dependencyResolutionManagement {
         google()
         gradlePluginPortal()
         mavenCentral()
+
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/elderanakain/daily-dish-common")
+            credentials {
+                username = System.getenv("DD_GH_USERNAME")
+                password = System.getenv("DD_GG_TOKEN")
+            }
+        }
     }
 }
 
 
 rootProject.name = "daily-dish-common"
 
+include(":androidApp")
 include(":common")
