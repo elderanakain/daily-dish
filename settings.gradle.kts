@@ -27,6 +27,6 @@ dependencyResolutionManagement {
 }
 
 
-rootProject.name = "daily-dish-common"
+rootProject.name = "daily-dish"
 
 include(":common", ":androidApp", "backEnd")
