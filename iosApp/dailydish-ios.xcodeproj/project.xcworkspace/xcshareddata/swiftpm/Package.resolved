@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "common",
+        "repositoryURL": "https://github.com/elderanakain/daily-dish-package.git",
+        "state": {
+          "branch": "master",
+          "revision": "d0ac00767855699ba514416127496bb43a49c75a",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
