@@ -9,7 +9,7 @@ import android.content.Intent
 import android.content.res.Resources
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotification.CookedTodayAction
-import io.krugosvet.dailydish.android.ui.container.view.ContainerActivity
+import io.krugosvet.dailydish.android.ui.container.ContainerActivity
 import io.krugosvet.dailydish.common.dto.Meal
 
 object ReminderNotification {

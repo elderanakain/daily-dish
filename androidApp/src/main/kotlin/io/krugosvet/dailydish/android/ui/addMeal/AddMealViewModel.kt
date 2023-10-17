@@ -1,12 +1,9 @@
-package io.krugosvet.dailydish.android.ui.addMeal.viewmodel
+package io.krugosvet.dailydish.android.ui.addMeal
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import io.krugosvet.dailydish.android.architecture.extension.savedStateFlow
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
-import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisual
-import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisualFactory
-import io.krugosvet.dailydish.android.ui.addMeal.viewmodel.AddMealViewModel.Event
+import io.krugosvet.dailydish.android.ui.addMeal.AddMealViewModel.Event
 import io.krugosvet.dailydish.common.dto.AddMealForm
 import io.krugosvet.dailydish.common.dto.NewImage
 import io.krugosvet.dailydish.common.usecase.AddMealUseCase
@@ -15,6 +12,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.datetime.LocalDate
 import timber.log.Timber
 
@@ -26,7 +24,7 @@ class AddMealViewModel(
     ViewModel<Event>(savedStateHandle) {
 
     private val shouldValidate = MutableStateFlow(false)
-    private val form by savedStateFlow(AddMealForm())
+    private val form = MutableStateFlow(AddMealForm())
 
     val visual: StateFlow<AddMealVisual?> =
         form
@@ -61,29 +59,30 @@ class AddMealViewModel(
     }
 
     fun onTitleChange(title: String) {
-        form.value = form.value.copy(title = title)
+        form.update { form.value.copy(title = title) }
     }
 
     fun onDescriptionChange(description: String) {
-        form.value = form.value.copy(description = description)
+        form.update { form.value.copy(description = description) }
     }
 
     fun onDateChange(date: LocalDate) {
-        form.value = form.value.copy(date = date)
+        form.update { form.value.copy(date = date) }
     }
 
     fun onImageChange(image: NewImage?) {
-        form.value = form.value.copy(image = image)
+        form.update { form.value.copy(image = image) }
     }
 
-    sealed class Event : NavigationEvent() {
-        data object Close : Event()
+    sealed interface Event : NavigationEvent {
+
+        data object Close : Event
 
         data class ShowImagePicker(
             val isImageEmpty: Boolean
         ) :
-            Event()
+            Event
 
-        data object ShowDatePicker : Event()
+        data object ShowDatePicker : Event
     }
 }

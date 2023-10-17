@@ -45,7 +45,4 @@
 
     <string name="permission_explanation_camera">We need to access your camera to be able to make photos of your cooked meals.</string>
     <string name="permission_explanation_gallery">We need to access your gallery to let you pick photos of your cooked meals.</string>
-
-    <!--suppress CheckTagEmptyBody -->
-    <string name="empty"></string>
 </resources>

@@ -2,6 +2,7 @@ package io.krugosvet.dailydish.android.architecture.viewmodel
 
 import androidx.lifecycle.ViewModel as JetpackViewModel
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel.NavigationEvent
 import io.krugosvet.dailydish.android.errorHandler
 import kotlinx.coroutines.CoroutineScope
@@ -20,7 +21,7 @@ abstract class ViewModel<TNavigation : NavigationEvent>(
 ) :
     JetpackViewModel() {
 
-    abstract class NavigationEvent
+    interface NavigationEvent
 
     sealed interface State {
 
@@ -33,7 +34,9 @@ abstract class ViewModel<TNavigation : NavigationEvent>(
     private val _state = MutableStateFlow<State>(State.Loading)
     val state: StateFlow<State> = _state.asStateFlow()
 
-    protected fun navigate(event: TNavigation) = _navigationEvent.tryEmit(event)
+    protected fun navigate(event: TNavigation) = viewModelScope.launch {
+        _navigationEvent.emit(event)
+    }
 
     protected fun setState(state: State) = _state.update { state }
 

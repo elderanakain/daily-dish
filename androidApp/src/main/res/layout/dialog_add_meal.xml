@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="io.krugosvet.dailydish.android.ui.addMeal.viewmodel.AddMealViewModel" />
+            type="io.krugosvet.dailydish.android.ui.addMeal.AddMealViewModel" />
     </data>
 
     <ScrollView
@@ -101,28 +101,15 @@
                 app:layout_constraintTop_toTopOf="@id/dateEditText"
                 tools:src="@drawable/meal_empty_image" />
 
-            <TextView
-                android:id="@+id/imageError"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@{viewModel.visual.image.error}"
-                android:textAlignment="center"
-                android:textColor="@android:color/holo_red_dark"
-                app:layout_constraintEnd_toEndOf="@+id/addMealImage"
-                app:layout_constraintStart_toStartOf="@+id/addMealImage"
-                app:layout_constraintTop_toBottomOf="@+id/addMealImage"
-                tools:text="No image" />
-
             <Button
                 android:id="@+id/addMealButton"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="28dp"
                 android:text="@string/dialog_add_meal_button_add_text"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imageError" />
+                app:layout_constraintTop_toBottomOf="@id/addMealImage" />
 
             <Button
                 android:id="@+id/cancel_button"
@@ -130,12 +117,11 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="28dp"
                 android:layout_marginEnd="8dp"
                 android:onClick="@{() -> viewModel.onCancel()}"
                 android:text="@string/dialog_cancel_button"
                 app:layout_constraintEnd_toStartOf="@id/addMealButton"
-                app:layout_constraintTop_toBottomOf="@id/imageError" />
+                app:layout_constraintTop_toTopOf="@id/addMealButton" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

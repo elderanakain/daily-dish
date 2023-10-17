@@ -3,15 +3,11 @@ package io.krugosvet.dailydish.android.ui.mealList
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.lifecycle.flowWithLifecycle
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.aspect.BindingComponent
 import io.krugosvet.dailydish.android.architecture.view.BaseFragment
 import io.krugosvet.dailydish.android.databinding.FragmentMealListBinding
-import io.krugosvet.dailydish.android.ui.mealList.MealListViewModel.Event
-import io.krugosvet.dailydish.common.dto.NewImage
 import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
@@ -48,28 +44,7 @@ class MealListFragment :
 
         viewModel.navigationEvent
             .flowWithLifecycle(lifecycle)
-            .onEach { event ->
-                when (event) {
-                    is Event.ShowImagePicker -> {
-                        val pickMedia = registerForActivityResult(PickVisualMedia()) { image ->
-                            image ?: return@registerForActivityResult
-
-                            val contentResolver = requireContext().contentResolver
-
-                            val bytes = contentResolver.openInputStream(image)
-                                ?.use { it.buffered().readBytes() }
-                                ?: return@registerForActivityResult
-
-                            viewModel.changeImage(
-                                event.meal,
-                                NewImage(bytes, extension = contentResolver.getType(image) ?: "")
-                            )
-                        }
-
-                        pickMedia.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
-                    }
-                }
-            }
+            .onEach {}
             .launchInCatching()
     }
 }

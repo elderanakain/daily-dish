@@ -13,7 +13,7 @@
     </fragment>
     <fragment
         android:id="@+id/dialogAddMeal"
-        android:name="io.krugosvet.dailydish.android.ui.addMeal.view.AddMealFragment"
+        android:name="io.krugosvet.dailydish.android.ui.addMeal.AddMealFragment"
         android:label="@string/add_meal_dialog_title" >
         <action
             android:id="@+id/action_dialogAddMeal_to_mealListFragment"

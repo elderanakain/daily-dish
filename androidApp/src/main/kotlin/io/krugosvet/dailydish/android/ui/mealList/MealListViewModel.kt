@@ -27,11 +27,7 @@ class MealListViewModel(
 ) :
     ViewModel<MealListViewModel.Event>(savedStateHandle) {
 
-    sealed class Event :
-        NavigationEvent() {
-
-        class ShowImagePicker(val meal: Meal) : Event()
-    }
+    sealed interface Event : NavigationEvent
 
     val mealList: StateFlow<List<MealVisual>> =
         mealRepository.mealsFlow
@@ -56,10 +52,6 @@ class MealListViewModel(
         }
     }
 
-    private fun onImageClick(meal: Meal): OnClick = {
-        navigate(Event.ShowImagePicker(meal))
-    }
-
     private fun onCookTodayClick(meal: Meal): OnClick = {
         reminderNotificationService.closeReminder()
 
@@ -69,5 +61,5 @@ class MealListViewModel(
     }
 
     private fun mapToVisual(it: Meal): MealVisual =
-        mealVisualFactory.from(it, onDelete(it), onImageClick(it), onCookTodayClick(it))
+        mealVisualFactory.from(it, onDelete(it), onCookTodayClick(it))
 }

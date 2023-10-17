@@ -1,4 +1,4 @@
-package io.krugosvet.dailydish.android.ui.addMeal.view
+package io.krugosvet.dailydish.android.ui.addMeal
 
 import android.app.DatePickerDialog
 import android.content.Context
@@ -13,23 +13,39 @@ import io.krugosvet.dailydish.android.architecture.aspect.BindingComponent
 import io.krugosvet.dailydish.android.architecture.extension.hideKeyboard
 import io.krugosvet.dailydish.android.architecture.view.BaseFragment
 import io.krugosvet.dailydish.android.databinding.DialogAddMealBinding
-import io.krugosvet.dailydish.android.ui.addMeal.viewmodel.AddMealViewModel
-import io.krugosvet.dailydish.android.ui.addMeal.viewmodel.AddMealViewModel.Event
+import io.krugosvet.dailydish.android.ui.addMeal.AddMealViewModel.Event
 import io.krugosvet.dailydish.common.core.currentDate
 import io.krugosvet.dailydish.common.dto.NewImage
 import kotlinx.coroutines.flow.onEach
 import kotlinx.datetime.LocalDate
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddMealFragment :
     BaseFragment<DialogAddMealBinding, AddMealViewModel>(),
     DatePickerDialog.OnDateSetListener {
 
-    override val viewModel: AddMealViewModel by stateViewModel()
+    override val viewModel: AddMealViewModel by viewModel()
     override val bindingComponent = BindingComponent(R.layout.dialog_add_meal, this)
 
     override val parentContext: Context
         get() = requireContext()
+
+    private val pickMedia = registerForActivityResult(PickVisualMedia()) { image ->
+        image ?: return@registerForActivityResult
+
+        val contentResolver = requireContext().contentResolver
+
+        val bytes = contentResolver.openInputStream(image)
+            ?.use { it.buffered().readBytes() }
+            ?: return@registerForActivityResult
+
+        viewModel.onImageChange(
+            NewImage(
+                bytes,
+                extension = contentResolver.getType(image) ?: ""
+            )
+        )
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -62,23 +78,6 @@ class AddMealFragment :
     }
 
     private fun showImagePicker() = launch {
-        val pickMedia = registerForActivityResult(PickVisualMedia()) { image ->
-            image ?: return@registerForActivityResult
-
-            val contentResolver = requireContext().contentResolver
-
-            val bytes = contentResolver.openInputStream(image)
-                ?.use { it.buffered().readBytes() }
-                ?: return@registerForActivityResult
-
-            viewModel.onImageChange(
-                NewImage(
-                    bytes,
-                    extension = contentResolver.getType(image) ?: ""
-                )
-            )
-        }
-
         pickMedia.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
     }
 

@@ -27,8 +27,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-// FIXME
-//@RunWith(AndroidJUnit4::class)
+@RunWith(AndroidJUnit4::class)
 class MealCRUDTest :
     BaseTest() {
 
@@ -36,7 +35,7 @@ class MealCRUDTest :
     @Rule
     val permissions: GrantPermissionRule = GrantPermissionRule.grant(WRITE_EXTERNAL_STORAGE)
 
-    //@Test
+    @Test
     fun whenCreateUpdateDeleteMeal_thenActionsArePropagatedCorrectly() {
         openAddMealScreen()
 

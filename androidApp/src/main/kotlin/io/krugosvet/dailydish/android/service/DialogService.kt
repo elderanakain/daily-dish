@@ -3,7 +3,7 @@ package io.krugosvet.dailydish.android.service
 import android.app.AlertDialog
 import android.content.res.Resources
 import io.krugosvet.dailydish.android.service.permission.Permission
-import io.krugosvet.dailydish.android.ui.container.view.ContainerActivity
+import io.krugosvet.dailydish.android.ui.container.ContainerActivity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 

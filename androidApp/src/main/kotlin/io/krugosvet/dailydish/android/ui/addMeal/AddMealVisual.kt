@@ -1,11 +1,11 @@
-package io.krugosvet.dailydish.android.ui.addMeal.model
+package io.krugosvet.dailydish.android.ui.addMeal
 
 import androidx.annotation.StringRes
 import io.krugosvet.dailydish.android.R
-import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisual.Date
-import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisual.Description
-import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisual.Image
-import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisual.Title
+import io.krugosvet.dailydish.android.ui.addMeal.AddMealVisual.Date
+import io.krugosvet.dailydish.android.ui.addMeal.AddMealVisual.Description
+import io.krugosvet.dailydish.android.ui.addMeal.AddMealVisual.Image
+import io.krugosvet.dailydish.android.ui.addMeal.AddMealVisual.Title
 import io.krugosvet.dailydish.common.core.toDisplayString
 import io.krugosvet.dailydish.common.dto.AddMealForm
 import io.krugosvet.dailydish.common.dto.NewImage
@@ -36,11 +36,7 @@ data class AddMealVisual(
 
     data class Image(
         val value: ByteArray? = null,
-
-        @StringRes
-        override val error: Int = R.string.empty,
-    ) :
-        ErrorHolder {
+    ) {
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -52,16 +48,11 @@ data class AddMealVisual(
                 if (other.value == null) return false
                 if (!value.contentEquals(other.value)) return false
             } else if (other.value != null) return false
-            if (error != other.error) return false
 
             return true
         }
 
-        override fun hashCode(): Int {
-            var result = value?.contentHashCode() ?: 0
-            result = 31 * result + error
-            return result
-        }
+        override fun hashCode(): Int = value?.contentHashCode() ?: 0
     }
 
     data class Date(
@@ -109,17 +100,12 @@ class AddMealVisualFactory(
                     else -> null
                 }
             ),
-            image = getImage(form, shouldValidate)
+            image = getImage(form)
         )
 
-    private fun getImage(form: AddMealForm, shouldValidate: Boolean): Image =
+    private fun getImage(form: AddMealForm): Image =
         Image(
             value = form.image?.data,
-            error = when {
-                !shouldValidate -> R.string.empty
-                !validator.isImageValid(form.image) -> R.string.incorrect_value
-                else -> R.string.empty
-            }
         )
 }
 
@@ -133,7 +119,4 @@ class AddMealVisualValidator {
 
     fun isDateValid(date: LocalDate?): Boolean =
         date != null
-
-    fun isImageValid(image: NewImage?): Boolean =
-        image != null
 }

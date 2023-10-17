@@ -1,4 +1,4 @@
-package io.krugosvet.dailydish.android.ui.container.view
+package io.krugosvet.dailydish.android.ui.container
 
 import android.content.Context
 import android.os.Bundle
@@ -10,7 +10,7 @@ import io.krugosvet.dailydish.android.architecture.aspect.BindingComponent
 import io.krugosvet.dailydish.android.architecture.extension.setVisibility
 import io.krugosvet.dailydish.android.architecture.view.BaseActivity
 import io.krugosvet.dailydish.android.databinding.ActivityContainerBinding
-import io.krugosvet.dailydish.android.ui.container.viewmodel.ContainerViewModel
+import io.krugosvet.dailydish.android.ui.container.ContainerViewModel.Event
 import io.krugosvet.dailydish.android.ui.mealList.MealListFragmentDirections
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
@@ -31,7 +31,7 @@ class ContainerActivity :
             .flowWithLifecycle(lifecycle)
             .onEach { event ->
                 when (event) {
-                    ContainerViewModel.Event.ShowAddMeal -> showAddMeal()
+                    Event.ShowAddMeal -> showAddMeal()
                 }
             }
             .launchInCatching()

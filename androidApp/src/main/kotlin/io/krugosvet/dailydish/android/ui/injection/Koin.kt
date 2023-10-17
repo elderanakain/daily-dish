@@ -1,10 +1,10 @@
 package io.krugosvet.dailydish.android.ui.injection
 
 import androidx.lifecycle.SavedStateHandle
-import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisualFactory
-import io.krugosvet.dailydish.android.ui.addMeal.model.AddMealVisualValidator
-import io.krugosvet.dailydish.android.ui.addMeal.viewmodel.AddMealViewModel
-import io.krugosvet.dailydish.android.ui.container.viewmodel.ContainerViewModel
+import io.krugosvet.dailydish.android.ui.addMeal.AddMealVisualFactory
+import io.krugosvet.dailydish.android.ui.addMeal.AddMealVisualValidator
+import io.krugosvet.dailydish.android.ui.addMeal.AddMealViewModel
+import io.krugosvet.dailydish.android.ui.container.ContainerViewModel
 import io.krugosvet.dailydish.android.ui.mealList.MealListDecorator
 import io.krugosvet.dailydish.android.ui.mealList.MealVisualFactory
 import io.krugosvet.dailydish.android.ui.mealList.MealListViewModel

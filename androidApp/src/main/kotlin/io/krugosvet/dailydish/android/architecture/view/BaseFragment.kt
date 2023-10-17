@@ -11,14 +11,11 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import io.krugosvet.dailydish.android.architecture.aspect.DisposableAspect
 import io.krugosvet.dailydish.android.architecture.aspect.IBindingContainer
-import io.krugosvet.dailydish.android.architecture.aspect.IStorageAspect
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel.State
 import io.krugosvet.dailydish.android.errorHandler
-import io.krugosvet.dailydish.android.ui.container.view.ContainerActivity
-import io.reactivex.disposables.Disposable
+import io.krugosvet.dailydish.android.ui.container.ContainerActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -29,8 +26,7 @@ import kotlinx.coroutines.plus
 
 abstract class BaseFragment<TBinding : ViewDataBinding, TViewModel : ViewModel<*>> :
     Fragment(),
-    IBindingContainer<TBinding, TViewModel>,
-    IStorageAspect<Disposable> by DisposableAspect() {
+    IBindingContainer<TBinding, TViewModel> {
 
     abstract override val viewModel: TViewModel
 
@@ -52,12 +48,6 @@ abstract class BaseFragment<TBinding : ViewDataBinding, TViewModel : ViewModel<*
                 container.binding.progressBar.isVisible = state is State.Loading
             }
             .launchInCatching()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        clear()
     }
 
     protected inline fun launch(crossinline block: suspend CoroutineScope.() -> Unit) {

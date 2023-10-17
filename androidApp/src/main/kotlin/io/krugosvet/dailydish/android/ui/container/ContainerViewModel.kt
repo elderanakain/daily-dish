@@ -1,16 +1,16 @@
-package io.krugosvet.dailydish.android.ui.container.viewmodel
+package io.krugosvet.dailydish.android.ui.container
 
 import androidx.lifecycle.SavedStateHandle
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
-import io.krugosvet.dailydish.android.ui.container.viewmodel.ContainerViewModel.Event
+import io.krugosvet.dailydish.android.ui.container.ContainerViewModel.Event
 
 class ContainerViewModel(
     savedStateHandle: SavedStateHandle
 ) :
     ViewModel<Event>(savedStateHandle) {
 
-    sealed class Event : NavigationEvent() {
-        object ShowAddMeal : Event()
+    sealed interface Event : NavigationEvent {
+        data object ShowAddMeal : Event
     }
 
     fun onOpenAddMealScreen() {

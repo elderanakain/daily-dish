@@ -21,7 +21,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.platform.app.InstrumentationRegistry
 import io.krugosvet.dailydish.android.R
-import io.krugosvet.dailydish.android.ui.container.view.ContainerActivity
+import io.krugosvet.dailydish.android.ui.container.ContainerActivity
 import io.krugosvet.dailydish.android.ui.mealList.MealListAdapter.MealViewHolder
 import org.hamcrest.Description
 import org.hamcrest.Matcher

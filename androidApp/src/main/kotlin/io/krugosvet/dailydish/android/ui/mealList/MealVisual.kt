@@ -27,7 +27,6 @@ class MealVisualFactory(
     fun from(
         meal: Meal,
         onDelete: OnClick,
-        onImageClick: OnClick,
         onCookTodayClick: OnClick
     ) =
         MealVisual(
@@ -40,7 +39,7 @@ class MealVisualFactory(
             ),
             isCookTodayButtonEnabled = meal.lastCookingDate.isToday,
             onDelete = onDelete,
-            onImageClick = onImageClick,
+            onImageClick = {},
             onCookTodayClick = onCookTodayClick
         )
 }

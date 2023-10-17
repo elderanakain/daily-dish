@@ -6,15 +6,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import io.krugosvet.dailydish.android.R
-import io.krugosvet.dailydish.android.architecture.aspect.DisposableAspect
 import io.krugosvet.dailydish.android.architecture.aspect.IBindingContainer
-import io.krugosvet.dailydish.android.architecture.aspect.IStorageAspect
 import io.krugosvet.dailydish.android.architecture.extension.RequestPermissionWithCallback
 import io.krugosvet.dailydish.android.architecture.extension.RequestPermissionWithCallback.Input
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
 import io.krugosvet.dailydish.android.errorHandler
 import io.krugosvet.dailydish.android.service.permission.Permission
-import io.reactivex.disposables.Disposable
 import kotlin.coroutines.resume
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -24,8 +21,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 
 abstract class BaseActivity<TBinding : ViewDataBinding, TViewModel : ViewModel<*>> :
     AppCompatActivity(),
-    IBindingContainer<TBinding, TViewModel>,
-    IStorageAspect<Disposable> by DisposableAspect() {
+    IBindingContainer<TBinding, TViewModel> {
 
     abstract override val viewModel: TViewModel
 
@@ -37,12 +33,6 @@ abstract class BaseActivity<TBinding : ViewDataBinding, TViewModel : ViewModel<*
         val input = Input(permission) { isGranted -> it.resume(isGranted) }
 
         permissionRequester.launch(input)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        clear()
     }
 
     protected fun <T> Flow<T>.launchInCatching(): Job =

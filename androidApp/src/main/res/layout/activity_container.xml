@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="io.krugosvet.dailydish.android.ui.container.viewmodel.ContainerViewModel"
+            type="io.krugosvet.dailydish.android.ui.container.ContainerViewModel"
             />
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
