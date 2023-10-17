@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mealListFragment"
+        android:icon="@drawable/ic_calendar_today_black_18dp"
+        android:title="@string/what_to_cook_today" />
+
+    <item
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/ic_settings_black_18dp"
+        android:title="@string/settings" />
+</menu>

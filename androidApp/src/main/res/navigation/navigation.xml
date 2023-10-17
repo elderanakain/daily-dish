@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/navigation"
+            app:startDestination="@id/mealListFragment">
+    <fragment
+        android:id="@+id/mealListFragment"
+        android:name="io.krugosvet.dailydish.android.ui.mealList.MealListFragment"
+        android:label="@string/what_to_cook_today" >
+        <action
+            android:id="@+id/action_mealListFragment_to_dialogAddMeal"
+            app:destination="@id/dialogAddMeal"/>
+    </fragment>
+    <fragment
+        android:id="@+id/dialogAddMeal"
+        android:name="io.krugosvet.dailydish.android.ui.addMeal.AddMealFragment"
+        android:label="@string/add_meal_dialog_title" >
+        <action
+            android:id="@+id/action_dialogAddMeal_to_mealListFragment"
+            app:destination="@id/mealListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="io.krugosvet.dailydish.android.ui.settings.view.SettingsFragment"
+        android:label="@string/settings" />
+</navigation>
