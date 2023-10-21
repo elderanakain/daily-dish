@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 internal class MealDao(
-    private val dbQueries: DbQueries
+    private val dbQueries: DbQueries,
 ) {
 
     val meals: List<MealEntity>
@@ -35,7 +35,7 @@ internal class MealDao(
 
     suspend fun update(mealEntity: MealEntity) = withContext(Dispatchers.Default) {
         with(mealEntity) {
-            dbQueries.update(title, description, imageUri, lastCookingDate, id)
+            dbQueries.update(title, description, lastCookingDate, id)
         }
     }
 

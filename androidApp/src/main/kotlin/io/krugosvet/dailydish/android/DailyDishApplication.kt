@@ -40,8 +40,8 @@ class DailyDishApplication :
                         coreModule,
                         reminderModule,
                         uiModule,
-                    )
-                )
+                    ),
+                ),
             )
         }
 
@@ -49,7 +49,7 @@ class DailyDishApplication :
 
         registerReceiver(
             get<ReminderNotificationReceiver>(),
-            IntentFilter(ReminderNotification.CookedTodayAction.INTENT)
+            IntentFilter(ReminderNotification.CookedTodayAction.INTENT),
         )
     }
 }

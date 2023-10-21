@@ -17,7 +17,7 @@ dependencyResolutionManagement {
 
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/elderanakain/daily-dish-common")
+            url = uri("https://maven.pkg.github.com/elderanakain/daily-dish")
             credentials {
                 username = System.getenv("DD_GH_USERNAME")
                 password = System.getenv("DD_GG_TOKEN")

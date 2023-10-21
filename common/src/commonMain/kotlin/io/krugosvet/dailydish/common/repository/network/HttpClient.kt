@@ -13,6 +13,8 @@ import io.ktor.client.request.accept
 import io.ktor.http.ContentType
 import io.ktor.serialization.kotlinx.json.json
 
+internal expect val baseUrl: String
+
 internal fun createHttpClient(): HttpClient =
     HttpClient {
         install(ContentNegotiation) {
@@ -31,9 +33,6 @@ internal fun createHttpClient(): HttpClient =
         }
 
         defaultRequest {
-            // FIXME
-            // parameter("api_key", "some_api_key")
-
             accept(ContentType.Application.Json)
         }
     }

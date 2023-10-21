@@ -6,5 +6,4 @@ public actual class IdGenerator {
 
     public actual fun generate(): String =
         NSUUID().UUIDString
-
 }

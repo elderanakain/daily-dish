@@ -63,8 +63,8 @@ class MealCRUDTest :
             .perform(
                 actionOnHolderItem(
                     withTitle(MOCK_MEAL_TITLE),
-                    clickOnView(R.id.deleteButton)
-                )
+                    clickOnView(R.id.deleteButton),
+                ),
             )
     }
 
@@ -73,8 +73,8 @@ class MealCRUDTest :
             .perform(
                 actionOnHolderItem(
                     withTitle(MOCK_MEAL_TITLE),
-                    clickOnView(R.id.meal_image)
-                )
+                    clickOnView(R.id.meal_image),
+                ),
             )
 
         onView(withText(R.string.remove_picture))
@@ -90,14 +90,14 @@ class MealCRUDTest :
         onView(withId(R.id.addMealButton))
             .perform(
                 scrollTo(),
-                click()
+                click(),
             )
     }
 
     private fun fillInMealData() {
         mapOf(
             R.id.title_field to MOCK_MEAL_TITLE,
-            R.id.description_field to MOCK_MEAL_DESCRIPTION
+            R.id.description_field to MOCK_MEAL_DESCRIPTION,
         )
             .forEach(::fillInMealField)
 
@@ -142,7 +142,7 @@ class MealCRUDTest :
             Activity.RESULT_OK,
             Intent().apply {
                 data = getResourceUriFrom(drawable.ic_add_white_24dp)
-            }
+            },
         )
 
         intending(hasAction(Intent.ACTION_OPEN_DOCUMENT)).respondWith(result)

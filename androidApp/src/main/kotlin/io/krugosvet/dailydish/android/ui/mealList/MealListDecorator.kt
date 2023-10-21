@@ -12,7 +12,10 @@ class MealListDecorator(
     RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(
-        outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State,
     ) {
         super.getItemOffsets(outRect, view, parent, state)
 
@@ -31,7 +34,7 @@ class MealListDecorator(
                     resources.getDimensionPixelSize(R.dimen.meal_list_offset)
                 }
                 else -> 0
-            }
+            },
         )
     }
 

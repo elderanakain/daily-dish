@@ -33,7 +33,9 @@ abstract class BaseFragment<TBinding : ViewDataBinding, TViewModel : ViewModel<*
     protected val navController: NavController by lazy { findNavController() }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ) =
         binding.root
 

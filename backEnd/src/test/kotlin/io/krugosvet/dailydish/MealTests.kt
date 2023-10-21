@@ -142,7 +142,7 @@ class MealTests : KoinTest {
         assertTrue(
             createdMeal
                 .image!!
-                .matches("https://daily-dish-be-staging.herokuapp.com/static/.*".toRegex())
+                .matches("https://daily-dish-be-staging.herokuapp.com/static/.*".toRegex()),
         )
         assertEquals(expected = mockLastCookingDate, actual = createdMeal.lastCookingDate)
 

@@ -1,9 +1,7 @@
 package io.krugosvet.dailydish.common.repository
 
-import io.krugosvet.dailydish.common.dto.AddMeal
 import io.krugosvet.dailydish.common.dto.Meal
 import io.krugosvet.dailydish.common.dto.MealFactory
-import io.krugosvet.dailydish.common.dto.NewImage
 import io.krugosvet.dailydish.common.repository.db.MealDao
 import io.krugosvet.dailydish.common.repository.db.MealEntityFactory
 import io.krugosvet.dailydish.common.repository.network.MealService
@@ -28,12 +26,12 @@ internal actual class MealRepositoryImpl(
                 mealEntities.map(mealFactory::from)
             }
 
-    override suspend fun add(meal: AddMeal, newImage: NewImage?): String =
-        runCatching { mealService.add(meal, newImage) }
+    override suspend fun add(meal: Meal): String =
+        runCatching { mealService.add(meal) }
             .refreshData()
 
-    override suspend fun update(meal: Meal, newImage: NewImage?) {
-        runCatching { mealService.update(meal, newImage) }
+    override suspend fun update(meal: Meal) {
+        runCatching { mealService.update(meal) }
             .refreshData()
     }
 
@@ -43,8 +41,7 @@ internal actual class MealRepositoryImpl(
     }
 
     override suspend fun get(mealId: String): Meal =
-        runCatching { mealService.get(mealId) }
-            .getOrThrow()
+        mealService.get(mealId)
 
     override suspend fun fetch() {
         val entities = mealService.getAll()

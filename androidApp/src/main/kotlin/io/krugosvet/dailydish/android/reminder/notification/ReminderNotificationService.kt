@@ -26,7 +26,7 @@ object ReminderNotification {
 class ReminderNotificationService(
     private val context: Context,
     private val resources: Resources,
-    private val notificationManager: NotificationManager
+    private val notificationManager: NotificationManager,
 ) {
 
     private val onTapIntent
@@ -34,11 +34,10 @@ class ReminderNotificationService(
             context,
             ReminderNotification.ID,
             Intent(context, ContainerActivity::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_UPDATE_CURRENT,
         )
 
     fun sendReminderNotification(meal: Meal) {
-
         if (!isChannelAdded()) {
             addChannel()
         }
@@ -46,10 +45,10 @@ class ReminderNotificationService(
         val notification = Notification.Builder(context, ReminderNotification.CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification_reminder)
             .setContentTitle(
-                resources.getString(R.string.notification_title, meal.title)
+                resources.getString(R.string.notification_title, meal.title),
             )
             .setContentText(
-                resources.getString(R.string.notification_text, meal.title)
+                resources.getString(R.string.notification_text, meal.title),
             )
             .setContentIntent(onTapIntent)
             .setAutoCancel(true)
@@ -58,9 +57,9 @@ class ReminderNotificationService(
                     .Builder(
                         null,
                         resources.getString(R.string.meal_card_cooked_button),
-                        createOnCookedTodayAction(meal.id)
+                        createOnCookedTodayAction(meal.id),
                     )
-                    .build()
+                    .build(),
             )
             .build()
 
@@ -73,11 +72,12 @@ class ReminderNotificationService(
 
     private fun createOnCookedTodayAction(mealId: String): PendingIntent =
         PendingIntent.getBroadcast(
-            context, ReminderNotification.ID,
+            context,
+            ReminderNotification.ID,
             Intent(CookedTodayAction.INTENT).apply {
                 putExtra(CookedTodayAction.MEAL_ID_KEY, mealId)
             },
-            PendingIntent.FLAG_ONE_SHOT
+            PendingIntent.FLAG_ONE_SHOT,
         )
 
     private fun isChannelAdded(): Boolean =
@@ -89,10 +89,10 @@ class ReminderNotificationService(
                 NotificationChannel(
                     ReminderNotification.CHANNEL_ID,
                     resources.getString(R.string.notification_channel_title),
-                    NotificationManager.IMPORTANCE_HIGH
+                    NotificationManager.IMPORTANCE_HIGH,
                 ).apply {
                     enableVibration(true)
-                }
+                },
             )
     }
 }

@@ -89,18 +89,6 @@
                     tools:text="November 2, 2018" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <ImageButton
-                android:id="@+id/addMealImage"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:layout_width="@dimen/add_meal_image_size"
-                android:layout_height="@dimen/add_meal_image_size"
-                android:adjustViewBounds="true"
-                android:onClick="@{() -> viewModel.showImagePicker()}"
-                android:src="@{viewModel.visual.image.value}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/dateEditText"
-                tools:src="@drawable/meal_empty_image" />
-
             <Button
                 android:id="@+id/addMealButton"
                 style="@style/Widget.AppCompat.Button.Colored"
@@ -109,7 +97,7 @@
                 android:layout_gravity="center"
                 android:text="@string/dialog_add_meal_button_add_text"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/addMealImage" />
+                app:layout_constraintTop_toBottomOf="@id/dateEditText" />
 
             <Button
                 android:id="@+id/cancel_button"

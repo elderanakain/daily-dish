@@ -1,15 +1,13 @@
 package io.krugosvet.dailydish.common.repository.network
 
-import io.krugosvet.dailydish.common.core.environment
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 internal val networkModule = module {
 
-  single {
-    createHttpClient()
-  }
+    singleOf(::createHttpClient)
 
-  single<MealService> {
-    MealServiceImpl(environment.endpoint, get())
-  }
+    single<MealService> {
+        MealServiceImpl(baseUrl, get())
+    }
 }

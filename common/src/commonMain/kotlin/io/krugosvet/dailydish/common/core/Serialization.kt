@@ -11,20 +11,20 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
 
 public val jsonConfig: Json = Json {
-  ignoreUnknownKeys = true
-  isLenient = true
-  encodeDefaults = false
+    ignoreUnknownKeys = true
+    isLenient = true
+    encodeDefaults = false
 }
 
 internal class LocalDateSerializer :
-  KSerializer<LocalDate> {
+    KSerializer<LocalDate> {
 
-  override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("LocalDate", STRING)
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("LocalDate", STRING)
 
-  override fun deserialize(decoder: Decoder): LocalDate =
-    decoder.decodeString().toLocalDate()
+    override fun deserialize(decoder: Decoder): LocalDate =
+        decoder.decodeString().toLocalDate()
 
-  override fun serialize(encoder: Encoder, value: LocalDate) {
-    encoder.encodeString(value.toString())
-  }
+    override fun serialize(encoder: Encoder, value: LocalDate) {
+        encoder.encodeString(value.toString())
+    }
 }

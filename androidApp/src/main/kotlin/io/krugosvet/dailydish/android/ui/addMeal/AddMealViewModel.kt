@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
 import io.krugosvet.dailydish.android.ui.addMeal.AddMealViewModel.Event
-import io.krugosvet.dailydish.common.dto.AddMealForm
-import io.krugosvet.dailydish.common.dto.NewImage
+import io.krugosvet.dailydish.common.core.currentDate
+import io.krugosvet.dailydish.common.dto.Meal
 import io.krugosvet.dailydish.common.usecase.AddMealUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -24,7 +24,9 @@ class AddMealViewModel(
     ViewModel<Event>(savedStateHandle) {
 
     private val shouldValidate = MutableStateFlow(false)
-    private val form = MutableStateFlow(AddMealForm())
+    private val form = MutableStateFlow(
+        Meal(id = "", title = "", description = "", lastCookingDate = currentDate),
+    )
 
     val visual: StateFlow<AddMealVisual?> =
         form
@@ -32,12 +34,6 @@ class AddMealViewModel(
                 visualFactory.from(visual, shouldValidate)
             }
             .stateIn(viewModelScope, SharingStarted.Lazily, initialValue = null)
-
-    fun showImagePicker() {
-        val event = Event.ShowImagePicker(form.value.image == null)
-
-        navigate(event)
-    }
 
     fun showDatePicker() {
         navigate(Event.ShowDatePicker)
@@ -67,21 +63,12 @@ class AddMealViewModel(
     }
 
     fun onDateChange(date: LocalDate) {
-        form.update { form.value.copy(date = date) }
-    }
-
-    fun onImageChange(image: NewImage?) {
-        form.update { form.value.copy(image = image) }
+        form.update { form.value.copy(lastCookingDate = date) }
     }
 
     sealed interface Event : NavigationEvent {
 
         data object Close : Event
-
-        data class ShowImagePicker(
-            val isImageEmpty: Boolean
-        ) :
-            Event
 
         data object ShowDatePicker : Event
     }

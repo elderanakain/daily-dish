@@ -9,17 +9,17 @@ import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 
 public val commonModules: List<Module> by lazy {
-  listOf(
-    dbModule,
-    networkModule,
-    useCaseModule,
-    dtoModule,
-    platformModule
-  )
+    listOf(
+        dbModule,
+        networkModule,
+        useCaseModule,
+        dtoModule,
+        platformModule,
+    )
 }
 
 public fun init(): KoinApplication = startKoin {
-  modules(commonModules)
+    modules(commonModules)
 }
 
 internal expect val platformModule: Module

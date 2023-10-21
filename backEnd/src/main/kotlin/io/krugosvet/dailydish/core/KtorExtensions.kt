@@ -1,6 +1,6 @@
 package io.krugosvet.dailydish.core
 
-import io.ktor.http.*
+import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.log
 import io.ktor.server.response.respond

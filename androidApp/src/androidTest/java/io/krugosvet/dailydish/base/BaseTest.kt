@@ -120,7 +120,5 @@ abstract class BaseTest {
         override fun atPosition(position: Int): PositionableRecyclerViewAction {
             throw IllegalStateException("Not supported")
         }
-
     }
-
 }
