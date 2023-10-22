@@ -39,7 +39,7 @@ class MealListViewModel(
 
     private fun onDelete(meal: Meal): OnClick = {
         viewModelScope.launchCatching {
-            deleteMealUseCase.execute(meal)
+            deleteMealUseCase(meal)
         }
     }
 
@@ -47,7 +47,7 @@ class MealListViewModel(
         reminderNotificationService.closeReminder()
 
         viewModelScope.launchCatching {
-            setCurrentTimeToCookedDateMealUseCase.execute(meal)
+            setCurrentTimeToCookedDateMealUseCase(meal)
         }
     }
 

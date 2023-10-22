@@ -15,24 +15,16 @@ internal actual class MealRepositoryImpl(
 ) :
     MealRepository {
 
-    override val meals: List<Meal>
-        get() = mealDao.meals
-            .map(mealFactory::from)
-
     override val mealsFlow: Flow<List<Meal>>
         get() = mealDao.mealsFlow
-            .map {
-                it.map(mealFactory::from)
-            }
+            .map { it.map(mealFactory::from) }
 
-    override suspend fun add(meal: Meal): String {
+    override suspend fun add(meal: Meal) {
         val newId = UUID.randomUUID().toString()
 
         val newEntity = mealEntityFactory.from(meal.copy(id = newId))
 
         mealDao.add(newEntity)
-
-        return newId
     }
 
     override suspend fun delete(mealId: String) {

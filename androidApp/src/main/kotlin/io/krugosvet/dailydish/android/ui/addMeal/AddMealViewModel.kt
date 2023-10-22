@@ -24,6 +24,7 @@ class AddMealViewModel(
     ViewModel<Event>(savedStateHandle) {
 
     private val shouldValidate = MutableStateFlow(false)
+
     private val form = MutableStateFlow(
         Meal(id = "", title = "", description = "", lastCookingDate = currentDate),
     )
@@ -40,10 +41,8 @@ class AddMealViewModel(
     }
 
     fun onAddMeal() = viewModelScope.launchCatching {
-        runCatching { addMealUseCase.execute(form.value) }
-            .onSuccess {
-                navigate(Event.Close)
-            }
+        addMealUseCase(form.value)
+            .onSuccess { navigate(Event.Close) }
             .onFailure {
                 Timber.e(it)
                 shouldValidate.value = true

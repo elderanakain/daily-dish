@@ -10,34 +10,35 @@ import kotlinx.coroutines.flow.map
 
 internal actual class MealRepositoryImpl(
     private val mealDao: MealDao,
-    private val mealFactory: MealFactory,
-    private val mealEntityFactory: MealEntityFactory,
+    private val factory: MealFactory,
+    private val entityFactory: MealEntityFactory,
     private val mealService: MealService,
 ) :
     MealRepository {
 
-    override val meals: List<Meal>
-        get() = mealDao.meals
-            .map(mealFactory::from)
-
     override val mealsFlow: Flow<List<Meal>> =
         mealDao.mealsFlow
-            .map { mealEntities ->
-                mealEntities.map(mealFactory::from)
-            }
+            .map { entities -> entities.map(factory::from) }
 
-    override suspend fun add(meal: Meal): String =
-        runCatching { mealService.add(meal) }
-            .refreshData()
+    override suspend fun add(meal: Meal) {
+        val entity = entityFactory.from(meal)
+
+        mealDao.add(entity)
+
+        runCatching {
+            mealService.add(meal)
+            fetch()
+        }
+    }
 
     override suspend fun update(meal: Meal) {
-        runCatching { mealService.update(meal) }
-            .refreshData()
+        mealService.update(meal)
+        fetch()
     }
 
     override suspend fun delete(mealId: String) {
-        runCatching { mealService.delete(mealId) }
-            .refreshData()
+        mealService.delete(mealId)
+        fetch()
     }
 
     override suspend fun get(mealId: String): Meal =
@@ -45,16 +46,12 @@ internal actual class MealRepositoryImpl(
 
     override suspend fun fetch() {
         val entities = mealService.getAll()
-            .map { mealEntityFactory.from(it) }
+            .map { entityFactory.from(it) }
 
         mealDao.replaceAll(entities)
     }
 
     override suspend fun reset() {
-        throw IllegalStateException("Not supported on Android")
+        mealDao.reset()
     }
-
-    private suspend fun <T> Result<T>.refreshData(): T =
-        onSuccess { fetch() }
-            .getOrThrow()
 }

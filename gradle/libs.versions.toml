@@ -1,4 +1,5 @@
 [versions]
+common = "1.1.8-SNAPSHOT"
 agp = "8.1.2"
 kotlin = "1.9.10"
 sqldelight = "2.0.0"
@@ -24,7 +25,6 @@ androidRecyclerView = "1.3.1"
 androidLifecycle = "2.6.2"
 androidWork = "2.8.1"
 androidTimber = "5.0.1"
-common = "1.1.6"
 hamster = "1.3"
 junit = "4.13.2"
 roboelectric = "4.4"

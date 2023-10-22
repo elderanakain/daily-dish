@@ -1,13 +1,8 @@
 package io.krugosvet.dailydish.base
 
-import android.content.ContentResolver
 import android.content.res.Resources
-import android.net.Uri
 import android.view.View
-import android.widget.ImageView
-import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
-import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
@@ -26,7 +21,6 @@ import io.krugosvet.dailydish.android.ui.mealList.MealListAdapter.MealViewHolder
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
-import org.hamcrest.TypeSafeMatcher
 import org.junit.Rule
 
 @Suppress("UnnecessaryAbstractClass")
@@ -44,38 +38,6 @@ abstract class BaseTest {
             check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
             perform(ViewActions.click())
         }
-    }
-
-    protected fun withDrawable(@DrawableRes id: Int) = object : TypeSafeMatcher<View>() {
-
-        override fun describeTo(description: Description) {
-            description.appendText("ImageView with drawable same as drawable with id $id")
-        }
-
-        override fun matchesSafely(view: View): Boolean {
-            val imageView = view as? ImageView
-
-            val actualDrawable = imageView?.drawable
-            val expectedDrawable = view.context.getDrawable(id)
-
-            imageView?.setImageDrawable(expectedDrawable)
-
-            val actual = imageView?.drawable?.toBitmap()
-            val expected = view.context.getDrawable(id)?.toBitmap()
-
-            imageView?.setImageDrawable(actualDrawable)
-
-            return actual?.sameAs(expected) ?: false
-        }
-    }
-
-    protected fun getResourceUriFrom(resourceId: Int): Uri = with(resources) {
-        Uri.Builder()
-            .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
-            .authority(getResourcePackageName(resourceId))
-            .appendPath(getResourceTypeName(resourceId))
-            .appendPath(getResourceEntryName(resourceId))
-            .build()
     }
 
     protected fun withTitle(title: String): Matcher<MealViewHolder> = object :
