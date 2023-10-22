@@ -6,12 +6,15 @@ import android.content.Intent
 import io.krugosvet.dailydish.common.core.currentDate
 import io.krugosvet.dailydish.common.repository.MealRepository
 import kotlinx.coroutines.runBlocking
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class ReminderNotificationReceiver(
-    private val mealRepository: MealRepository,
-    private val reminderNotificationService: ReminderNotificationService,
-) :
-    BroadcastReceiver() {
+class ReminderNotificationReceiver :
+    BroadcastReceiver(),
+    KoinComponent {
+
+    private val mealRepository: MealRepository by inject()
+    private val reminderNotificationService: ReminderNotificationService by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
         val mealId = intent.getStringExtra(ReminderNotification.CookedTodayAction.MEAL_ID_KEY)

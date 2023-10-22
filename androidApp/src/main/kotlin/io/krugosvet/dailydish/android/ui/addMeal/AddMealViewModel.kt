@@ -2,7 +2,7 @@ package io.krugosvet.dailydish.android.ui.addMeal
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
+import io.krugosvet.dailydish.android.architecture.ViewModel
 import io.krugosvet.dailydish.android.ui.addMeal.AddMealViewModel.Event
 import io.krugosvet.dailydish.common.core.currentDate
 import io.krugosvet.dailydish.common.dto.Meal

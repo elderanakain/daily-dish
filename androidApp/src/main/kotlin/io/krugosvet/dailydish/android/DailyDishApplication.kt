@@ -2,12 +2,12 @@ package io.krugosvet.dailydish.android
 
 import android.app.Application
 import android.content.IntentFilter
-import io.krugosvet.dailydish.android.architecture.injection.coreModule
+import io.krugosvet.dailydish.android.architecture.coreModule
 import io.krugosvet.dailydish.android.reminder.ReminderService
-import io.krugosvet.dailydish.android.reminder.injection.reminderModule
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotification
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotificationReceiver
-import io.krugosvet.dailydish.android.service.injection.serviceModule
+import io.krugosvet.dailydish.android.reminder.reminderModule
+import io.krugosvet.dailydish.android.service.serviceModule
 import io.krugosvet.dailydish.android.ui.injection.uiModule
 import io.krugosvet.dailydish.common.core.commonModules
 import io.krugosvet.dailydish.common.repository.db.appContext

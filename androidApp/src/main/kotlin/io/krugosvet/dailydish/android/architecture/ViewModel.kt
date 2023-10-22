@@ -1,9 +1,9 @@
-package io.krugosvet.dailydish.android.architecture.viewmodel
+package io.krugosvet.dailydish.android.architecture
 
 import androidx.lifecycle.ViewModel as JetpackViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel.NavigationEvent
+import io.krugosvet.dailydish.android.architecture.ViewModel.NavigationEvent
 import io.krugosvet.dailydish.android.errorHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job

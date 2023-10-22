@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.ManagedVirtualDevice
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -47,6 +49,27 @@ android {
 
     buildFeatures {
         dataBinding = true
+    }
+
+    @Suppress("UnstableApiUsage")
+    testOptions {
+        managedDevices {
+            devices {
+                maybeCreate<ManagedVirtualDevice>("ddUiTests").apply {
+                    device = "Pixel 2"
+                    apiLevel = 33
+                    systemImageSource = "aosp-atd"
+                }
+            }
+        }
+    }
+}
+
+afterEvaluate {
+    val check by tasks.getting {
+        val allDevicesDebugAndroidTest by tasks.getting
+
+        dependsOn(allDevicesDebugAndroidTest)
     }
 }
 
