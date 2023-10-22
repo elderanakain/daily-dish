@@ -6,23 +6,21 @@ import kotlin.test.assertTrue
 
 class IdGeneratorTest {
 
-  private lateinit var idGenerator: IdGenerator
+    private lateinit var idGenerator: IdGenerator
 
-  @Test
-  fun whenGenerateId_thenIdIsValid() {
+    @Test
+    fun whenGenerateId_thenIdIsValid() {
+        // when
 
-    // when
+        val id = idGenerator.generate()
 
-    val id = idGenerator.generate()
+        // then
 
-    // then
+        assertTrue(id.isNotBlank())
+    }
 
-    assertTrue(id.isNotBlank())
-  }
-
-  @BeforeTest
-  fun setUp() {
-    idGenerator = IdGenerator()
-  }
-
+    @BeforeTest
+    fun setUp() {
+        idGenerator = IdGenerator()
+    }
 }

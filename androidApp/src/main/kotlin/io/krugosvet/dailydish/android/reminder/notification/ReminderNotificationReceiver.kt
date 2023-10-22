@@ -25,10 +25,9 @@ class ReminderNotificationReceiver(
             val updatedMeal = mealRepository.get(mealId)
                 .copy(lastCookingDate = currentDate)
 
-            mealRepository.update(updatedMeal, null)
+            mealRepository.update(updatedMeal)
         }
 
         reminderNotificationService.closeReminder()
     }
-
 }

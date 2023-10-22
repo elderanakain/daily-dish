@@ -19,35 +19,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/meal_image"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@color/meal_image_placeholder"
-                android:onClick="@{() -> visual.onImageClick.invoke()}"
-                android:scaleType="centerInside"
-                android:src="@{visual.image}"
-                app:layout_constraintDimensionRatio="H,16:9"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="ContentDescription" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:id="@+id/innerLayout"
-                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
-                app:layout_constraintTop_toBottomOf="@id/meal_image">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/title"
                     style="@style/TitleTextView"
                     android:paddingTop="8dp"
                     android:text="@{visual.title}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/innerLayout"
                     tools:text="Lorem ipsum" />
 
                 <TextView
@@ -71,7 +57,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/last_date_of_cooking"
                     tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel sagittis dolor. Cras vulputate dictum urna id tincidunt. Mauris efficitur ligula orci, eget consequat nulla interdum nec." />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
             <Button
                 android:id="@+id/deleteButton"
@@ -99,6 +85,7 @@
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/innerLayout" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>

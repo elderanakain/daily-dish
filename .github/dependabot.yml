@@ -1,0 +1,34 @@
+version: 2
+updates:
+    -   package-ecosystem: "github-actions"
+        directory: "/"
+        assignees:
+            - elderanakain
+        schedule:
+            interval: "daily"
+        groups:
+            dependencies:
+                patterns:
+                    - "*"
+
+    -   package-ecosystem: "gradle"
+        directory: "/"
+        assignees:
+            - elderanakain
+        schedule:
+            interval: "daily"
+        groups:
+            dependencies:
+                patterns:
+                    - "*"
+
+    -   package-ecosystem: "docker"
+        directory: "/"
+        assignees:
+            - elderanakain
+        schedule:
+            interval: "daily"
+        groups:
+            dependencies:
+                patterns:
+                    - "*"

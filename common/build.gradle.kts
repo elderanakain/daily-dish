@@ -10,7 +10,7 @@ plugins {
     id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
 }
 
-version = "1.1.1"
+version = libs.versions.common.get()
 group = "io.krugosvet.dailydish"
 
 @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -78,9 +78,16 @@ sqldelight {
     }
 }
 
-gradle.settingsEvaluated {
-    publishing {
-        repositories.addLast(repositories.getByName("GitHubPackages"))
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/elderanakain/daily-dish")
+            credentials {
+                username = System.getenv("DD_GH_USERNAME")
+                password = System.getenv("DD_GG_TOKEN")
+            }
+        }
     }
 }
 

@@ -6,9 +6,7 @@ import io.krugosvet.dailydish.android.architecture.extension.OnClick
 import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotificationService
 import io.krugosvet.dailydish.common.dto.Meal
-import io.krugosvet.dailydish.common.dto.NewImage
 import io.krugosvet.dailydish.common.repository.MealRepository
-import io.krugosvet.dailydish.common.usecase.ChangeMealImageUseCase
 import io.krugosvet.dailydish.common.usecase.DeleteMealUseCase
 import io.krugosvet.dailydish.common.usecase.SetCurrentTimeToCookedDateMealUseCase
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,7 +20,6 @@ class MealListViewModel(
     private val mealVisualFactory: MealVisualFactory,
     private val reminderNotificationService: ReminderNotificationService,
     private val deleteMealUseCase: DeleteMealUseCase,
-    private val changeMealImageUseCase: ChangeMealImageUseCase,
     private val setCurrentTimeToCookedDateMealUseCase: SetCurrentTimeToCookedDateMealUseCase,
 ) :
     ViewModel<MealListViewModel.Event>(savedStateHandle) {
@@ -38,12 +35,6 @@ class MealListViewModel(
         viewModelScope.launchCatching {
             mealRepository.fetch()
         }
-    }
-
-    fun changeImage(meal: Meal, image: NewImage?) = viewModelScope.launchCatching {
-        val input = ChangeMealImageUseCase.Input(meal, image)
-
-        changeMealImageUseCase.execute(input)
     }
 
     private fun onDelete(meal: Meal): OnClick = {

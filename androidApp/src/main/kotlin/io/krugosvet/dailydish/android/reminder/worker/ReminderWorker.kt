@@ -12,7 +12,7 @@ import org.koin.core.component.inject
 
 internal class ReminderWorker(
     context: Context,
-    workerParams: WorkerParameters
+    workerParams: WorkerParameters,
 ) :
     CoroutineWorker(context, workerParams),
     KoinComponent {
@@ -30,5 +30,4 @@ internal class ReminderWorker(
                 Result.success()
             }
             ?: Result.failure()
-
 }

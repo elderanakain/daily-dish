@@ -4,17 +4,14 @@ import androidx.annotation.StringRes
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.ui.addMeal.AddMealVisual.Date
 import io.krugosvet.dailydish.android.ui.addMeal.AddMealVisual.Description
-import io.krugosvet.dailydish.android.ui.addMeal.AddMealVisual.Image
 import io.krugosvet.dailydish.android.ui.addMeal.AddMealVisual.Title
 import io.krugosvet.dailydish.common.core.toDisplayString
-import io.krugosvet.dailydish.common.dto.AddMealForm
-import io.krugosvet.dailydish.common.dto.NewImage
+import io.krugosvet.dailydish.common.dto.Meal
 import kotlinx.datetime.LocalDate
 
 data class AddMealVisual(
     val title: Title = Title(),
     val description: Description = Description(),
-    val image: Image = Image(),
     val date: Date = Date(),
 ) {
 
@@ -74,7 +71,7 @@ class AddMealVisualFactory(
     private val validator: AddMealVisualValidator,
 ) {
 
-    fun from(form: AddMealForm, shouldValidate: Boolean): AddMealVisual =
+    fun from(form: Meal, shouldValidate: Boolean): AddMealVisual =
         AddMealVisual(
             title = Title(
                 value = form.title,
@@ -82,7 +79,7 @@ class AddMealVisualFactory(
                     !shouldValidate -> null
                     !validator.isTitleValid(form.title) -> R.string.incorrect_value
                     else -> null
-                }
+                },
             ),
             description = Description(
                 value = form.description,
@@ -90,22 +87,16 @@ class AddMealVisualFactory(
                     !shouldValidate -> null
                     !validator.isDescriptionValid(form.description) -> R.string.incorrect_value
                     else -> null
-                }
+                },
             ),
             date = Date(
-                value = form.date.toDisplayString(),
+                value = form.lastCookingDate.toDisplayString(),
                 error = when {
                     !shouldValidate -> null
-                    !validator.isDateValid(form.date) -> R.string.incorrect_value
+                    !validator.isDateValid(form.lastCookingDate) -> R.string.incorrect_value
                     else -> null
-                }
+                },
             ),
-            image = getImage(form)
-        )
-
-    private fun getImage(form: AddMealForm): Image =
-        Image(
-            value = form.image?.data,
         )
 }
 

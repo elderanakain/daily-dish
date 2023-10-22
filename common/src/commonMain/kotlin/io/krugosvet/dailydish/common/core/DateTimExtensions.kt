@@ -6,10 +6,10 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
 public val currentDate: LocalDate
-  get() = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+    get() = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 
 public val LocalDate.isToday: Boolean
-  get() = this == currentDate
+    get() = this == currentDate
 
 public fun LocalDate.toDisplayString(): String =
-  toString().replace("-", " ")
+    toString().replace("-", " ")

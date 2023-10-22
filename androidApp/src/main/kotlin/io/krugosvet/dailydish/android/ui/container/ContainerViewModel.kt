@@ -5,7 +5,7 @@ import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
 import io.krugosvet.dailydish.android.ui.container.ContainerViewModel.Event
 
 class ContainerViewModel(
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) :
     ViewModel<Event>(savedStateHandle) {
 

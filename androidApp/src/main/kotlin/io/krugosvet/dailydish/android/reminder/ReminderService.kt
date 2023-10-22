@@ -15,7 +15,7 @@ private const val REMINDER_WORK_ID = "reminder_work_id"
 
 class ReminderService(
     private val workManager: WorkManager,
-    private val preferenceService: PreferenceService
+    private val preferenceService: PreferenceService,
 ) {
 
     private val constrains: Constraints
@@ -26,10 +26,7 @@ class ReminderService(
 
     private val work: PeriodicWorkRequest
         get() = PeriodicWorkRequest
-            .Builder(
-                ReminderWorker::class.java,
-                1, TimeUnit.DAYS
-            )
+            .Builder(ReminderWorker::class.java, 1, TimeUnit.DAYS)
             .setConstraints(constrains)
             .build()
 
@@ -46,7 +43,9 @@ class ReminderService(
 
     private fun startWorker() {
         workManager.enqueueUniquePeriodicWork(
-            REMINDER_WORK_ID, ExistingPeriodicWorkPolicy.KEEP, work
+            REMINDER_WORK_ID,
+            ExistingPeriodicWorkPolicy.KEEP,
+            work,
         )
     }
 }

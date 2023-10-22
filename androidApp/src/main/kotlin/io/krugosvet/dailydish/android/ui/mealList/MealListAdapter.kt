@@ -19,7 +19,7 @@ class MealListAdapter :
     }
 
     class MealViewHolder private constructor(
-        val binding: ListMealBinding
+        val binding: ListMealBinding,
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -27,7 +27,7 @@ class MealListAdapter :
 
             fun from(parent: ViewGroup): MealViewHolder =
                 MealViewHolder(
-                    ListMealBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                    ListMealBinding.inflate(LayoutInflater.from(parent.context), parent, false),
                 )
         }
 
