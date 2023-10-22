@@ -1,6 +1,5 @@
 package io.krugosvet.dailydish.base
 
-import android.content.res.Resources
 import android.view.View
 import androidx.annotation.IdRes
 import androidx.recyclerview.widget.RecyclerView
@@ -14,10 +13,10 @@ import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
-import androidx.test.platform.app.InstrumentationRegistry
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.ui.container.ContainerActivity
 import io.krugosvet.dailydish.android.ui.mealList.MealListAdapter.MealViewHolder
+import leakcanary.DetectLeaksAfterTestSuccess
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
@@ -26,12 +25,11 @@ import org.junit.Rule
 @Suppress("UnnecessaryAbstractClass")
 abstract class BaseTest {
 
-    @JvmField
-    @Rule
+    @get:Rule
     val activityRule = IntentsTestRule(ContainerActivity::class.java)
 
-    private val resources: Resources
-        get() = InstrumentationRegistry.getInstrumentation().targetContext.resources
+    @get:Rule
+    val rule = DetectLeaksAfterTestSuccess()
 
     protected fun openAddMealScreen() {
         onView(ViewMatchers.withId(R.id.floatingButton)).apply {

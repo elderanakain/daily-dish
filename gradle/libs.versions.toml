@@ -33,6 +33,7 @@ androidTest = "1.4.0"
 espresso = "3.4.0"
 postgresql = "42.2.2"
 logback = "1.2.1"
+leakCanary = "2.12"
 
 [libraries]
 sqldelight = { module = "app.cash.sqldelight:runtime", version.ref = "sqldelight" }
@@ -98,6 +99,7 @@ android-hamster = { module = "org.hamcrest:hamcrest-all", version.ref = "hamster
 
 junit = { module = "junit:junit", version.ref = "junit" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "roboelectric" }
+leakCanary = { module = "com.squareup.leakcanary:leakcanary-android-instrumentation", version.ref = "leakCanary" }
 
 android-junit = { module = "androidx.test.ext:junit", version.ref = "androidJunit" }
 android-test-core = { module = "androidx.test:core", version.ref = "androidTest" }
@@ -159,7 +161,8 @@ androidInstrumentedTest = [
     "espresso-accessibility",
     "espresso-web",
     "espresso-idling",
-    "espresso-resource"
+    "espresso-resource",
+    "leakCanary"
 ]
 
 backEnd = [
