@@ -26,8 +26,7 @@ import kotlinx.coroutines.plus
 abstract class BaseFragment<TBinding : ViewDataBinding, TViewModel : ViewModel<*>>(
     @LayoutRes val layout: Int,
 ) :
-    Fragment(),
-    BindingContainer<TBinding, TViewModel> {
+    Fragment(), BindingContainer<TBinding, TViewModel> {
 
     abstract override val viewModel: TViewModel
 

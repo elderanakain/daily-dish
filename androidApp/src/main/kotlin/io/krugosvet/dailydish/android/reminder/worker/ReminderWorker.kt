@@ -15,8 +15,7 @@ internal class ReminderWorker(
     context: Context,
     workerParams: WorkerParameters,
 ) :
-    CoroutineWorker(context, workerParams),
-    KoinComponent {
+    CoroutineWorker(context, workerParams), KoinComponent {
 
     private val mealRepository: MealRepository by inject()
     private val reminderNotificationService: ReminderNotificationService by inject()

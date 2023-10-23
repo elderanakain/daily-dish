@@ -17,7 +17,6 @@ data class AddMealVisual(
 
     data class Title(
         val value: String = "",
-
         @StringRes
         override val error: Int? = null,
     ) :
@@ -25,36 +24,13 @@ data class AddMealVisual(
 
     data class Description(
         val value: String = "",
-
         @StringRes
         override val error: Int? = null,
     ) :
         ErrorHolder
 
-    data class Image(
-        val value: ByteArray? = null,
-    ) {
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (javaClass != other?.javaClass) return false
-
-            other as Image
-
-            if (value != null) {
-                if (other.value == null) return false
-                if (!value.contentEquals(other.value)) return false
-            } else if (other.value != null) return false
-
-            return true
-        }
-
-        override fun hashCode(): Int = value?.contentHashCode() ?: 0
-    }
-
     data class Date(
         val value: String = "",
-
         @StringRes
         override val error: Int? = null,
     ) :
