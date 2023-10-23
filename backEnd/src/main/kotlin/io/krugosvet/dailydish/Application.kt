@@ -9,9 +9,7 @@ import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.plugins.compression.Compression
-import io.ktor.server.plugins.compression.deflate
 import io.ktor.server.plugins.compression.gzip
-import io.ktor.server.plugins.compression.minimumSize
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.defaultheaders.DefaultHeaders
 import io.ktor.server.routing.routing
@@ -22,7 +20,7 @@ fun main() {
         .start(wait = true)
 }
 
-private fun Application.module() {
+internal fun Application.module() {
     install(DefaultHeaders)
     install(CallLogging)
 
@@ -35,13 +33,7 @@ private fun Application.module() {
     }
 
     install(Compression) {
-        gzip {
-            priority = 1.0
-        }
-        deflate {
-            priority = 10.0
-            minimumSize(1024)
-        }
+        gzip { priority = 1.0 }
     }
 
     routing {

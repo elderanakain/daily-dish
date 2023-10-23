@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 public interface MealRepository {
 
-    public val mealsFlow: Flow<List<Meal>>
+    public fun observe(): Flow<List<Meal>>
 
     public suspend fun add(meal: Meal)
 

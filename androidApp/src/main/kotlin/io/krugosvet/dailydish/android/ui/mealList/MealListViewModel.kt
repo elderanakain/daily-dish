@@ -28,7 +28,7 @@ class MealListViewModel(
     sealed interface Event : NavigationEvent
 
     val mealList: StateFlow<List<MealVisual>> =
-        mealRepository.mealsFlow
+        mealRepository.observe()
             .map { meals -> meals.map(::mapToVisual) }
             .stateIn(viewModelScope, SharingStarted.Lazily, initialValue = emptyList())
 

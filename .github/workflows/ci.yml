@@ -1,6 +1,10 @@
 name: CI
 
-on: [ pull_request ]
+on:
+    pull_request:
+    push:
+        branches:
+            - master
 
 concurrency:
     group: ${{ github.head_ref }}
@@ -32,3 +36,6 @@ jobs:
 
             -   name: Android check
                 run: ./gradlew :androidApp:check
+
+            -   name: BE check
+                run: ./gradlew :backEnd:check
