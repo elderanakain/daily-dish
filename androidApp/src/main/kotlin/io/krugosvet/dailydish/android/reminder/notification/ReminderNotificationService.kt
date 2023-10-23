@@ -77,7 +77,7 @@ class ReminderNotificationService(
             Intent(CookedTodayAction.INTENT).apply {
                 putExtra(CookedTodayAction.MEAL_ID_KEY, mealId)
             },
-            PendingIntent.FLAG_ONE_SHOT,
+            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE,
         )
 
     private fun isChannelAdded(): Boolean =

@@ -2,9 +2,10 @@ package io.krugosvet.dailydish.android.ui.mealList
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import io.krugosvet.dailydish.android.architecture.ViewModel
 import io.krugosvet.dailydish.android.architecture.extension.OnClick
-import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotificationService
+import io.krugosvet.dailydish.android.ui.mealList.MealListViewModel.Event
 import io.krugosvet.dailydish.common.dto.Meal
 import io.krugosvet.dailydish.common.repository.MealRepository
 import io.krugosvet.dailydish.common.usecase.DeleteMealUseCase
@@ -22,7 +23,7 @@ class MealListViewModel(
     private val deleteMealUseCase: DeleteMealUseCase,
     private val setCurrentTimeToCookedDateMealUseCase: SetCurrentTimeToCookedDateMealUseCase,
 ) :
-    ViewModel<MealListViewModel.Event>(savedStateHandle) {
+    ViewModel<Event>(savedStateHandle) {
 
     sealed interface Event : NavigationEvent
 
@@ -39,7 +40,7 @@ class MealListViewModel(
 
     private fun onDelete(meal: Meal): OnClick = {
         viewModelScope.launchCatching {
-            deleteMealUseCase.execute(meal)
+            deleteMealUseCase(meal)
         }
     }
 
@@ -47,7 +48,7 @@ class MealListViewModel(
         reminderNotificationService.closeReminder()
 
         viewModelScope.launchCatching {
-            setCurrentTimeToCookedDateMealUseCase.execute(meal)
+            setCurrentTimeToCookedDateMealUseCase(meal)
         }
     }
 

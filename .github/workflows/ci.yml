@@ -6,9 +6,13 @@ concurrency:
     group: ${{ github.head_ref }}
     cancel-in-progress: true
 
+env:
+    DD_GH_USERNAME: ${{ secrets.DD_GH_USERNAME }}
+    DD_GG_TOKEN: ${{ secrets.DD_GG_TOKEN }}
+
 jobs:
     verify:
-        runs-on: ubuntu-latest
+        runs-on: self-hosted
         timeout-minutes: 10
 
         steps:
@@ -23,5 +27,8 @@ jobs:
             -   name: Lint
                 run: ./gradlew lintKotlin --build-cache --stacktrace
 
-            -   name: Check
+            -   name: Common unit tests
                 run: ./gradlew allTests --build-cache
+
+            -   name: Android check
+                run: ./gradlew :androidApp:check

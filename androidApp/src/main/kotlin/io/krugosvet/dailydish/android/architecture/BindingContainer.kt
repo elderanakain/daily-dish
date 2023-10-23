@@ -1,23 +1,21 @@
-package io.krugosvet.dailydish.android.architecture.aspect
+package io.krugosvet.dailydish.android.architecture
 
-import android.content.Context
 import android.view.LayoutInflater
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import io.krugosvet.dailydish.android.BR
 
-interface IBindingContainer<TBinding : ViewDataBinding, TViewModel : ViewModel> : LifecycleOwner {
+interface BindingContainer<TBinding : ViewDataBinding, TViewModel : ViewModel> : LifecycleOwner {
 
-    val bindingComponent: IBindingComponent<TBinding>
+    val bindingComponent: Binding<TBinding>
 
     fun onBind() = Unit
-
-    val parentContext: Context
 
     val viewModel: TViewModel
 
@@ -28,7 +26,7 @@ interface IBindingContainer<TBinding : ViewDataBinding, TViewModel : ViewModel> 
 /**
  * Represents binding part of UI layer
  */
-interface IBindingComponent<TBinding : ViewDataBinding> {
+interface Binding<TBinding : ViewDataBinding> {
 
     @get:LayoutRes
     val layoutId: Int
@@ -36,16 +34,16 @@ interface IBindingComponent<TBinding : ViewDataBinding> {
     val binding: TBinding
 }
 
-class BindingComponent<TBinding : ViewDataBinding, TViewModel : ViewModel>(
+class BindingImpl<TBinding : ViewDataBinding, TViewModel : ViewModel>(
     @LayoutRes
     override val layoutId: Int,
-    private val container: IBindingContainer<TBinding, TViewModel>,
+    private val container: BindingContainer<TBinding, TViewModel>,
 ) :
-    IBindingComponent<TBinding>,
+    Binding<TBinding>,
     DefaultLifecycleObserver {
 
     override val binding: TBinding
-        get() = _binding ?: throw IllegalStateException("Binding is not ready")
+        get() = _binding ?: error("Binding is not ready")
 
     private var _binding: TBinding? = null
 
@@ -56,7 +54,11 @@ class BindingComponent<TBinding : ViewDataBinding, TViewModel : ViewModel>(
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
 
-        val context = container.parentContext
+        val context = when (container) {
+            is AppCompatActivity -> container
+            is Fragment -> container.requireContext()
+            else -> error("Context is not available")
+        }
 
         _binding = DataBindingUtil.inflate(LayoutInflater.from(context), layoutId, null, false)
         binding.lifecycleOwner = container

@@ -13,4 +13,8 @@ subprojects {
     tasks.withType<LintTask>().configureEach {
         exclude { it.file.path.contains("/build/generated/") }
     }
+
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor(0, TimeUnit.SECONDS)
+    }
 }

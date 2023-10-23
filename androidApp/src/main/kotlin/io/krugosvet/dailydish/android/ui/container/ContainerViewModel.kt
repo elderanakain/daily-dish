@@ -1,7 +1,7 @@
 package io.krugosvet.dailydish.android.ui.container
 
 import androidx.lifecycle.SavedStateHandle
-import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
+import io.krugosvet.dailydish.android.architecture.ViewModel
 import io.krugosvet.dailydish.android.ui.container.ContainerViewModel.Event
 
 class ContainerViewModel(

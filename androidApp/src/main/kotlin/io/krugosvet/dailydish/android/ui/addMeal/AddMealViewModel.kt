@@ -2,7 +2,7 @@ package io.krugosvet.dailydish.android.ui.addMeal
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import io.krugosvet.dailydish.android.architecture.viewmodel.ViewModel
+import io.krugosvet.dailydish.android.architecture.ViewModel
 import io.krugosvet.dailydish.android.ui.addMeal.AddMealViewModel.Event
 import io.krugosvet.dailydish.common.core.currentDate
 import io.krugosvet.dailydish.common.dto.Meal
@@ -24,6 +24,7 @@ class AddMealViewModel(
     ViewModel<Event>(savedStateHandle) {
 
     private val shouldValidate = MutableStateFlow(false)
+
     private val form = MutableStateFlow(
         Meal(id = "", title = "", description = "", lastCookingDate = currentDate),
     )
@@ -40,10 +41,8 @@ class AddMealViewModel(
     }
 
     fun onAddMeal() = viewModelScope.launchCatching {
-        runCatching { addMealUseCase.execute(form.value) }
-            .onSuccess {
-                navigate(Event.Close)
-            }
+        addMealUseCase(form.value)
+            .onSuccess { navigate(Event.Close) }
             .onFailure {
                 Timber.e(it)
                 shouldValidate.value = true

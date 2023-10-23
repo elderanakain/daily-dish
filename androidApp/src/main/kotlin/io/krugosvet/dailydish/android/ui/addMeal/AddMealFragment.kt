@@ -1,15 +1,13 @@
 package io.krugosvet.dailydish.android.ui.addMeal
 
 import android.app.DatePickerDialog
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.DatePicker
 import androidx.lifecycle.flowWithLifecycle
 import io.krugosvet.dailydish.android.R
-import io.krugosvet.dailydish.android.architecture.aspect.BindingComponent
+import io.krugosvet.dailydish.android.architecture.BaseFragment
 import io.krugosvet.dailydish.android.architecture.extension.hideKeyboard
-import io.krugosvet.dailydish.android.architecture.view.BaseFragment
 import io.krugosvet.dailydish.android.databinding.DialogAddMealBinding
 import io.krugosvet.dailydish.android.ui.addMeal.AddMealViewModel.Event
 import io.krugosvet.dailydish.common.core.currentDate
@@ -18,14 +16,10 @@ import kotlinx.datetime.LocalDate
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddMealFragment :
-    BaseFragment<DialogAddMealBinding, AddMealViewModel>(),
+    BaseFragment<DialogAddMealBinding, AddMealViewModel>(R.layout.dialog_add_meal),
     DatePickerDialog.OnDateSetListener {
 
     override val viewModel: AddMealViewModel by viewModel()
-    override val bindingComponent = BindingComponent(R.layout.dialog_add_meal, this)
-
-    override val parentContext: Context
-        get() = requireContext()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

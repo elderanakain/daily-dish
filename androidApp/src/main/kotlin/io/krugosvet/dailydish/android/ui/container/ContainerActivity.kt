@@ -1,28 +1,37 @@
 package io.krugosvet.dailydish.android.ui.container
 
-import android.content.Context
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import io.krugosvet.dailydish.android.R
-import io.krugosvet.dailydish.android.architecture.aspect.BindingComponent
+import io.krugosvet.dailydish.android.architecture.BindingContainer
+import io.krugosvet.dailydish.android.architecture.BindingImpl
 import io.krugosvet.dailydish.android.architecture.extension.setVisibility
-import io.krugosvet.dailydish.android.architecture.view.BaseActivity
 import io.krugosvet.dailydish.android.databinding.ActivityContainerBinding
+import io.krugosvet.dailydish.android.errorHandler
 import io.krugosvet.dailydish.android.ui.container.ContainerViewModel.Event
 import io.krugosvet.dailydish.android.ui.mealList.MealListFragmentDirections
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import kotlinx.coroutines.plus
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ContainerActivity :
-    BaseActivity<ActivityContainerBinding, ContainerViewModel>() {
+    AppCompatActivity(),
+    BindingContainer<ActivityContainerBinding, ContainerViewModel> {
 
-    override val viewModel: ContainerViewModel by stateViewModel()
-    override val bindingComponent =
-        BindingComponent(R.layout.activity_container, this)
+    override val viewModel: ContainerViewModel by viewModel()
 
-    override val parentContext: Context = this
+    override val bindingComponent = BindingImpl(R.layout.activity_container, this)
+
+    private val navController: NavController by lazy { findNavController(R.id.hostFragment) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,4 +63,7 @@ class ContainerActivity :
     private fun showAddMeal() {
         navController.navigate(MealListFragmentDirections.actionMealListFragmentToDialogAddMeal())
     }
+
+    private fun <T> Flow<T>.launchInCatching(): Job =
+        launchIn(lifecycleScope + errorHandler)
 }
