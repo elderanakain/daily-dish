@@ -4,12 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import io.krugosvet.dailydish.android.databinding.ListMealBinding
-import io.krugosvet.dailydish.android.ui.mealList.MealListAdapter.MealViewHolder
 
 class MealListAdapter :
-    ListAdapter<MealVisual, MealViewHolder>(MealDiffUtilCallback) {
+    ListAdapter<MealVisual, MealListAdapter.MealViewHolder>(MealDiffUtilCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         MealViewHolder.from(parent)
@@ -18,21 +17,18 @@ class MealListAdapter :
         holder.bind(getItem(position) ?: return)
     }
 
-    class MealViewHolder private constructor(
-        val binding: ListMealBinding,
-    ) :
-        RecyclerView.ViewHolder(binding.root) {
+    class MealViewHolder(val binding: ListMealBinding) :
+        ViewHolder(binding.root) {
+
+        fun bind(visual: MealVisual) {
+            binding.visual = visual
+        }
 
         companion object {
-
             fun from(parent: ViewGroup): MealViewHolder =
                 MealViewHolder(
                     ListMealBinding.inflate(LayoutInflater.from(parent.context), parent, false),
                 )
-        }
-
-        fun bind(visual: MealVisual) {
-            binding.visual = visual
         }
     }
 }

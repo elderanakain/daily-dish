@@ -9,10 +9,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class Meal(
     val id: String,
-
     val title: String,
     val description: String,
-
     @Serializable(LocalDateSerializer::class)
     val lastCookingDate: LocalDate,
 )

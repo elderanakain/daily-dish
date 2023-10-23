@@ -49,18 +49,19 @@ abstract class BaseTest {
         }
     }
 
-    protected fun clickOnView(@IdRes viewId: Int) = object : ViewAction {
+    protected fun clickOnView(@IdRes viewId: Int) =
+        object : ViewAction {
 
-        override fun getConstraints() = null
+            override fun getConstraints() = null
 
-        override fun getDescription(): String = "Click on specific button"
+            override fun getDescription(): String = "Click on specific button"
 
-        override fun perform(uiController: UiController, view: View) {
-            val button = view.findViewById<View>(viewId)
+            override fun perform(uiController: UiController, view: View) {
+                val button = view.findViewById<View>(viewId)
 
-            button.performClick()
+                button.performClick()
+            }
         }
-    }
 
     protected fun scrollToLastPosition() = object : PositionableRecyclerViewAction {
 

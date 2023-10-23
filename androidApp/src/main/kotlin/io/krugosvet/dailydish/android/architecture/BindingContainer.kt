@@ -39,8 +39,7 @@ class BindingImpl<TBinding : ViewDataBinding, TViewModel : ViewModel>(
     override val layoutId: Int,
     private val container: BindingContainer<TBinding, TViewModel>,
 ) :
-    Binding<TBinding>,
-    DefaultLifecycleObserver {
+    Binding<TBinding>, DefaultLifecycleObserver {
 
     override val binding: TBinding
         get() = _binding ?: error("Binding is not ready")
