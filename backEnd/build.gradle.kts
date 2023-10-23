@@ -1,11 +1,13 @@
 import io.ktor.plugin.features.DockerImageRegistry
 import io.ktor.plugin.features.DockerPortMapping
+import kotlinx.kover.gradle.plugin.dsl.MetricType
 
 plugins {
     kotlin("jvm")
     alias(libs.plugins.serialization)
     alias(libs.plugins.ktor)
     `maven-publish`
+    alias(libs.plugins.kover)
 }
 
 group = "io.krugosvet.dailydish"
@@ -25,7 +27,7 @@ ktor {
             username = provider { System.getenv("DD_GH_USERNAME") },
             password = provider { System.getenv("DD_GG_TOKEN") },
             project = provider { "DailyDish" },
-            namespace = provider { "https://ghcr.io" }
+            namespace = provider { "https://ghcr.io" },
         )
     }
 }
@@ -36,5 +38,15 @@ jib.from {
             architecture = "arm64"
             os = "linux"
         }
+    }
+}
+
+koverReport {
+    defaults {
+        log { coverageUnits = MetricType.INSTRUCTION }
+    }
+
+    verify {
+        rule { minBound(90, metric = MetricType.INSTRUCTION) }
     }
 }

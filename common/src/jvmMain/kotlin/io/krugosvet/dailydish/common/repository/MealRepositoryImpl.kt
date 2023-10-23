@@ -15,8 +15,8 @@ internal actual class MealRepositoryImpl(
 ) :
     MealRepository {
 
-    override val mealsFlow: Flow<List<Meal>>
-        get() = mealDao.mealsFlow
+    override fun observe(): Flow<List<Meal>> =
+        mealDao.mealsFlow
             .map { it.map(mealFactory::from) }
 
     override suspend fun add(meal: Meal) {

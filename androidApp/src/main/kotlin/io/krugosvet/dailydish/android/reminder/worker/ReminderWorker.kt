@@ -21,7 +21,7 @@ internal class ReminderWorker(
     private val reminderNotificationService: ReminderNotificationService by inject()
 
     override suspend fun doWork(): Result =
-        mealRepository.mealsFlow.first()
+        mealRepository.observe().first()
             .firstOrNull { meal ->
                 meal.lastCookingDate.monthsUntil(currentDate) > 1
             }

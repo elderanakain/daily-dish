@@ -1,5 +1,5 @@
 [versions]
-common = "1.1.8-SNAPSHOT"
+common = "1.1.9"
 agp = "8.1.2"
 kotlin = "1.9.10"
 sqldelight = "2.0.0"
@@ -33,6 +33,7 @@ espresso = "3.4.0"
 postgresql = "42.6.0"
 logback = "1.4.11"
 leakCanary = "2.12"
+kover = "0.7.4"
 
 [libraries]
 sqldelight = { module = "app.cash.sqldelight:runtime", version.ref = "sqldelight" }
@@ -179,7 +180,8 @@ backEnd = [
     "ktor-jsonx",
     "ktor-server-compression",
     "postgresql",
-    "logback"
+    "logback",
+    "ktor-negotiation"
 ]
 backEnd-test = ["ktor-server-test", "koin-test"]
 
@@ -193,3 +195,4 @@ serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref 
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 kotliner = { id = "org.jmailen.kotlinter", version.ref = "kotliner" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
