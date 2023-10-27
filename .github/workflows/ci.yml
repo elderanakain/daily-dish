@@ -69,3 +69,26 @@ jobs:
 
             -   name: check
                 run: ./gradlew :backEnd:check
+
+    release:
+        runs-on: self-hosted
+        timeout-minutes: 5
+        needs: [ android, backend ]
+        steps:
+            -   uses: actions/checkout@v4
+            -   uses: actions/setup-java@v3
+                with:
+                    java-version: 17
+                    distribution: 'zulu'
+            -   uses: gradle/gradle-build-action@v2.7.0
+
+            -   name: get version
+                run: echo "version=$(${{github.workspace}}/gradlew -q printVersion)" >> $GITHUB_ENV
+
+            -   name: create release
+                uses: ncipollo/release-action@v1
+                with:
+                    allowUpdates: true
+                    generateReleaseNotes: true
+                    makeLatest: ${{ github.ref == 'refs/heads/master' }}
+                    tag: ${{ env.version }}
