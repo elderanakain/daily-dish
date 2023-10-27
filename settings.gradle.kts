@@ -22,6 +22,14 @@ dependencyResolutionManagement {
             }
         }
     }
+
+    versionCatalogs {
+        create("libs") {
+            val isOnMaster: Boolean = providers.gradleProperty("isOnMaster").get().toBoolean()
+
+            version("common", "1.1.12".let { if (!isOnMaster) it.plus("-SNAPSHOT") else it })
+        }
+    }
 }
 
 
