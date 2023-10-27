@@ -83,7 +83,7 @@ jobs:
             -   uses: gradle/gradle-build-action@v2.7.0
 
             -   name: get version
-                run: echo "version=$(${{github.workspace}}/gradlew -q printVersion)" >> $GITHUB_ENV
+                run: echo "version=$(${{github.workspace}}/gradlew -q -PisOnMaster=${{ github.ref == 'refs/heads/master' }} printVersion)" >> $GITHUB_ENV
 
             -   name: create release
                 uses: ncipollo/release-action@v1
