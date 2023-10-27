@@ -18,3 +18,9 @@ subprojects {
         resolutionStrategy.cacheChangingModulesFor(1, TimeUnit.MINUTES)
     }
 }
+
+val printVersion by tasks.registering {
+    doLast {
+        println(libs.versions.common.get())
+    }
+}

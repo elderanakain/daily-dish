@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         versionCode = 5
-        versionName = "0.3.0"
+        versionName = libs.versions.common.get()
 
         compileSdk = 34
         minSdk = 31

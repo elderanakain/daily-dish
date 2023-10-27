@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "io.krugosvet.dailydish"
-version = "0.3.0"
+version = libs.versions.common.get()
 
 dependencies {
     implementation(libs.bundles.backEnd)
