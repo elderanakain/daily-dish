@@ -27,7 +27,7 @@ dependencyResolutionManagement {
         create("libs") {
             val isOnMaster: Boolean = providers.gradleProperty("isOnMaster").get().toBoolean()
 
-            version("common", "1.1.13".let { if (!isOnMaster) it.plus("-SNAPSHOT") else it })
+            version("common", "1.1.14".let { if (!isOnMaster) it.plus("-SNAPSHOT") else it })
         }
     }
 }
