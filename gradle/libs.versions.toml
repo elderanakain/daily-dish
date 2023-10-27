@@ -1,5 +1,4 @@
 [versions]
-common = "1.1.9"
 agp = "8.1.2"
 kotlin = "1.9.10"
 sqldelight = "2.0.0"
