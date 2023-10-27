@@ -28,7 +28,7 @@ jobs:
                 run: ./gradlew :common:lintKotlin
 
             -   name: tests
-                run: ./gradlew :common:allTests --build-cache
+                run: ./gradlew -PisOnMaster=${{ github.ref == 'refs/heads/master' }} :common:allTests --build-cache
 
             -   name: publish
                 run: ./gradlew -PisOnMaster=${{ github.ref == 'refs/heads/master' }} :common:publish
@@ -50,7 +50,7 @@ jobs:
                 run: ./gradlew :androidApp:lintKotlin
 
             -   name: check
-                run: ./gradlew :androidApp:check
+                run: ./gradlew -PisOnMaster=${{ github.ref == 'refs/heads/master' }} :androidApp:check
 
     backend:
         runs-on: self-hosted
@@ -68,7 +68,7 @@ jobs:
                 run: ./gradlew :backEnd:lintKotlin
 
             -   name: check
-                run: ./gradlew :backEnd:check
+                run: ./gradlew -PisOnMaster=${{ github.ref == 'refs/heads/master' }} :backEnd:check
 
     release:
         runs-on: self-hosted
@@ -83,7 +83,7 @@ jobs:
             -   uses: gradle/gradle-build-action@v2.7.0
 
             -   name: get version
-                run: echo "version=$(${{github.workspace}}/gradlew -q printVersion)" >> $GITHUB_ENV
+                run: echo "version=$(${{github.workspace}}/gradlew -q -PisOnMaster=${{ github.ref == 'refs/heads/master' }} printVersion)" >> $GITHUB_ENV
 
             -   name: create release
                 uses: ncipollo/release-action@v1
