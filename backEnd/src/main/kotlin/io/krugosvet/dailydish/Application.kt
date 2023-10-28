@@ -1,6 +1,5 @@
 package io.krugosvet.dailydish
 
-import io.krugosvet.dailydish.common.core.commonModules
 import io.krugosvet.dailydish.route.mealRouting
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
@@ -25,7 +24,7 @@ internal fun Application.module() {
     install(CallLogging)
 
     install(Koin) {
-        modules(commonModules)
+        modules(module)
     }
 
     install(ContentNegotiation) {
