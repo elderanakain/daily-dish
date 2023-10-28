@@ -5,6 +5,7 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     alias(libs.plugins.android.safeargs)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -20,7 +21,7 @@ android {
 
         applicationId = namespace
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "io.krugosvet.dailydish.CustomTestRunner"
     }
 
     compileOptions {
@@ -49,6 +50,10 @@ android {
 
     buildFeatures {
         dataBinding = true
+
+        hilt {
+            enableAggregatingTask = false
+        }
     }
 
     @Suppress("UnstableApiUsage")
@@ -65,6 +70,10 @@ android {
     }
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
 afterEvaluate {
     val check by tasks.getting {
         val allDevicesDebugAndroidTest by tasks.getting
@@ -75,6 +84,9 @@ afterEvaluate {
 
 dependencies {
     implementation(libs.bundles.androidApp)
+    kapt(libs.bundles.androidAppKapt)
+    kaptAndroidTest(libs.bundles.androidAppKapt)
+
     testImplementation(libs.bundles.androidUnitTest)
     androidTestImplementation(libs.bundles.androidInstrumentedTest)
 }

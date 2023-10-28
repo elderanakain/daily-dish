@@ -7,10 +7,12 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import dagger.hilt.android.qualifiers.ApplicationContext
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotification.CookedTodayAction
 import io.krugosvet.dailydish.android.ui.container.ContainerActivity
 import io.krugosvet.dailydish.common.dto.Meal
+import javax.inject.Inject
 
 object ReminderNotification {
 
@@ -23,8 +25,8 @@ object ReminderNotification {
     }
 }
 
-class ReminderNotificationService(
-    private val context: Context,
+class ReminderNotificationService @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val resources: Resources,
     private val notificationManager: NotificationManager,
 ) {

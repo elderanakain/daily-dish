@@ -5,8 +5,9 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import io.krugosvet.dailydish.android.R
+import javax.inject.Inject
 
-class MealListDecorator(
+class MealListDecorator @Inject constructor(
     private val resources: Resources,
 ) :
     RecyclerView.ItemDecoration() {

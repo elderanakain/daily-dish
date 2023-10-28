@@ -1,24 +1,30 @@
 package io.krugosvet.dailydish.android.reminder.worker
 
 import android.content.Context
+import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotificationService
 import io.krugosvet.dailydish.common.core.currentDate
 import io.krugosvet.dailydish.common.repository.MealRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.monthsUntil
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
-internal class ReminderWorker(
-    context: Context,
-    workerParams: WorkerParameters,
+@HiltWorker
+class ReminderWorker @AssistedInject constructor(
+    @Assisted context: Context,
+    @Assisted workerParams: WorkerParameters,
 ) :
-    CoroutineWorker(context, workerParams), KoinComponent {
+    CoroutineWorker(context, workerParams) {
 
-    private val mealRepository: MealRepository by inject()
-    private val reminderNotificationService: ReminderNotificationService by inject()
+    @Inject
+    lateinit var mealRepository: MealRepository
+
+    @Inject
+    lateinit var reminderNotificationService: ReminderNotificationService
 
     override suspend fun doWork(): Result =
         mealRepository.observe().first()

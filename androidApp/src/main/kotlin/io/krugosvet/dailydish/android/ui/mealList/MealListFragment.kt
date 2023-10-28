@@ -2,20 +2,23 @@ package io.krugosvet.dailydish.android.ui.mealList
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
+import dagger.hilt.android.AndroidEntryPoint
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.BaseFragment
 import io.krugosvet.dailydish.android.databinding.FragmentMealListBinding
+import javax.inject.Inject
 import kotlinx.coroutines.flow.onEach
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
+@AndroidEntryPoint
 class MealListFragment :
     BaseFragment<FragmentMealListBinding, MealListViewModel>(R.layout.fragment_meal_list) {
 
-    override val viewModel: MealListViewModel by viewModel()
+    override val viewModel: MealListViewModel by viewModels()
 
-    private val mealListDecorator: MealListDecorator by inject()
+    @Inject
+    lateinit var mealListDecorator: MealListDecorator
 
     private val adapter: MealListAdapter by lazy { MealListAdapter() }
 

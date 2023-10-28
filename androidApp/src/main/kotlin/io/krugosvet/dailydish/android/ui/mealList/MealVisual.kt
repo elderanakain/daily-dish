@@ -2,10 +2,11 @@ package io.krugosvet.dailydish.android.ui.mealList
 
 import android.content.res.Resources
 import io.krugosvet.dailydish.android.R
-import io.krugosvet.dailydish.android.architecture.extension.OnClick
+import io.krugosvet.dailydish.android.architecture.OnClick
 import io.krugosvet.dailydish.common.core.isToday
 import io.krugosvet.dailydish.common.core.toDisplayString
 import io.krugosvet.dailydish.common.dto.Meal
+import javax.inject.Inject
 
 data class MealVisual(
     val id: String,
@@ -17,7 +18,7 @@ data class MealVisual(
     val onCookTodayClick: OnClick,
 )
 
-class MealVisualFactory(
+class MealVisualFactory @Inject constructor(
     private val resources: Resources,
 ) {
 
