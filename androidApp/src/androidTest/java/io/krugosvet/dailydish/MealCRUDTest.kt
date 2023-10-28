@@ -10,6 +10,8 @@ import androidx.test.espresso.contrib.RecyclerViewActions.actionOnHolderItem
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.base.BaseTest
 import io.krugosvet.dailydish.common.core.currentDate
@@ -17,14 +19,25 @@ import io.krugosvet.dailydish.common.core.toDisplayString
 import io.krugosvet.dailydish.common.repository.MealRepository
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
+import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+@HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 class MealCRUDTest : BaseTest() {
 
+    @get:Rule(order = 0)
+    var hiltRule = HiltAndroidRule(this)
+
     @Inject
     lateinit var mealRepository: MealRepository
+
+    @Before
+    fun setup() {
+        hiltRule.inject()
+    }
 
     @Test
     fun whenCreateUpdateDeleteMeal_thenActionsArePropagatedCorrectly() = runBlocking {

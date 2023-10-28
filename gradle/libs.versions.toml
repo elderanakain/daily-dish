@@ -34,6 +34,7 @@ leakCanary = "2.12"
 kover = "0.7.4"
 hilt = "2.48.1"
 hilt-work = "1.0.0"
+androidStartup = "1.1.1"
 
 [libraries]
 sqldelight = { module = "app.cash.sqldelight:runtime", version.ref = "sqldelight" }
@@ -96,10 +97,12 @@ android-navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", vers
 android-work = { module = "androidx.work:work-runtime-ktx", version.ref = "androidWork" }
 android-timber = { module = "com.jakewharton.timber:timber", version.ref = "androidTimber" }
 android-hamster = { module = "org.hamcrest:hamcrest-all", version.ref = "hamster" }
+android-startup = { module = "androidx.startup:startup-runtime", version.ref = "androidStartup" }
 
 hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hilt-work" }
+hilt-test = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
 leakCanary = { module = "com.squareup.leakcanary:leakcanary-android-instrumentation", version.ref = "leakCanary" }
@@ -125,7 +128,7 @@ kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test-junit5", version.ref 
 [bundles]
 jvm = ["slf4j", "hikari", "ktor-cio", "koin-ktor", "sqldelight-jvm"]
 
-android = ["slf4j", "sqldelight-android", "koin-android", "coroutines-android"]
+android = ["slf4j", "sqldelight-android", "koin-android", "coroutines-android", "android-startup"]
 
 native = ["ktor-native", "sqldelight-native"]
 
@@ -150,7 +153,7 @@ androidUnitTest = ["junit", "kotlin-test"]
 androidInstrumentedTest = [
     "android-junit", "android-test-core", "android-test-runner", "android-truth", "espresso-core",
     "espresso-contrib", "espresso-intents", "espresso-accessibility", "espresso-web",
-    "espresso-idling", "espresso-resource", "leakCanary"
+    "espresso-idling", "espresso-resource", "leakCanary", "hilt-test"
 ]
 
 backEnd = [

@@ -21,7 +21,7 @@ android {
 
         applicationId = namespace
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "io.krugosvet.dailydish.CustomTestRunner"
     }
 
     compileOptions {
@@ -85,6 +85,7 @@ afterEvaluate {
 dependencies {
     implementation(libs.bundles.androidApp)
     kapt(libs.bundles.androidAppKapt)
+    kaptAndroidTest(libs.bundles.androidAppKapt)
 
     testImplementation(libs.bundles.androidUnitTest)
     androidTestImplementation(libs.bundles.androidInstrumentedTest)

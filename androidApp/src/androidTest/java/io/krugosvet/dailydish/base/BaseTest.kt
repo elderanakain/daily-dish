@@ -25,10 +25,10 @@ import org.junit.Rule
 @Suppress("UnnecessaryAbstractClass")
 abstract class BaseTest {
 
-    @get:Rule
+    @get:Rule(order = 1)
     val activityRule = IntentsTestRule(ContainerActivity::class.java)
 
-    @get:Rule
+    @get:Rule(order = 2)
     val rule = DetectLeaksAfterTestSuccess()
 
     protected fun openAddMealScreen() {

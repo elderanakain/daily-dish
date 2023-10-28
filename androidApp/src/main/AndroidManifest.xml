@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
+            android:name="android.hardware.camera"
+            android:required="false" />
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -13,17 +14,17 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".DailyDishApplication"
-        android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:dataExtractionRules="@xml/data_extraction_rules">
+            android:name=".DailyDishApplication"
+            android:allowBackup="false"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme"
+            android:dataExtractionRules="@xml/data_extraction_rules">
         <activity
-            android:name=".ui.container.ContainerActivity"
-            android:exported="true">
+                android:name=".ui.container.ContainerActivity"
+                android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,16 +33,26 @@
         </activity>
 
         <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
-
+                android:name="preloaded_fonts"
+                android:resource="@array/preloaded_fonts" />
 
         <receiver
-            android:name=".reminder.notification.ReminderNotificationReceiver"
-            android:exported="false">
+                android:name=".reminder.notification.ReminderNotificationReceiver"
+                android:exported="false">
             <intent-filter>
                 <action android:name="io.krugosvet.dailydish.android.reminder.notification.COOKED_TODAY" />
             </intent-filter>
         </receiver>
+
+        <provider
+                android:name="androidx.startup.InitializationProvider"
+                android:authorities="${applicationId}.androidx-startup"
+                android:exported="false"
+                tools:node="merge">
+            <meta-data
+                    android:name="androidx.work.WorkManagerInitializer"
+                    android:value="androidx.startup"
+                    tools:node="remove" />
+        </provider>
     </application>
 </manifest>

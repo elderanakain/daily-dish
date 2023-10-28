@@ -5,7 +5,6 @@ import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
 import io.krugosvet.dailydish.android.reminder.ReminderService
-import io.krugosvet.dailydish.common.repository.db.appContext
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineExceptionHandler
 import timber.log.Timber
@@ -22,8 +21,6 @@ class DailyDishApplication :
 
     override fun onCreate() {
         super.onCreate()
-
-        appContext = this
 
         Timber.plant(Timber.DebugTree())
 
