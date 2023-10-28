@@ -2,20 +2,23 @@ package io.krugosvet.dailydish.android.ui.mealList
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import io.krugosvet.dailydish.android.architecture.OnClick
 import io.krugosvet.dailydish.android.architecture.ViewModel
-import io.krugosvet.dailydish.android.architecture.extension.OnClick
 import io.krugosvet.dailydish.android.reminder.notification.ReminderNotificationService
 import io.krugosvet.dailydish.android.ui.mealList.MealListViewModel.Event
 import io.krugosvet.dailydish.common.dto.Meal
 import io.krugosvet.dailydish.common.repository.MealRepository
 import io.krugosvet.dailydish.common.usecase.DeleteMealUseCase
 import io.krugosvet.dailydish.common.usecase.SetCurrentTimeToCookedDateMealUseCase
+import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
-class MealListViewModel(
+@HiltViewModel
+class MealListViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     mealRepository: MealRepository,
     private val mealVisualFactory: MealVisualFactory,

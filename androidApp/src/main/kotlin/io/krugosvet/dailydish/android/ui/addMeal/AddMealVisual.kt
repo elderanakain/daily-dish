@@ -7,6 +7,7 @@ import io.krugosvet.dailydish.android.ui.addMeal.AddMealVisual.Description
 import io.krugosvet.dailydish.android.ui.addMeal.AddMealVisual.Title
 import io.krugosvet.dailydish.common.core.toDisplayString
 import io.krugosvet.dailydish.common.dto.Meal
+import javax.inject.Inject
 import kotlinx.datetime.LocalDate
 
 data class AddMealVisual(
@@ -43,7 +44,7 @@ data class AddMealVisual(
     }
 }
 
-class AddMealVisualFactory(
+class AddMealVisualFactory @Inject constructor(
     private val validator: AddMealVisualValidator,
 ) {
 
@@ -76,7 +77,7 @@ class AddMealVisualFactory(
         )
 }
 
-class AddMealVisualValidator {
+class AddMealVisualValidator @Inject constructor() {
 
     fun isTitleValid(title: String): Boolean =
         title.isNotBlank()

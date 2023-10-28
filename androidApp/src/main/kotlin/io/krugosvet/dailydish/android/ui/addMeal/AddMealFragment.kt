@@ -4,22 +4,24 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.DatePicker
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
+import dagger.hilt.android.AndroidEntryPoint
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.BaseFragment
-import io.krugosvet.dailydish.android.architecture.extension.hideKeyboard
+import io.krugosvet.dailydish.android.architecture.hideKeyboard
 import io.krugosvet.dailydish.android.databinding.DialogAddMealBinding
 import io.krugosvet.dailydish.android.ui.addMeal.AddMealViewModel.Event
 import io.krugosvet.dailydish.common.core.currentDate
 import kotlinx.coroutines.flow.onEach
 import kotlinx.datetime.LocalDate
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
+@AndroidEntryPoint
 class AddMealFragment :
     BaseFragment<DialogAddMealBinding, AddMealViewModel>(R.layout.dialog_add_meal),
     DatePickerDialog.OnDateSetListener {
 
-    override val viewModel: AddMealViewModel by viewModel()
+    override val viewModel: AddMealViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

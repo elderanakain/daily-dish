@@ -10,7 +10,6 @@ datetime = "0.4.1"
 hikari = "5.0.1"
 slf4j = "2.0.9"
 kotliner = "4.0.0"
-
 androidNavigation = "2.7.4"
 androidXCore = "1.12.0"
 appCompat = "1.6.1"
@@ -33,6 +32,8 @@ postgresql = "42.6.0"
 logback = "1.4.11"
 leakCanary = "2.12"
 kover = "0.7.4"
+hilt = "2.48.1"
+hilt-work = "1.0.0"
 
 [libraries]
 sqldelight = { module = "app.cash.sqldelight:runtime", version.ref = "sqldelight" }
@@ -96,6 +97,10 @@ android-work = { module = "androidx.work:work-runtime-ktx", version.ref = "andro
 android-timber = { module = "com.jakewharton.timber:timber", version.ref = "androidTimber" }
 android-hamster = { module = "org.hamcrest:hamcrest-all", version.ref = "hamster" }
 
+hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hilt-work" }
+
 junit = { module = "junit:junit", version.ref = "junit" }
 leakCanary = { module = "com.squareup.leakcanary:leakcanary-android-instrumentation", version.ref = "leakCanary" }
 
@@ -119,69 +124,41 @@ kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test-junit5", version.ref 
 
 [bundles]
 jvm = ["slf4j", "hikari", "ktor-cio", "koin-ktor", "sqldelight-jvm"]
+
 android = ["slf4j", "sqldelight-android", "koin-android", "coroutines-android"]
+
 native = ["ktor-native", "sqldelight-native"]
+
 common = [
     "sqldelight", "sqldelight-coroutines", "ktor", "serialization", "koin-core", "datetime",
     "ktor-json", "ktor-logging", "coroutines-core", "ktor-serialization", "ktor-negotiation",
     "ktor-jsonx"
 ]
+
 androidApp = [
-    "androidx-core",
-    "android-appCompat",
-    "android-prefs",
-    "android-activity",
-    "android-material",
-    "android-glide",
-    "android-recyclerView",
-    "android-viewmodel",
-    "android-savedstate",
-    "android-navigation",
-    "android-navigation-ui",
-    "koin-android",
-    "koin-workmanager",
-    "coroutines-core",
-    "coroutines-android",
-    "android-work",
-    "datetime",
-    "android-timber",
-    "serialization",
-    "commom",
-    "ktor-cio"
+    "androidx-core", "android-appCompat", "android-prefs", "android-activity", "android-material",
+    "android-glide", "android-recyclerView", "android-viewmodel", "android-savedstate",
+    "android-navigation", "android-navigation-ui", "coroutines-core", "coroutines-android",
+    "android-work", "datetime", "android-timber", "serialization", "commom", "ktor-cio",
+    "hilt", "hilt-work"
 ]
+
+androidAppKapt = ["hilt-compiler"]
+
 androidUnitTest = ["junit", "kotlin-test"]
+
 androidInstrumentedTest = [
-    "android-junit",
-    "android-test-core",
-    "android-test-runner",
-    "android-truth",
-    "espresso-core",
-    "espresso-contrib",
-    "espresso-intents",
-    "espresso-accessibility",
-    "espresso-web",
-    "espresso-idling",
-    "espresso-resource",
-    "leakCanary"
+    "android-junit", "android-test-core", "android-test-runner", "android-truth", "espresso-core",
+    "espresso-contrib", "espresso-intents", "espresso-accessibility", "espresso-web",
+    "espresso-idling", "espresso-resource", "leakCanary"
 ]
 
 backEnd = [
-    "ktor-server",
-    "koin-ktor",
-    "ktor-server-cio",
-    "ktor-serialization",
-    "commom",
-    "datetime",
-    "ktor-server-content",
-    "ktor-logging",
-    "ktor-server-call-logging",
-    "ktor-server-headers",
-    "ktor-jsonx",
-    "ktor-server-compression",
-    "postgresql",
-    "logback",
-    "ktor-negotiation"
+    "ktor-server", "koin-ktor", "ktor-server-cio", "ktor-serialization", "commom", "datetime",
+    "ktor-server-content", "ktor-logging", "ktor-server-call-logging", "ktor-server-headers",
+    "ktor-jsonx", "ktor-server-compression", "postgresql", "logback", "ktor-negotiation"
 ]
+
 backEnd-test = ["ktor-server-test", "koin-test"]
 
 [plugins]
@@ -195,3 +172,4 @@ sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 kotliner = { id = "org.jmailen.kotlinter", version.ref = "kotliner" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }

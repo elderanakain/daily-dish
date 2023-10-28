@@ -7,13 +7,14 @@ import androidx.work.WorkManager
 import io.krugosvet.dailydish.android.reminder.worker.ReminderWorker
 import io.krugosvet.dailydish.android.service.PreferenceService
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 private const val REMINDER_WORK_ID = "reminder_work_id"
 
-class ReminderService(
+class ReminderService @Inject constructor(
     private val workManager: WorkManager,
     private val preferenceService: PreferenceService,
 ) {

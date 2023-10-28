@@ -3,6 +3,7 @@ package io.krugosvet.dailydish.android.service
 import android.content.SharedPreferences
 import android.content.res.Resources
 import io.krugosvet.dailydish.android.R
+import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class PreferenceService(
+class PreferenceService @Inject constructor(
     private val sharedPreferences: SharedPreferences,
     resources: Resources,
 ) {

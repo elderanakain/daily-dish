@@ -1,6 +1,7 @@
 package io.krugosvet.dailydish.android.ui.container
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -8,10 +9,11 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
+import dagger.hilt.android.AndroidEntryPoint
 import io.krugosvet.dailydish.android.R
 import io.krugosvet.dailydish.android.architecture.BindingContainer
 import io.krugosvet.dailydish.android.architecture.BindingImpl
-import io.krugosvet.dailydish.android.architecture.extension.setVisibility
+import io.krugosvet.dailydish.android.architecture.setVisibility
 import io.krugosvet.dailydish.android.databinding.ActivityContainerBinding
 import io.krugosvet.dailydish.android.errorHandler
 import io.krugosvet.dailydish.android.ui.container.ContainerViewModel.Event
@@ -21,13 +23,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.plus
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
+@AndroidEntryPoint
 class ContainerActivity :
     AppCompatActivity(),
     BindingContainer<ActivityContainerBinding, ContainerViewModel> {
 
-    override val viewModel: ContainerViewModel by viewModel()
+    override val viewModel: ContainerViewModel by viewModels()
 
     override val bindingComponent = BindingImpl(R.layout.activity_container, this)
 

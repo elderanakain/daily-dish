@@ -2,11 +2,13 @@ package io.krugosvet.dailydish.android.ui.addMeal
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.krugosvet.dailydish.android.architecture.ViewModel
 import io.krugosvet.dailydish.android.ui.addMeal.AddMealViewModel.Event
 import io.krugosvet.dailydish.common.core.currentDate
 import io.krugosvet.dailydish.common.dto.Meal
 import io.krugosvet.dailydish.common.usecase.AddMealUseCase
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +18,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.datetime.LocalDate
 import timber.log.Timber
 
-class AddMealViewModel(
+@HiltViewModel
+class AddMealViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val visualFactory: AddMealVisualFactory,
     private val addMealUseCase: AddMealUseCase,

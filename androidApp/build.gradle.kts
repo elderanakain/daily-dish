@@ -5,6 +5,7 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     alias(libs.plugins.android.safeargs)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -15,8 +16,8 @@ android {
         versionName = libs.versions.common.get()
 
         compileSdk = 34
-        minSdk = 31
-        targetSdk = 34
+        minSdk = compileSdk
+        targetSdk = compileSdk
 
         applicationId = namespace
 
@@ -49,6 +50,10 @@ android {
 
     buildFeatures {
         dataBinding = true
+
+        hilt {
+            enableAggregatingTask = false
+        }
     }
 
     @Suppress("UnstableApiUsage")
@@ -57,12 +62,16 @@ android {
             devices {
                 maybeCreate<ManagedVirtualDevice>("ddUiTests").apply {
                     device = "Pixel 2"
-                    apiLevel = 33
+                    apiLevel = 34
                     systemImageSource = "aosp-atd"
                 }
             }
         }
     }
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 afterEvaluate {
@@ -75,6 +84,8 @@ afterEvaluate {
 
 dependencies {
     implementation(libs.bundles.androidApp)
+    kapt(libs.bundles.androidAppKapt)
+
     testImplementation(libs.bundles.androidUnitTest)
     androidTestImplementation(libs.bundles.androidInstrumentedTest)
 }
