@@ -46,7 +46,7 @@ object Module {
     @Provides
     fun providePreferences(
         @ApplicationContext context: Context,
-        resources: Resources
+        resources: Resources,
     ): PreferenceService =
         PreferenceService(PreferenceManager.getDefaultSharedPreferences(context), resources)
 

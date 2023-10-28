@@ -16,8 +16,8 @@ android {
         versionName = libs.versions.common.get()
 
         compileSdk = 34
-        minSdk = compileSdk
-        targetSdk = compileSdk
+        minSdk = 31
+        targetSdk = 34
 
         applicationId = namespace
 
@@ -62,7 +62,7 @@ android {
             devices {
                 maybeCreate<ManagedVirtualDevice>("ddUiTests").apply {
                     device = "Pixel 2"
-                    apiLevel = 34
+                    apiLevel = 33
                     systemImageSource = "aosp-atd"
                 }
             }

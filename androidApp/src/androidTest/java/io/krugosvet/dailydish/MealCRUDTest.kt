@@ -15,21 +15,20 @@ import io.krugosvet.dailydish.base.BaseTest
 import io.krugosvet.dailydish.common.core.currentDate
 import io.krugosvet.dailydish.common.core.toDisplayString
 import io.krugosvet.dailydish.common.repository.MealRepository
+import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.core.component.KoinComponent
 
 @RunWith(AndroidJUnit4::class)
-class MealCRUDTest :
-    BaseTest(),
-    KoinComponent {
+class MealCRUDTest : BaseTest() {
+
+    @Inject
+    lateinit var mealRepository: MealRepository
 
     @Test
     fun whenCreateUpdateDeleteMeal_thenActionsArePropagatedCorrectly() = runBlocking {
-        getKoin()
-            .get<MealRepository>()
-            .reset()
+        mealRepository.reset()
 
         openAddMealScreen()
 

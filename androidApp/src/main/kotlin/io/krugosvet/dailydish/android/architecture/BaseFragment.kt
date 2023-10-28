@@ -12,7 +12,6 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import dagger.hilt.android.AndroidEntryPoint
 import io.krugosvet.dailydish.android.architecture.ViewModel.State
 import io.krugosvet.dailydish.android.errorHandler
 import io.krugosvet.dailydish.android.ui.container.ContainerActivity

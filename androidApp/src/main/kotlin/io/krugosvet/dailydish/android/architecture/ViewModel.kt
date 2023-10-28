@@ -3,7 +3,6 @@ package io.krugosvet.dailydish.android.architecture
 import androidx.lifecycle.ViewModel as JetpackViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import io.krugosvet.dailydish.android.architecture.ViewModel.NavigationEvent
 import io.krugosvet.dailydish.android.errorHandler
 import kotlinx.coroutines.CoroutineScope
