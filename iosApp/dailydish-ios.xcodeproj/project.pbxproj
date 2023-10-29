@@ -3,14 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		500B22012AEECC4C00F8905D /* DDCore in Frameworks */ = {isa = PBXBuildFile; productRef = 500B22002AEECC4C00F8905D /* DDCore */; };
 		5027145126248154004295B8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5027145026248154004295B8 /* ContentView.swift */; };
 		5027145326248155004295B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5027145226248155004295B8 /* Assets.xcassets */; };
 		5027145626248155004295B8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5027145526248155004295B8 /* Preview Assets.xcassets */; };
-		50FD619E2625F78000C91825 /* Koin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FD619D2625F78000C91825 /* Koin.swift */; };
 		50FD61A2262600AE00C91825 /* dailydish_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FD61A1262600AE00C91825 /* dailydish_iosApp.swift */; };
 /* End PBXBuildFile section */
 
@@ -33,7 +33,6 @@
 		5027145226248155004295B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5027145526248155004295B8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		5027145726248155004295B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		50FD619D2625F78000C91825 /* Koin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Koin.swift; sourceTree = "<group>"; };
 		50FD61A1262600AE00C91825 /* dailydish_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dailydish_iosApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -42,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				500B22012AEECC4C00F8905D /* DDCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,7 +71,6 @@
 				5027145226248155004295B8 /* Assets.xcassets */,
 				5027145726248155004295B8 /* Info.plist */,
 				5027145426248155004295B8 /* Preview Content */,
-				50FD619D2625F78000C91825 /* Koin.swift */,
 				50FD61A1262600AE00C91825 /* dailydish_iosApp.swift */,
 			);
 			path = "dailydish-ios";
@@ -103,6 +102,7 @@
 			);
 			name = "dailydish-ios";
 			packageProductDependencies = (
+				500B22002AEECC4C00F8905D /* DDCore */,
 			);
 			productName = "dailydish-ios";
 			productReference = 5027144B26248154004295B8 /* dailydish-ios.app */;
@@ -132,6 +132,7 @@
 			);
 			mainGroup = 5027144226248154004295B8;
 			packageReferences = (
+				500B21FF2AEECC4C00F8905D /* XCRemoteSwiftPackageReference "daily-dish" */,
 			);
 			productRefGroup = 5027144C26248154004295B8 /* Products */;
 			projectDirPath = "";
@@ -160,7 +161,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				50FD61A2262600AE00C91825 /* dailydish_iosApp.swift in Sources */,
-				50FD619E2625F78000C91825 /* Koin.swift in Sources */,
 				5027145126248154004295B8 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -348,6 +348,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		500B21FF2AEECC4C00F8905D /* XCRemoteSwiftPackageReference "daily-dish" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/elderanakain/daily-dish";
+			requirement = {
+				kind = exactVersion;
+				version = 1.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		500B22002AEECC4C00F8905D /* DDCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 500B21FF2AEECC4C00F8905D /* XCRemoteSwiftPackageReference "daily-dish" */;
+			productName = DDCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5027144326248154004295B8 /* Project object */;
 }

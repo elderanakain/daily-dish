@@ -1,8 +1,8 @@
 import SwiftUI
-import common
+import DDCore
 
 struct ContentView: View {
-    var repository = koin.mealRepository
+    var repository: MealRepository
     
     @State var mealsText = String("")
     

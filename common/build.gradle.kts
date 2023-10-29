@@ -1,3 +1,8 @@
+import co.touchlab.skie.configuration.DefaultArgumentInterop
+import co.touchlab.skie.configuration.EnumInterop
+import co.touchlab.skie.configuration.FlowInterop
+import co.touchlab.skie.configuration.SealedInterop
+import co.touchlab.skie.configuration.SuspendInterop
 import org.gradle.api.internal.artifacts.repositories.resolver.MavenUniqueSnapshotComponentIdentifier
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode.*
@@ -9,6 +14,7 @@ plugins {
     alias(libs.plugins.serialization)
     alias(libs.plugins.sqldelight)
     alias(libs.plugins.kmmBridge)
+    alias(libs.plugins.skie)
 
     id("maven-publish")
 }
@@ -144,3 +150,19 @@ kmmbridge {
     }
 }
 
+skie {
+    analytics {
+        enabled = false
+    }
+
+    features {
+        group {
+            SuspendInterop.Enabled(true)
+            FlowInterop.Enabled(true)
+
+            EnumInterop.Enabled(false)
+            DefaultArgumentInterop.Enabled(false)
+            SealedInterop.Enabled(false)
+        }
+    }
+}

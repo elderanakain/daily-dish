@@ -36,6 +36,7 @@ hilt = "2.48.1"
 hilt-work = "1.0.0"
 androidStartup = "1.1.1"
 kmmBridge = "0.5.0"
+skie = "0.5.0"
 
 [libraries]
 sqldelight = { module = "app.cash.sqldelight:runtime", version.ref = "sqldelight" }
@@ -176,3 +177,4 @@ kotliner = { id = "org.jmailen.kotlinter", version.ref = "kotliner" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kmmBridge = { id = "co.touchlab.kmmbridge", version.ref = "kmmBridge" }
+skie = { id = "co.touchlab.skie", version.ref = "skie" }
