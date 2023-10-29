@@ -1,14 +1,20 @@
+import org.gradle.api.internal.artifacts.repositories.resolver.MavenUniqueSnapshotComponentIdentifier
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode.*
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 plugins {
     id("com.android.library")
     alias(libs.plugins.kotlin)
     alias(libs.plugins.serialization)
     alias(libs.plugins.sqldelight)
+    alias(libs.plugins.kmmBridge)
 
     id("maven-publish")
-    id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
 }
+
+val isOnMaster: Boolean = (rootProject.extra.get("isOnMaster") as String).toBooleanStrict()
+val framework = "DDCore"
 
 version = libs.versions.common.get()
 group = "io.krugosvet.dailydish"
@@ -26,8 +32,10 @@ kotlin {
     listOf(iosArm64(), iosX64(), iosSimulatorArm64())
         .forEach {
             it.binaries {
-                framework {
-                    baseName = "common"
+                framework(framework) {
+                    isStatic = true
+                    embedBitcodeMode = DISABLE
+                    binaryOption("bundleShortVersionString", version.toString())
                 }
             }
         }
@@ -78,10 +86,12 @@ sqldelight {
     }
 }
 
+val publishRepository = "GitHubPackages"
+
 publishing {
     repositories {
         maven {
-            name = "GitHubPackages"
+            name = publishRepository
             url = uri("https://maven.pkg.github.com/elderanakain/daily-dish")
             credentials {
                 username = System.getenv("DD_GH_USERNAME")
@@ -91,12 +101,46 @@ publishing {
     }
 }
 
-multiplatformSwiftPackage {
-    packageName("common")
-    swiftToolsVersion("5.4")
-    targetPlatforms {
-        iOS { v("13") }
+kmmbridge {
+    frameworkName = framework
+    buildType = if (isOnMaster) NativeBuildType.RELEASE else NativeBuildType.DEBUG
+
+    mavenPublishArtifacts(repository = publishRepository)
+    spm(useCustomPackageFile = true)
+    manualVersions()
+
+    rootProject.extensions.extraProperties["spmBuildTargets"] = when {
+        isOnMaster -> "ios_simulator_arm64,ios_arm64,ios_x64"
+        else -> "ios_simulator_arm64"
     }
-    distributionMode { local() }
-    outputDirectory(File("$projectDir/../../daily-dish-package", "/"))
+
+    val version = version.toString()
+
+    if (!version.contains("-SNAPSHOT")) {
+        return@kmmbridge
+    }
+
+    afterEvaluate {
+        val updatePackageSwift by tasks.existing {
+            outputs.upToDateWhen { false }
+
+            doFirst {
+                val snapShotVersion = project.dependencies
+                    .create(project.group.toString(), "${project.name}-kmmbridge", version)
+                    .let { configurations.detachedConfiguration(it) }
+                    .apply { resolutionStrategy.cacheChangingModulesFor(0, TimeUnit.MINUTES) }
+                    .resolvedConfiguration.resolvedArtifacts.firstOrNull()
+                    ?.id?.componentIdentifier?.let { it as? MavenUniqueSnapshotComponentIdentifier }
+                    ?.timestamp
+                    ?: error("Cannot resolve component timestamp")
+
+                with(file("${layout.buildDirectory.get()}/faktory/url")) {
+                    readText()
+                        .replace("SNAPSHOT.zip", "$snapShotVersion.zip")
+                        .let(::writeText)
+                }
+            }
+        }
+    }
 }
+

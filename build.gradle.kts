@@ -21,6 +21,6 @@ subprojects {
 
 val printVersion by tasks.registering {
     doLast {
-        println(libs.versions.common.get())
+        println(libs.versions.common.get().removeSuffix("-SNAPSHOT"))
     }
 }

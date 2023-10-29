@@ -35,6 +35,7 @@ kover = "0.7.4"
 hilt = "2.48.1"
 hilt-work = "1.0.0"
 androidStartup = "1.1.1"
+kmmBridge = "0.5.0"
 
 [libraries]
 sqldelight = { module = "app.cash.sqldelight:runtime", version.ref = "sqldelight" }
@@ -119,10 +120,8 @@ espresso-accessibility = { module = "androidx.test.espresso:espresso-accessibili
 espresso-web = { module = "androidx.test.espresso:espresso-web", version.ref = "espresso" }
 espresso-idling = { module = "androidx.test.espresso.idling:idling-concurrent", version.ref = "espresso" }
 espresso-resource = { module = "androidx.test.espresso:espresso-idling-resource", version.ref = "espresso" }
-
 postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
-
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test-junit5", version.ref = "kotlin" }
 
 [bundles]
@@ -176,3 +175,4 @@ ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 kotliner = { id = "org.jmailen.kotlinter", version.ref = "kotliner" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+kmmBridge = { id = "co.touchlab.kmmbridge", version.ref = "kmmBridge" }

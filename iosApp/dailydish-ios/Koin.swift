@@ -1,5 +1,5 @@
 import Foundation
-import common
+import DDCore
 
 func startKoin() {
     _koin = KoinKt.doInit().koin

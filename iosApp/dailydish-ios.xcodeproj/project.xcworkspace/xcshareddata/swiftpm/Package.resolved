@@ -1,16 +1,14 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "common",
-        "repositoryURL": "https://github.com/elderanakain/daily-dish-package.git",
-        "state": {
-          "branch": "master",
-          "revision": "d0ac00767855699ba514416127496bb43a49c75a",
-          "version": null
-        }
+  "pins" : [
+    {
+      "identity" : "daily-dish",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/elderanakain/daily-dish",
+      "state" : {
+        "revision" : "87cb0a218d38ff73b010b0ec3e0857672de671fa",
+        "version" : "1.3.0"
       }
-    ]
-  },
-  "version": 1
+    }
+  ],
+  "version" : 2
 }
