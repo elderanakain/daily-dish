@@ -10,6 +10,7 @@ struct ContentView: View {
         return Text(mealsText)
             .padding()
             .onAppear(perform: {
+                repository.observe()
                 repository.fetch { (unit, error) -> Void in
                     mealsText = repository.meals.map { $0.title }.joined()
                 }

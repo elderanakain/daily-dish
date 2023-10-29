@@ -10,7 +10,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
 
-public val jsonConfig: Json = Json {
+internal val jsonConfig: Json = Json {
     ignoreUnknownKeys = true
     isLenient = true
     encodeDefaults = false
