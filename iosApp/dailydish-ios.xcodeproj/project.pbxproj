@@ -13,6 +13,10 @@
 		5027145626248155004295B8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5027145526248155004295B8 /* Preview Assets.xcassets */; };
 		50C95D372AEEFFDF000E968C /* MealListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C95D362AEEFFDF000E968C /* MealListViewModel.swift */; };
 		50D9A7632AEF32C8009F04C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D9A7622AEF32C8009F04C3 /* AppDelegate.swift */; };
+		50DD46122AEF507B0076534C /* KMPNativeCoroutinesAsync in Frameworks */ = {isa = PBXBuildFile; productRef = 50DD46112AEF507B0076534C /* KMPNativeCoroutinesAsync */; };
+		50DD46142AEF507B0076534C /* KMPNativeCoroutinesCombine in Frameworks */ = {isa = PBXBuildFile; productRef = 50DD46132AEF507B0076534C /* KMPNativeCoroutinesCombine */; };
+		50DD46162AEF507B0076534C /* KMPNativeCoroutinesCore in Frameworks */ = {isa = PBXBuildFile; productRef = 50DD46152AEF507B0076534C /* KMPNativeCoroutinesCore */; };
+		50DD46182AEF507B0076534C /* KMPNativeCoroutinesRxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 50DD46172AEF507B0076534C /* KMPNativeCoroutinesRxSwift */; };
 		50FD61A2262600AE00C91825 /* dailydish_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FD61A1262600AE00C91825 /* dailydish_iosApp.swift */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +49,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50DD46142AEF507B0076534C /* KMPNativeCoroutinesCombine in Frameworks */,
+				50DD46122AEF507B0076534C /* KMPNativeCoroutinesAsync in Frameworks */,
+				50DD46182AEF507B0076534C /* KMPNativeCoroutinesRxSwift in Frameworks */,
+				50DD46162AEF507B0076534C /* KMPNativeCoroutinesCore in Frameworks */,
 				500B22012AEECC4C00F8905D /* DDCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -109,6 +117,10 @@
 			name = "dailydish-ios";
 			packageProductDependencies = (
 				500B22002AEECC4C00F8905D /* DDCore */,
+				50DD46112AEF507B0076534C /* KMPNativeCoroutinesAsync */,
+				50DD46132AEF507B0076534C /* KMPNativeCoroutinesCombine */,
+				50DD46152AEF507B0076534C /* KMPNativeCoroutinesCore */,
+				50DD46172AEF507B0076534C /* KMPNativeCoroutinesRxSwift */,
 			);
 			productName = "dailydish-ios";
 			productReference = 5027144B26248154004295B8 /* dailydish-ios.app */;
@@ -139,6 +151,7 @@
 			mainGroup = 5027144226248154004295B8;
 			packageReferences = (
 				500B21FF2AEECC4C00F8905D /* XCRemoteSwiftPackageReference "daily-dish" */,
+				50DD46102AEF507B0076534C /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */,
 			);
 			productRefGroup = 5027144C26248154004295B8 /* Products */;
 			projectDirPath = "";
@@ -368,6 +381,14 @@
 				version = 1.3.0;
 			};
 		};
+		50DD46102AEF507B0076534C /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rickclephas/KMP-NativeCoroutines";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -375,6 +396,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 500B21FF2AEECC4C00F8905D /* XCRemoteSwiftPackageReference "daily-dish" */;
 			productName = DDCore;
+		};
+		50DD46112AEF507B0076534C /* KMPNativeCoroutinesAsync */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50DD46102AEF507B0076534C /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;
+			productName = KMPNativeCoroutinesAsync;
+		};
+		50DD46132AEF507B0076534C /* KMPNativeCoroutinesCombine */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50DD46102AEF507B0076534C /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;
+			productName = KMPNativeCoroutinesCombine;
+		};
+		50DD46152AEF507B0076534C /* KMPNativeCoroutinesCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50DD46102AEF507B0076534C /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;
+			productName = KMPNativeCoroutinesCore;
+		};
+		50DD46172AEF507B0076534C /* KMPNativeCoroutinesRxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50DD46102AEF507B0076534C /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;
+			productName = KMPNativeCoroutinesRxSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

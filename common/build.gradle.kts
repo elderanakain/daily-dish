@@ -1,12 +1,13 @@
-
 import co.touchlab.skie.configuration.DefaultArgumentInterop
 import co.touchlab.skie.configuration.EnumInterop
 import co.touchlab.skie.configuration.FlowInterop
 import co.touchlab.skie.configuration.SealedInterop
 import co.touchlab.skie.configuration.SuspendInterop
+import com.rickclephas.kmp.nativecoroutines.gradle.ExposedSeverity
 import org.gradle.api.internal.artifacts.repositories.resolver.MavenUniqueSnapshotComponentIdentifier
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode.*
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 plugins {
     id("com.android.library")
@@ -15,6 +16,8 @@ plugins {
     alias(libs.plugins.sqldelight)
     alias(libs.plugins.kmmBridge)
     alias(libs.plugins.skie)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.nativeCoroutines)
 
     id("maven-publish")
 }
@@ -63,6 +66,8 @@ kotlin {
             dependsOn(mobileMain)
             dependencies { implementation(libs.bundles.android) }
         }
+
+        all { languageSettings.optIn("kotlin.experimental.ExperimentalObjCName") }
     }
 }
 
@@ -110,16 +115,16 @@ publishing {
 
 kmmbridge {
     frameworkName = framework
-    //buildType = if (isOnMaster) NativeBuildType.RELEASE else NativeBuildType.DEBUG
+    buildType = if (isOnMaster) NativeBuildType.RELEASE else NativeBuildType.DEBUG
 
     mavenPublishArtifacts(repository = publishRepository)
     spm(useCustomPackageFile = true)
     manualVersions()
 
-    // rootProject.extensions.extraProperties["spmBuildTargets"] = when {
-    //     isOnMaster -> "ios_simulator_arm64,ios_arm64,ios_x64"
-    //     else -> "ios_simulator_arm64"
-    // }
+    rootProject.extensions.extraProperties["spmBuildTargets"] = when {
+        isOnMaster -> "ios_simulator_arm64,ios_arm64,ios_x64"
+        else -> "ios_simulator_arm64"
+    }
 
     val version = version.toString()
 
@@ -158,12 +163,15 @@ skie {
 
     features {
         group {
-            SuspendInterop.Enabled(true)
-            FlowInterop.Enabled(true)
-
+            SuspendInterop.Enabled(false)
+            FlowInterop.Enabled(false)
             EnumInterop.Enabled(false)
             DefaultArgumentInterop.Enabled(false)
             SealedInterop.Enabled(false)
         }
     }
+}
+
+nativeCoroutines {
+    exposedSeverity = ExposedSeverity.ERROR
 }
