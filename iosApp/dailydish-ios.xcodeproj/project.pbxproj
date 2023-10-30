@@ -12,6 +12,7 @@
 		5027145326248155004295B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5027145226248155004295B8 /* Assets.xcassets */; };
 		5027145626248155004295B8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5027145526248155004295B8 /* Preview Assets.xcassets */; };
 		50C95D372AEEFFDF000E968C /* MealListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C95D362AEEFFDF000E968C /* MealListViewModel.swift */; };
+		50D9A7632AEF32C8009F04C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D9A7622AEF32C8009F04C3 /* AppDelegate.swift */; };
 		50FD61A2262600AE00C91825 /* dailydish_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FD61A1262600AE00C91825 /* dailydish_iosApp.swift */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +36,7 @@
 		5027145526248155004295B8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		5027145726248155004295B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50C95D362AEEFFDF000E968C /* MealListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealListViewModel.swift; sourceTree = "<group>"; };
+		50D9A7622AEF32C8009F04C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		50FD61A1262600AE00C91825 /* dailydish_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dailydish_iosApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -75,6 +77,7 @@
 				5027145426248155004295B8 /* Preview Content */,
 				50FD61A1262600AE00C91825 /* dailydish_iosApp.swift */,
 				50C95D362AEEFFDF000E968C /* MealListViewModel.swift */,
+				50D9A7622AEF32C8009F04C3 /* AppDelegate.swift */,
 			);
 			path = "dailydish-ios";
 			sourceTree = "<group>";
@@ -163,6 +166,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50D9A7632AEF32C8009F04C3 /* AppDelegate.swift in Sources */,
 				50FD61A2262600AE00C91825 /* dailydish_iosApp.swift in Sources */,
 				5027145126248154004295B8 /* ContentView.swift in Sources */,
 				50C95D372AEEFFDF000E968C /* MealListViewModel.swift in Sources */,
@@ -302,7 +306,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-lsqlite3";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.krugosvet.dailydish-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -324,7 +328,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-lsqlite3";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.krugosvet.dailydish-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

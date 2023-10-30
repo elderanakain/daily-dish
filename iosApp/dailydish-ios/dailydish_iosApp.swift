@@ -1,18 +1,14 @@
 import SwiftUI
 import DDCore
 
-var env: DDCore.Environment? = nil
-
 @main
-struct dailydish_iosApp: App {
+struct DailyDishApp: App {
+    
+    @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
     
     var body: some Scene {
         return WindowGroup {
             ContentView()
         }
-    }
-    
-    init() {
-        env = EnvironmentCompanion.shared.doInit()
     }
 }

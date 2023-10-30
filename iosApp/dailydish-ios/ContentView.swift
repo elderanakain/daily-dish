@@ -6,13 +6,16 @@ struct ContentView: View {
     var body: some View {
         let viewModel = MealListViewModel()
         
-        List(viewModel.meals, id: \.id) { meal in
-            Text(meal.title)
-        }
-        .task {
-            await viewModel.observeMeals()
-        }
+        VStack {
+            Text("Meals").padding()
             
+            List(viewModel.meals, id: \.id) { meal in
+                Text(meal.title)
+            }
+            .task {
+                await viewModel.observeMeals()
+            }
+        }
     }
 }
 

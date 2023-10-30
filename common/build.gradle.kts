@@ -1,3 +1,4 @@
+
 import co.touchlab.skie.configuration.DefaultArgumentInterop
 import co.touchlab.skie.configuration.EnumInterop
 import co.touchlab.skie.configuration.FlowInterop
@@ -6,7 +7,6 @@ import co.touchlab.skie.configuration.SuspendInterop
 import org.gradle.api.internal.artifacts.repositories.resolver.MavenUniqueSnapshotComponentIdentifier
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode.*
-import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 plugins {
     id("com.android.library")
@@ -39,6 +39,7 @@ kotlin {
         .forEach {
             it.binaries {
                 framework(framework) {
+                    isStatic = true
                     embedBitcodeMode = DISABLE
                     binaryOption("bundleShortVersionString", version.toString())
                 }
@@ -84,6 +85,7 @@ android {
 }
 
 sqldelight {
+    linkSqlite = true
     databases {
         create("Database") {
             packageName.set("io.krugosvet.dailydish.common.repository.db")
@@ -108,16 +110,16 @@ publishing {
 
 kmmbridge {
     frameworkName = framework
-    buildType = if (isOnMaster) NativeBuildType.RELEASE else NativeBuildType.DEBUG
+    //buildType = if (isOnMaster) NativeBuildType.RELEASE else NativeBuildType.DEBUG
 
     mavenPublishArtifacts(repository = publishRepository)
     spm(useCustomPackageFile = true)
     manualVersions()
 
-    rootProject.extensions.extraProperties["spmBuildTargets"] = when {
-        isOnMaster -> "ios_simulator_arm64,ios_arm64,ios_x64"
-        else -> "ios_simulator_arm64"
-    }
+    // rootProject.extensions.extraProperties["spmBuildTargets"] = when {
+    //     isOnMaster -> "ios_simulator_arm64,ios_arm64,ios_x64"
+    //     else -> "ios_simulator_arm64"
+    // }
 
     val version = version.toString()
 
