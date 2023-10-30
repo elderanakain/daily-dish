@@ -39,7 +39,6 @@ kotlin {
         .forEach {
             it.binaries {
                 framework(framework) {
-                    isStatic = true
                     embedBitcodeMode = DISABLE
                     binaryOption("bundleShortVersionString", version.toString())
                 }

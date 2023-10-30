@@ -2,19 +2,17 @@ import SwiftUI
 import DDCore
 
 struct ContentView: View {
-    var repository: MealRepository
-    
-    @State var mealsText = String("")
-    
+
     var body: some View {
-        return Text(mealsText)
-            .padding()
-            .onAppear(perform: {
-                repository.observe()
-                repository.fetch { (unit, error) -> Void in
-                    mealsText = repository.meals.map { $0.title }.joined()
-                }
-            })
+        let viewModel = MealListViewModel()
+        
+        List(viewModel.meals, id: \.id) { meal in
+            Text(meal.title)
+        }
+        .task {
+            await viewModel.observeMeals()
+        }
+            
     }
 }
 

@@ -11,6 +11,7 @@
 		5027145126248154004295B8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5027145026248154004295B8 /* ContentView.swift */; };
 		5027145326248155004295B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5027145226248155004295B8 /* Assets.xcassets */; };
 		5027145626248155004295B8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5027145526248155004295B8 /* Preview Assets.xcassets */; };
+		50C95D372AEEFFDF000E968C /* MealListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C95D362AEEFFDF000E968C /* MealListViewModel.swift */; };
 		50FD61A2262600AE00C91825 /* dailydish_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FD61A1262600AE00C91825 /* dailydish_iosApp.swift */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +34,7 @@
 		5027145226248155004295B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5027145526248155004295B8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		5027145726248155004295B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		50C95D362AEEFFDF000E968C /* MealListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealListViewModel.swift; sourceTree = "<group>"; };
 		50FD61A1262600AE00C91825 /* dailydish_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dailydish_iosApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -72,6 +74,7 @@
 				5027145726248155004295B8 /* Info.plist */,
 				5027145426248155004295B8 /* Preview Content */,
 				50FD61A1262600AE00C91825 /* dailydish_iosApp.swift */,
+				50C95D362AEEFFDF000E968C /* MealListViewModel.swift */,
 			);
 			path = "dailydish-ios";
 			sourceTree = "<group>";
@@ -162,6 +165,7 @@
 			files = (
 				50FD61A2262600AE00C91825 /* dailydish_iosApp.swift in Sources */,
 				5027145126248154004295B8 /* ContentView.swift in Sources */,
+				50C95D372AEEFFDF000E968C /* MealListViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,11 +297,12 @@
 				DEVELOPMENT_ASSET_PATHS = "\"dailydish-ios/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "dailydish-ios/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.krugosvet.dailydish-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -314,11 +319,12 @@
 				DEVELOPMENT_ASSET_PATHS = "\"dailydish-ios/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "dailydish-ios/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.krugosvet.dailydish-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

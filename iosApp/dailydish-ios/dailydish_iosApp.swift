@@ -1,14 +1,14 @@
 import SwiftUI
 import DDCore
 
+var env: DDCore.Environment? = nil
+
 @main
 struct dailydish_iosApp: App {
     
-    private let env: DDCore.Environment
-    
     var body: some Scene {
         return WindowGroup {
-            ContentView(repository: env.mealRepository)
+            ContentView()
         }
     }
     
