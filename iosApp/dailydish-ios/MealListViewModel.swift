@@ -14,8 +14,8 @@ public final class MealListViewModel: ObservableObject {
     @MainActor
     func observeMeals() async{
         do {
-            for try await meals in repository.flow() {
-                //self.meals = meals
+            for try await meals in repository.observe() {
+                self.meals = meals
             }
         } catch {
             print("Unexpected error: \(error).")
