@@ -62,7 +62,7 @@ android {
             devices {
                 maybeCreate<ManagedVirtualDevice>("ddUiTests").apply {
                     device = "Pixel 2"
-                    apiLevel = 33
+                    apiLevel = android.defaultConfig.minSdk!!
                     systemImageSource = "aosp-atd"
                 }
             }
