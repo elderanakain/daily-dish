@@ -1,9 +1,9 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 5.8
 import PackageDescription
 
 // BEGIN KMMBRIDGE VARIABLES BLOCK (do not edit)
-let remoteKotlinUrl = "https://maven.pkg.github.com/elderanakain/daily-dish/io/krugosvet/dailydish/common-kmmbridge/1.3.0-SNAPSHOT/common-kmmbridge-1.3.0-20231031.232138-37.zip"
-let remoteKotlinChecksum = "346fe604fb7c1c137a376f2398cece17c7335dc38284ecf4a1d5c1ec85089205"
+let remoteKotlinUrl = "https://maven.pkg.github.com/elderanakain/daily-dish/io/krugosvet/dailydish/common-kmmbridge/1.3.0-SNAPSHOT/common-kmmbridge-1.3.0-20231031.233309-38.zip"
+let remoteKotlinChecksum = "e60569cd3a1f74f616ef73d50c6c2d4a002e8bb3fd64d58db8e1fbc2a3c13abf"
 let packageName = "DDCore"
 // END KMMBRIDGE BLOCK
 
