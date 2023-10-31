@@ -58,11 +58,13 @@ android {
 
     @Suppress("UnstableApiUsage")
     testOptions {
+        animationsDisabled = true
+
         managedDevices {
             devices {
                 maybeCreate<ManagedVirtualDevice>("ddUiTests").apply {
                     device = "Pixel 2"
-                    apiLevel = android.defaultConfig.minSdk!!
+                    apiLevel = 33
                     systemImageSource = "aosp-atd"
                 }
             }

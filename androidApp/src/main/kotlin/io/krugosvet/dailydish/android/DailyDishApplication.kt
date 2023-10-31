@@ -3,7 +3,11 @@ package io.krugosvet.dailydish.android
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
+import dagger.hilt.EntryPoint
+import dagger.hilt.EntryPoints
+import dagger.hilt.InstallIn
 import dagger.hilt.android.HiltAndroidApp
+import dagger.hilt.components.SingletonComponent
 import io.krugosvet.dailydish.android.reminder.ReminderService
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -11,13 +15,11 @@ import timber.log.Timber
 
 @HiltAndroidApp
 class DailyDishApplication :
-    Application(), Configuration.Provider {
+    Application(),
+    Configuration.Provider {
 
     @Inject
     lateinit var reminderService: ReminderService
-
-    @Inject
-    lateinit var workerFactory: HiltWorkerFactory
 
     override fun onCreate() {
         super.onCreate()
@@ -29,8 +31,16 @@ class DailyDishApplication :
 
     override fun getWorkManagerConfiguration() =
         Configuration.Builder()
-            .setWorkerFactory(workerFactory)
+            .setWorkerFactory(
+                EntryPoints.get(this, WorkerEntryPoint::class.java).workerFactory(),
+            )
             .build()
+
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface WorkerEntryPoint {
+        fun workerFactory(): HiltWorkerFactory
+    }
 }
 
 val errorHandler = CoroutineExceptionHandler { _, error -> Timber.e(error) }

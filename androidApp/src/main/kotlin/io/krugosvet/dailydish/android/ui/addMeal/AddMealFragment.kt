@@ -41,21 +41,21 @@ class AddMealFragment :
             }
             .launchInCatching()
 
-        with(currentDate) {
-            onDateSet(null, year, monthNumber, dayOfMonth)
-        }
+        val now = currentDate
+
+        onDateSet(null, now.year, now.monthNumber - 1, now.dayOfMonth)
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        val newDate = LocalDate(year, month, dayOfMonth)
+        val newDate = LocalDate(year, month + 1, dayOfMonth)
 
         viewModel.onDateChange(newDate)
     }
 
     private fun showDatePicker() {
-        with(currentDate) {
-            DatePickerDialog(requireContext(), this@AddMealFragment, year, monthNumber, dayOfMonth)
-                .show()
-        }
+        val now = currentDate
+
+        DatePickerDialog(requireContext(), this, now.year, now.monthNumber - 1, now.dayOfMonth)
+            .show()
     }
 }

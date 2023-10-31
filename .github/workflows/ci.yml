@@ -25,6 +25,7 @@ jobs:
                 with:
                     java-version: 17
                     distribution: zulu
+
             -   uses: gradle/gradle-build-action@v2
             -   uses: android-actions/setup-android@v3
 
@@ -54,7 +55,7 @@ jobs:
 
     android:
         runs-on: self-hosted
-        timeout-minutes: 10
+        timeout-minutes: 5
         needs: [ common ]
         steps:
             -   uses: actions/checkout@v4
@@ -73,7 +74,7 @@ jobs:
 
     backend:
         runs-on: self-hosted
-        timeout-minutes: 10
+        timeout-minutes: 5
         needs: [ common ]
         steps:
             -   uses: actions/checkout@v4
