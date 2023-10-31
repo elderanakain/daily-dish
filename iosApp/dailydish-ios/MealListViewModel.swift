@@ -5,6 +5,7 @@ import KMPNativeCoroutinesAsync
 @MainActor
 public final class MealListViewModel: ObservableObject {
     
+    @MainActor
     @Published
     var meals: [Meal] = []
     
@@ -13,8 +14,8 @@ public final class MealListViewModel: ObservableObject {
     @MainActor
     func observeMeals() async{
         do {
-            for try await meals in asyncSequence(for: MealRepositoryNativeKt.observe(repository)) {
-                self.meals = meals
+            for try await meals in repository.flow() {
+                //self.meals = meals
             }
         } catch {
             print("Unexpected error: \(error).")
