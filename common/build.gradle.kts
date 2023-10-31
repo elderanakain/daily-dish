@@ -3,7 +3,6 @@ import co.touchlab.skie.configuration.EnumInterop
 import co.touchlab.skie.configuration.FlowInterop
 import co.touchlab.skie.configuration.SealedInterop
 import co.touchlab.skie.configuration.SuspendInterop
-import com.rickclephas.kmp.nativecoroutines.gradle.ExposedSeverity
 import org.gradle.api.internal.artifacts.repositories.resolver.MavenUniqueSnapshotComponentIdentifier
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode.*
@@ -163,15 +162,21 @@ skie {
 
     features {
         group {
-            SuspendInterop.Enabled(false)
-            FlowInterop.Enabled(false)
-            EnumInterop.Enabled(false)
+            SuspendInterop.Enabled(true)
+            FlowInterop.Enabled(true)
+            EnumInterop.Enabled(true)
+            SealedInterop.Enabled(true)
+
             DefaultArgumentInterop.Enabled(false)
-            SealedInterop.Enabled(false)
         }
+    }
+
+    debug {
+        printSkiePerformanceLogs = true
+        crashOnSoftErrors = true
     }
 }
 
 nativeCoroutines {
-    exposedSeverity = ExposedSeverity.ERROR
+    //exposedSeverity = ExposedSeverity.ERROR
 }

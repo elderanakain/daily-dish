@@ -1,30 +1,29 @@
 package io.krugosvet.dailydish.common.repository
 
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import io.krugosvet.dailydish.common.dto.Meal
 import kotlinx.coroutines.flow.Flow
 
 public interface MealRepository {
 
-    @NativeCoroutines
+    // @NativeCoroutines
     public fun observe(): Flow<List<Meal>>
 
-    @NativeCoroutines
+    // @NativeCoroutines
     public suspend fun add(meal: Meal)
 
-    @NativeCoroutines
+    // @NativeCoroutines
     public suspend fun delete(mealId: String)
 
-    @NativeCoroutines
+    // @NativeCoroutines
     public suspend fun reset()
 
-    @NativeCoroutines
+    // @NativeCoroutines
     public suspend fun get(mealId: String): Meal
 
-    @NativeCoroutines
+    // @NativeCoroutines
     public suspend fun update(meal: Meal)
 
-    @NativeCoroutines
+    // @NativeCoroutines
     public suspend fun fetch()
 }
 
