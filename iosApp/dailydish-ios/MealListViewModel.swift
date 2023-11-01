@@ -1,6 +1,5 @@
 import Foundation
 import DDCore
-import KMPNativeCoroutinesAsync
 
 @MainActor
 public final class MealListViewModel: ObservableObject {

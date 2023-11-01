@@ -5,7 +5,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/elderanakain/daily-dish",
       "state" : {
-        "revision" : "233ec5f11b7c22435b26ae4aa56ffcffe93e37e4",
+        "revision" : "748ed5dcfa1db8eda98110d5473ea29c43fd615b",
         "version" : "1.3.0"
       }
     }

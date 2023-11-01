@@ -90,10 +90,28 @@ jobs:
             -   name: check
                 run: ./gradlew -PisOnMaster=${{ github.ref == 'refs/heads/master' }} :backEnd:check
 
+    ios:
+        runs-on: self-hosted
+        timeout-minutes: 5
+        needs: [ common ]
+        steps:
+            -   uses: actions/checkout@v4
+
+            -   name: tests
+                working-directory: ./iosApp
+                run: |
+                    xcodebuild clean test \
+                        -project dailydish-ios.xcodeproj \
+                        -scheme dailydish-ios \
+                        -sdk iphonesimulator \
+                        -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0.1' \
+                        -configuration Debug \
+                        -parallel-testing-enabled NO
+
     release:
         runs-on: self-hosted
         timeout-minutes: 5
-        needs: [ android, backend ]
+        needs: [ android, backend, ios ]
         steps:
             -   uses: actions/checkout@v4
             -   uses: actions/setup-java@v3

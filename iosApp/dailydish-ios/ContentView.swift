@@ -8,7 +8,9 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            Text("Meals").padding()
+            Text("Meals")
+                .accessibilityLabel("title")
+                .padding()
             
             List(viewModel.meals, id: \.id) { meal in
                 MealRow(meal: meal)
