@@ -1,10 +1,12 @@
 import SwiftUI
+import DDCore
 
 @main
-struct dailydish_iosApp: App {
+struct DailyDishApp: App {
+    
+    @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
+    
     var body: some Scene {
-        startKoin()
-        
         return WindowGroup {
             ContentView()
         }

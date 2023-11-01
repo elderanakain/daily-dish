@@ -62,4 +62,3 @@ internal class MealServiceImpl(
 }
 
 private const val MULTIPART_KEY_MEAL = "meal"
-private const val MULTIPART_KEY_MEAL_IMAGE = "meal_image"

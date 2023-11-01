@@ -3,17 +3,30 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		500B22012AEECC4C00F8905D /* DDCore in Frameworks */ = {isa = PBXBuildFile; productRef = 500B22002AEECC4C00F8905D /* DDCore */; };
 		5027145126248154004295B8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5027145026248154004295B8 /* ContentView.swift */; };
 		5027145326248155004295B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5027145226248155004295B8 /* Assets.xcassets */; };
 		5027145626248155004295B8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5027145526248155004295B8 /* Preview Assets.xcassets */; };
-		50EDEF11270DE6A40055A2F1 /* common in Frameworks */ = {isa = PBXBuildFile; productRef = 50EDEF10270DE6A40055A2F1 /* common */; };
-		50FD619E2625F78000C91825 /* Koin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FD619D2625F78000C91825 /* Koin.swift */; };
+		50AB69CF2AF2BC6300934C6F /* DailyDishUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50AB69CE2AF2BC6300934C6F /* DailyDishUITests.swift */; };
+		50AB69D12AF2BC6300934C6F /* DailyDishUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50AB69D02AF2BC6300934C6F /* DailyDishUITestsLaunchTests.swift */; };
+		50C95D372AEEFFDF000E968C /* MealListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C95D362AEEFFDF000E968C /* MealListViewModel.swift */; };
+		50D9A7632AEF32C8009F04C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D9A7622AEF32C8009F04C3 /* AppDelegate.swift */; };
 		50FD61A2262600AE00C91825 /* dailydish_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FD61A1262600AE00C91825 /* dailydish_iosApp.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		50AB69D22AF2BC6300934C6F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5027144326248154004295B8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5027144A26248154004295B8;
+			remoteInfo = "dailydish-ios";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		500DA7602626C6700025827D /* Embed Frameworks */ = {
@@ -34,7 +47,11 @@
 		5027145226248155004295B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5027145526248155004295B8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		5027145726248155004295B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		50FD619D2625F78000C91825 /* Koin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Koin.swift; sourceTree = "<group>"; };
+		50AB69CC2AF2BC6300934C6F /* DailyDishUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DailyDishUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		50AB69CE2AF2BC6300934C6F /* DailyDishUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyDishUITests.swift; sourceTree = "<group>"; };
+		50AB69D02AF2BC6300934C6F /* DailyDishUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyDishUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		50C95D362AEEFFDF000E968C /* MealListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealListViewModel.swift; sourceTree = "<group>"; };
+		50D9A7622AEF32C8009F04C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		50FD61A1262600AE00C91825 /* dailydish_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dailydish_iosApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -43,7 +60,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50EDEF11270DE6A40055A2F1 /* common in Frameworks */,
+				500B22012AEECC4C00F8905D /* DDCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		50AB69C92AF2BC6300934C6F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				5027144D26248154004295B8 /* dailydish-ios */,
+				50AB69CD2AF2BC6300934C6F /* DailyDishUITests */,
 				5027144C26248154004295B8 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -62,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				5027144B26248154004295B8 /* dailydish-ios.app */,
+				50AB69CC2AF2BC6300934C6F /* DailyDishUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -73,8 +99,9 @@
 				5027145226248155004295B8 /* Assets.xcassets */,
 				5027145726248155004295B8 /* Info.plist */,
 				5027145426248155004295B8 /* Preview Content */,
-				50FD619D2625F78000C91825 /* Koin.swift */,
 				50FD61A1262600AE00C91825 /* dailydish_iosApp.swift */,
+				50C95D362AEEFFDF000E968C /* MealListViewModel.swift */,
+				50D9A7622AEF32C8009F04C3 /* AppDelegate.swift */,
 			);
 			path = "dailydish-ios";
 			sourceTree = "<group>";
@@ -85,6 +112,15 @@
 				5027145526248155004295B8 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		50AB69CD2AF2BC6300934C6F /* DailyDishUITests */ = {
+			isa = PBXGroup;
+			children = (
+				50AB69CE2AF2BC6300934C6F /* DailyDishUITests.swift */,
+				50AB69D02AF2BC6300934C6F /* DailyDishUITestsLaunchTests.swift */,
+			);
+			path = DailyDishUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -105,11 +141,29 @@
 			);
 			name = "dailydish-ios";
 			packageProductDependencies = (
-				50EDEF10270DE6A40055A2F1 /* common */,
+				500B22002AEECC4C00F8905D /* DDCore */,
 			);
 			productName = "dailydish-ios";
 			productReference = 5027144B26248154004295B8 /* dailydish-ios.app */;
 			productType = "com.apple.product-type.application";
+		};
+		50AB69CB2AF2BC6300934C6F /* DailyDishUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 50AB69D62AF2BC6300934C6F /* Build configuration list for PBXNativeTarget "DailyDishUITests" */;
+			buildPhases = (
+				50AB69C82AF2BC6300934C6F /* Sources */,
+				50AB69C92AF2BC6300934C6F /* Frameworks */,
+				50AB69CA2AF2BC6300934C6F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				50AB69D32AF2BC6300934C6F /* PBXTargetDependency */,
+			);
+			name = DailyDishUITests;
+			productName = DailyDishUITests;
+			productReference = 50AB69CC2AF2BC6300934C6F /* DailyDishUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -117,11 +171,16 @@
 		5027144326248154004295B8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1240;
-				LastUpgradeCheck = 1240;
+				BuildIndependentTargetsInParallel = YES;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					5027144A26248154004295B8 = {
 						CreatedOnToolsVersion = 12.4;
+					};
+					50AB69CB2AF2BC6300934C6F = {
+						CreatedOnToolsVersion = 15.0.1;
+						TestTargetID = 5027144A26248154004295B8;
 					};
 				};
 			};
@@ -135,13 +194,14 @@
 			);
 			mainGroup = 5027144226248154004295B8;
 			packageReferences = (
-				50EDEF0F270DE6A40055A2F1 /* XCRemoteSwiftPackageReference "daily-dish-package.git" */,
+				500B21FF2AEECC4C00F8905D /* XCRemoteSwiftPackageReference "daily-dish" */,
 			);
 			productRefGroup = 5027144C26248154004295B8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				5027144A26248154004295B8 /* dailydish-ios */,
+				50AB69CB2AF2BC6300934C6F /* DailyDishUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -156,6 +216,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		50AB69CA2AF2BC6300934C6F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -163,13 +230,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50D9A7632AEF32C8009F04C3 /* AppDelegate.swift in Sources */,
 				50FD61A2262600AE00C91825 /* dailydish_iosApp.swift in Sources */,
-				50FD619E2625F78000C91825 /* Koin.swift in Sources */,
 				5027145126248154004295B8 /* ContentView.swift in Sources */,
+				50C95D372AEEFFDF000E968C /* MealListViewModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		50AB69C82AF2BC6300934C6F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50AB69D12AF2BC6300934C6F /* DailyDishUITestsLaunchTests.swift in Sources */,
+				50AB69CF2AF2BC6300934C6F /* DailyDishUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		50AB69D32AF2BC6300934C6F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5027144A26248154004295B8 /* dailydish-ios */;
+			targetProxy = 50AB69D22AF2BC6300934C6F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		5027145826248155004295B8 /* Debug */ = {
@@ -223,7 +308,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -278,7 +363,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -297,11 +382,12 @@
 				DEVELOPMENT_ASSET_PATHS = "\"dailydish-ios/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "dailydish-ios/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.krugosvet.dailydish-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -318,15 +404,61 @@
 				DEVELOPMENT_ASSET_PATHS = "\"dailydish-ios/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "dailydish-ios/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.krugosvet.dailydish-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		50AB69D42AF2BC6300934C6F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.krugosvet.dailydish-ios.DailyDishUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "dailydish-ios";
+			};
+			name = Debug;
+		};
+		50AB69D52AF2BC6300934C6F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.krugosvet.dailydish-ios.DailyDishUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "dailydish-ios";
 			};
 			name = Release;
 		};
@@ -351,24 +483,33 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		50AB69D62AF2BC6300934C6F /* Build configuration list for PBXNativeTarget "DailyDishUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				50AB69D42AF2BC6300934C6F /* Debug */,
+				50AB69D52AF2BC6300934C6F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		50EDEF0F270DE6A40055A2F1 /* XCRemoteSwiftPackageReference "daily-dish-package.git" */ = {
+		500B21FF2AEECC4C00F8905D /* XCRemoteSwiftPackageReference "daily-dish" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/elderanakain/daily-dish-package.git";
+			repositoryURL = "https://github.com/elderanakain/daily-dish";
 			requirement = {
-				branch = master;
-				kind = branch;
+				kind = exactVersion;
+				version = 1.3.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		50EDEF10270DE6A40055A2F1 /* common */ = {
+		500B22002AEECC4C00F8905D /* DDCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 50EDEF0F270DE6A40055A2F1 /* XCRemoteSwiftPackageReference "daily-dish-package.git" */;
-			productName = common;
+			package = 500B21FF2AEECC4C00F8905D /* XCRemoteSwiftPackageReference "daily-dish" */;
+			productName = DDCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

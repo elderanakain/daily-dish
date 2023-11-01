@@ -58,6 +58,8 @@ android {
 
     @Suppress("UnstableApiUsage")
     testOptions {
+        animationsDisabled = true
+
         managedDevices {
             devices {
                 maybeCreate<ManagedVirtualDevice>("ddUiTests").apply {

@@ -4,7 +4,7 @@ on:
     push:
 
 concurrency:
-    group: ${{ github.head_ref || github.run_id }}
+    group: ${{ github.ref }}
     cancel-in-progress: true
 
 env:
@@ -17,10 +17,15 @@ jobs:
         timeout-minutes: 10
         steps:
             -   uses: actions/checkout@v4
+                with:
+                    ref: ${{ github.head_ref }}
+                    token: ${{ secrets.DD_GG_TOKEN }}
+                    fetch-depth: 2
             -   uses: actions/setup-java@v3
                 with:
                     java-version: 17
                     distribution: zulu
+
             -   uses: gradle/gradle-build-action@v2
             -   uses: android-actions/setup-android@v3
 
@@ -31,11 +36,26 @@ jobs:
                 run: ./gradlew -PisOnMaster=${{ github.ref == 'refs/heads/master' }} :common:allTests --build-cache
 
             -   name: publish
+                if: ${{ !contains(github.event.head_commit.message, '[published]') }}
                 run: ./gradlew -PisOnMaster=${{ github.ref == 'refs/heads/master' }} :common:publish
+
+            -   name: Get last commit message
+                id: last-commit-message
+                if: ${{ !contains(github.event.head_commit.message, '[published]') }}
+                run: |
+                    echo "msg=$(git log -1 --pretty=%s)" >> $GITHUB_OUTPUT
+
+            -   uses: stefanzweifel/git-auto-commit-action@v5
+                if: ${{ !contains(github.event.head_commit.message, '[published]') }}
+                with:
+                    commit_message: "${{ steps.last-commit-message.outputs.msg }}\n[published]"
+                    commit_options: '--amend'
+                    push_options: '--force'
+                    skip_fetch: true
 
     android:
         runs-on: self-hosted
-        timeout-minutes: 10
+        timeout-minutes: 5
         needs: [ common ]
         steps:
             -   uses: actions/checkout@v4
@@ -54,7 +74,7 @@ jobs:
 
     backend:
         runs-on: self-hosted
-        timeout-minutes: 10
+        timeout-minutes: 5
         needs: [ common ]
         steps:
             -   uses: actions/checkout@v4
@@ -70,10 +90,31 @@ jobs:
             -   name: check
                 run: ./gradlew -PisOnMaster=${{ github.ref == 'refs/heads/master' }} :backEnd:check
 
+    ios:
+        runs-on: self-hosted
+        timeout-minutes: 5
+        needs: [ common ]
+        steps:
+            -   uses: actions/checkout@v4
+
+            -   name: clear cache
+                run: swift package clean && swift package purge-cache && swift package reset && swift package resolve
+
+            -   name: tests
+                working-directory: ./iosApp
+                run: |
+                    xcodebuild clean test \
+                        -project dailydish-ios.xcodeproj \
+                        -scheme dailydish-ios \
+                        -sdk iphonesimulator \
+                        -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0.1' \
+                        -configuration Debug \
+                        -parallel-testing-enabled NO
+
     release:
         runs-on: self-hosted
         timeout-minutes: 5
-        needs: [ android, backend ]
+        needs: [ android, backend, ios ]
         steps:
             -   uses: actions/checkout@v4
             -   uses: actions/setup-java@v3
@@ -85,6 +126,30 @@ jobs:
             -   name: get version
                 run: echo "version=$(${{github.workspace}}/gradlew -q -PisOnMaster=${{ github.ref == 'refs/heads/master' }} printVersion)" >> $GITHUB_ENV
 
+            # Creates a tag using the obtained version. If the tag already exists, then moves it to the current commit.
+            -   name: Create tag
+                uses: actions/github-script@v6
+                with:
+                    script: |
+                        try {
+                            await github.rest.git.updateRef({
+                              owner: context.repo.owner,
+                              repo: context.repo.repo,
+                              ref: 'tags/${{ env.version }}',
+                              sha: context.sha,
+                              force: true,
+                            });
+                        } catch (error) {
+                            console.log(error);
+                        
+                            await github.rest.git.createRef({
+                              owner: context.repo.owner,
+                              repo: context.repo.repo,
+                              ref: 'refs/tags/${{ env.version }}',
+                              sha: context.sha,
+                            });
+                        }
+
             -   name: create release
                 uses: ncipollo/release-action@v1
                 with:
@@ -92,3 +157,4 @@ jobs:
                     generateReleaseNotes: true
                     makeLatest: ${{ github.ref == 'refs/heads/master' }}
                     tag: ${{ env.version }}
+                    draft: ${{ github.ref != 'refs/heads/master' }}

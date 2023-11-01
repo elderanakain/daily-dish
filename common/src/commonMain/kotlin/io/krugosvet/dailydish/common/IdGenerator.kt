@@ -1,6 +1,6 @@
 package io.krugosvet.dailydish.common
 
-public expect class IdGenerator() {
+internal expect class IdGenerator() {
 
-    public fun generate(): String
+    fun generate(): String
 }

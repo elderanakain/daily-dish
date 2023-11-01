@@ -6,6 +6,8 @@ pluginManagement {
     }
 }
 
+val isOnMaster: Boolean by extra { providers.gradleProperty("isOnMaster").get().toBoolean() }
+
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositories {
@@ -25,9 +27,7 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            val isOnMaster: Boolean = providers.gradleProperty("isOnMaster").get().toBoolean()
-
-            version("common", "1.2.0".let { if (!isOnMaster) it.plus("-SNAPSHOT") else it })
+            version("common", "1.3.0".let { if (!isOnMaster) it.plus("-SNAPSHOT") else it })
         }
     }
 }

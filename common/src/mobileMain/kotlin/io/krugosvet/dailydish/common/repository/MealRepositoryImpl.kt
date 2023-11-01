@@ -1,5 +1,6 @@
 package io.krugosvet.dailydish.common.repository
 
+import io.krugosvet.dailydish.common.IdGenerator
 import io.krugosvet.dailydish.common.dto.Meal
 import io.krugosvet.dailydish.common.dto.MealFactory
 import io.krugosvet.dailydish.common.repository.db.MealDao
@@ -13,6 +14,7 @@ internal actual class MealRepositoryImpl(
     private val factory: MealFactory,
     private val entityFactory: MealEntityFactory,
     private val mealService: MealService,
+    private val idGenerator: IdGenerator,
 ) :
     MealRepository {
 
@@ -21,7 +23,7 @@ internal actual class MealRepositoryImpl(
             .map { entities -> entities.map(factory::from) }
 
     override suspend fun add(meal: Meal) {
-        val entity = entityFactory.from(meal)
+        val entity = entityFactory.from(meal.copy(id = idGenerator.generate()))
 
         mealDao.add(entity)
 

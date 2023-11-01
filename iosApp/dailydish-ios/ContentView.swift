@@ -1,19 +1,32 @@
 import SwiftUI
-import common
+import DDCore
+import Foundation
 
 struct ContentView: View {
-    var repository = koin.mealRepository
     
-    @State var mealsText = String("")
+    @ObservedObject var viewModel = MealListViewModel(repository: AppDelegate.env.mealRepository)
+
+    var body: some View {
+        VStack {
+            Text("Meals")
+                .accessibilityLabel("title")
+                .padding()
+            
+            List(viewModel.meals, id: \.id) { meal in
+                MealRow(meal: meal)
+            }
+            .task {
+                await viewModel.observeMeals()
+            }
+        }
+    }
+}
+
+struct MealRow: View {
+    var meal: DDCore.Meal
     
     var body: some View {
-        return Text(mealsText)
-            .padding()
-            .onAppear(perform: {
-                repository.fetch { (unit, error) -> Void in
-                    mealsText = repository.meals.map { $0.title }.joined()
-                }
-            })
+        Text("\(meal.title)")
     }
 }
 
