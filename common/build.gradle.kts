@@ -43,6 +43,8 @@ kotlin {
                     isStatic = true
                     embedBitcodeMode = DISABLE
                     binaryOption("bundleShortVersionString", version.toString())
+
+                    freeCompilerArgs += arrayOf("-linker-options", "-lsqlite3")
                 }
             }
         }
