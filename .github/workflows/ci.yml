@@ -97,6 +97,9 @@ jobs:
         steps:
             -   uses: actions/checkout@v4
 
+            -   name: clear cache
+                run: swift package clean && swift package purge-cache && swift package reset && swift package resolve
+
             -   name: tests
                 working-directory: ./iosApp
                 run: |
