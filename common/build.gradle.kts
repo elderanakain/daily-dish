@@ -16,7 +16,6 @@ plugins {
     alias(libs.plugins.kmmBridge)
     alias(libs.plugins.skie)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.nativeCoroutines)
 
     id("maven-publish")
 }
@@ -186,8 +185,4 @@ skie {
         printSkiePerformanceLogs = true
         crashOnSoftErrors = true
     }
-}
-
-nativeCoroutines {
-    //exposedSeverity = ExposedSeverity.ERROR
 }

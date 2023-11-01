@@ -38,7 +38,6 @@ androidStartup = "1.1.1"
 kmmBridge = "0.5.0"
 skie = "0.5.2"
 ksp = "1.9.10-1.0.13"
-nativeCoroutines = "1.0.0-ALPHA-18"
 
 [libraries]
 sqldelight = { module = "app.cash.sqldelight:runtime", version.ref = "sqldelight" }
@@ -181,4 +180,3 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kmmBridge = { id = "co.touchlab.kmmbridge", version.ref = "kmmBridge" }
 skie = { id = "co.touchlab.skie", version.ref = "skie" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-nativeCoroutines = { id = "com.rickclephas.kmp.nativecoroutines", version.ref = "nativeCoroutines" }

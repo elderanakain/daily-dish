@@ -1,9 +1,10 @@
 import SwiftUI
 import DDCore
+import Foundation
 
 struct ContentView: View {
     
-    @ObservedObject var viewModel = MealListViewModel()
+    @ObservedObject var viewModel = MealListViewModel(repository: AppDelegate.env.mealRepository)
 
     var body: some View {
         VStack {

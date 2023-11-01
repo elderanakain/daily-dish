@@ -9,8 +9,12 @@ public final class MealListViewModel: ObservableObject {
     @Published
     var meals: [Meal] = []
     
-    private let repository: MealRepository = AppDelegate.env.mealRepository
+    private let repository: MealRepository
     
+    init(repository: MealRepository) {
+        self.repository = repository
+    }
+
     @MainActor
     func observeMeals() async{
         for try await meals in repository.observe() {
