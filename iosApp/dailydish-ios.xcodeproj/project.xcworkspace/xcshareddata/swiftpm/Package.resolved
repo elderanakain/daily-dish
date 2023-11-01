@@ -5,26 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/elderanakain/daily-dish",
       "state" : {
-        "revision" : "f4021c1c6ff24ed0d0b47c02291a2e9cec7d87c1",
+        "revision" : "4a120e9c4766717cea94bb3c29f17a06cc25a113",
         "version" : "1.3.0"
-      }
-    },
-    {
-      "identity" : "kmp-nativecoroutines",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/rickclephas/KMP-NativeCoroutines",
-      "state" : {
-        "branch" : "master",
-        "revision" : "815bb6aa6e9bd34284bb4f7d71ff5af301f5269e"
-      }
-    },
-    {
-      "identity" : "rxswift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ReactiveX/RxSwift.git",
-      "state" : {
-        "revision" : "9dcaa4b333db437b0fbfaf453fad29069044a8b4",
-        "version" : "6.6.0"
       }
     }
   ],
