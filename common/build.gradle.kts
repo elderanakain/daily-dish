@@ -43,20 +43,9 @@ kotlin {
                     isStatic = true
                     embedBitcodeMode = DISABLE
                     binaryOption("bundleShortVersionString", version.toString())
-                    linkerOpts.add("-lsqlite3")
-
-                    freeCompilerArgs += arrayOf("-linker-options", "-lsqlite3")
                 }
             }
         }
-
-    targets.filterIsInstance<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>().forEach{
-        it.binaries.filterIsInstance<org.jetbrains.kotlin.gradle.plugin.mpp.Framework>()
-            .forEach { lib ->
-                lib.isStatic = false
-                lib.linkerOpts.add("-lsqlite3")
-            }
-    }
 
     explicitApiWarning()
 
