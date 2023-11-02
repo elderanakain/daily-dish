@@ -4,8 +4,8 @@ import co.touchlab.skie.configuration.FlowInterop
 import co.touchlab.skie.configuration.SealedInterop
 import co.touchlab.skie.configuration.SuspendInterop
 import org.gradle.api.internal.artifacts.repositories.resolver.MavenUniqueSnapshotComponentIdentifier
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode.*
+import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode.DISABLE
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 plugins {
@@ -15,9 +15,8 @@ plugins {
     alias(libs.plugins.sqldelight)
     alias(libs.plugins.kmmBridge)
     alias(libs.plugins.skie)
-    alias(libs.plugins.ksp)
 
-    id("maven-publish")
+    `maven-publish`
 }
 
 val isOnMaster: Boolean = (rootProject.extra.get("isOnMaster") as String).toBooleanStrict()
@@ -26,10 +25,7 @@ val framework = "DDCore"
 version = libs.versions.common.get()
 group = "io.krugosvet.dailydish"
 
-@OptIn(ExperimentalKotlinGradlePluginApi::class)
 kotlin {
-    targetHierarchy.default()
-
     androidTarget {
         publishAllLibraryVariants()
     }
@@ -43,31 +39,49 @@ kotlin {
                     isStatic = true
                     embedBitcodeMode = DISABLE
                     binaryOption("bundleShortVersionString", version.toString())
-
-                    freeCompilerArgs += arrayOf("-linker-options", "-lsqlite3")
+                    linkerOpts("-lsqlite3")
                 }
             }
         }
 
-    explicitApiWarning()
+    applyDefaultHierarchyTemplate()
 
     sourceSets {
-        val commonMain by getting { dependencies { implementation(libs.bundles.common) } }
-        val commonTest by getting { dependencies { implementation(kotlin("test")) } }
-        val jvmMain by getting { dependencies { implementation(libs.bundles.jvm) } }
-        val mobileMain by creating { dependsOn(commonMain) }
+        commonMain { dependencies { implementation(libs.bundles.common) } }
+        commonTest { dependencies { implementation(kotlin("test")) } }
+        val mobileMain by creating { dependsOn(commonMain.get()) }
 
-        val iosMain by getting {
+        jvmMain { dependencies { implementation(libs.bundles.jvm) } }
+
+        iosMain {
             dependsOn(mobileMain)
             dependencies { implementation(libs.bundles.native) }
         }
 
-        val androidMain by getting {
+        androidMain {
             dependsOn(mobileMain)
             dependencies { implementation(libs.bundles.android) }
         }
+    }
 
-        all { languageSettings.optIn("kotlin.experimental.ExperimentalObjCName") }
+    explicitApiWarning()
+
+    targets.withType<KotlinNativeTarget>().configureEach {
+        compilations.configureEach {
+            compilerOptions.configure {
+                // https://kotlinlang.org/docs/native-ios-symbolication.html
+                freeCompilerArgs.add("-Xadd-light-debug=enable")
+                freeCompilerArgs.add("-Xpartial-linkage-loglevel=ERROR")
+            }
+        }
+    }
+
+    targets.configureEach {
+        compilations.configureEach {
+            compilerOptions.configure {
+                freeCompilerArgs.add("-Xexpect-actual-classes")
+            }
+        }
     }
 }
 
