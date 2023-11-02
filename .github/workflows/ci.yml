@@ -39,19 +39,48 @@ jobs:
                 if: ${{ !contains(github.event.head_commit.message, '[published]') }}
                 run: ./gradlew -PisOnMaster=${{ github.ref == 'refs/heads/master' }} :common:publish
 
-            -   name: Get last commit message
+            -   name: get last commit message
                 id: last-commit-message
                 if: ${{ !contains(github.event.head_commit.message, '[published]') }}
                 run: |
                     echo "msg=$(git log -1 --pretty=%s)" >> $GITHUB_OUTPUT
 
-            -   uses: stefanzweifel/git-auto-commit-action@v5
+            -   name: update swift package
+                uses: stefanzweifel/git-auto-commit-action@v5
                 if: ${{ !contains(github.event.head_commit.message, '[published]') }}
                 with:
                     commit_message: "${{ steps.last-commit-message.outputs.msg }}\n[published]"
                     commit_options: '--amend'
                     push_options: '--force'
                     skip_fetch: true
+
+            -   name: get version
+                if: ${{ contains(github.event.head_commit.message, '[published]') }}
+                run: echo "version=$(${{github.workspace}}/gradlew -q -PisOnMaster=${{ github.ref == 'refs/heads/master' }} printVersion)" >> $GITHUB_ENV
+
+            -   name: create tag
+                if: ${{ contains(github.event.head_commit.message, '[published]') }}
+                uses: actions/github-script@v6
+                with:
+                    script: |
+                        try {
+                            await github.rest.git.updateRef({
+                              owner: context.repo.owner,
+                              repo: context.repo.repo,
+                              ref: 'tags/${{ env.version }}',
+                              sha: context.sha,
+                              force: true,
+                            });
+                        } catch (error) {
+                            console.log(error);
+
+                            await github.rest.git.createRef({
+                              owner: context.repo.owner,
+                              repo: context.repo.repo,
+                              ref: 'refs/tags/${{ env.version }}',
+                              sha: context.sha,
+                            });
+                        }
 
     android:
         runs-on: self-hosted
@@ -126,8 +155,7 @@ jobs:
             -   name: get version
                 run: echo "version=$(${{github.workspace}}/gradlew -q -PisOnMaster=${{ github.ref == 'refs/heads/master' }} printVersion)" >> $GITHUB_ENV
 
-            # Creates a tag using the obtained version. If the tag already exists, then moves it to the current commit.
-            -   name: Create tag
+            -   name: create tag
                 uses: actions/github-script@v6
                 with:
                     script: |

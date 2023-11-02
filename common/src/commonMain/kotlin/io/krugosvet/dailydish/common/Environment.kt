@@ -29,7 +29,7 @@ public interface Environment {
     public companion object {
 
         public fun init(): Environment =
-            EnvironmentImpl().also { it.start() }
+            EnvironmentImpl().also(Environment::start)
     }
 }
 
