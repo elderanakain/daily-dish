@@ -79,3 +79,4 @@ vendor/bundle
 
 fastlane/.env
 __pycache__
+!/dailydish-ios.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
