@@ -1,6 +1,5 @@
 package io.krugosvet.dailydish.common.repository
 
-import co.touchlab.kermit.Logger
 import io.krugosvet.dailydish.common.IdGenerator
 import io.krugosvet.dailydish.common.dto.Meal
 import io.krugosvet.dailydish.common.dto.MealFactory
@@ -48,11 +47,7 @@ internal actual class MealRepositoryImpl(
         mealService.get(mealId)
 
     override suspend fun fetch() {
-        Logger.d { "Fetching meals" }
-
         val response = mealService.getAll()
-
-        Logger.d { "Received meals $response" }
 
         val entities = response.map(entityFactory::from)
 
