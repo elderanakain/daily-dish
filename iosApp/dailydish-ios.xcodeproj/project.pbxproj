@@ -14,8 +14,7 @@
 		50AB69CF2AF2BC6300934C6F /* DailyDishUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50AB69CE2AF2BC6300934C6F /* DailyDishUITests.swift */; };
 		50AB69D12AF2BC6300934C6F /* DailyDishUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50AB69D02AF2BC6300934C6F /* DailyDishUITestsLaunchTests.swift */; };
 		50C95D372AEEFFDF000E968C /* MealListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C95D362AEEFFDF000E968C /* MealListViewModel.swift */; };
-		50D9A7632AEF32C8009F04C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D9A7622AEF32C8009F04C3 /* AppDelegate.swift */; };
-		50FD61A2262600AE00C91825 /* dailydish_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FD61A1262600AE00C91825 /* dailydish_iosApp.swift */; };
+		50FD61A2262600AE00C91825 /* DailyDishApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FD61A1262600AE00C91825 /* DailyDishApp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,8 +50,7 @@
 		50AB69CE2AF2BC6300934C6F /* DailyDishUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyDishUITests.swift; sourceTree = "<group>"; };
 		50AB69D02AF2BC6300934C6F /* DailyDishUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyDishUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		50C95D362AEEFFDF000E968C /* MealListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealListViewModel.swift; sourceTree = "<group>"; };
-		50D9A7622AEF32C8009F04C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		50FD61A1262600AE00C91825 /* dailydish_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dailydish_iosApp.swift; sourceTree = "<group>"; };
+		50FD61A1262600AE00C91825 /* DailyDishApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyDishApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,9 +97,8 @@
 				5027145226248155004295B8 /* Assets.xcassets */,
 				5027145726248155004295B8 /* Info.plist */,
 				5027145426248155004295B8 /* Preview Content */,
-				50FD61A1262600AE00C91825 /* dailydish_iosApp.swift */,
+				50FD61A1262600AE00C91825 /* DailyDishApp.swift */,
 				50C95D362AEEFFDF000E968C /* MealListViewModel.swift */,
-				50D9A7622AEF32C8009F04C3 /* AppDelegate.swift */,
 			);
 			path = "dailydish-ios";
 			sourceTree = "<group>";
@@ -230,8 +227,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50D9A7632AEF32C8009F04C3 /* AppDelegate.swift in Sources */,
-				50FD61A2262600AE00C91825 /* dailydish_iosApp.swift in Sources */,
+				50FD61A2262600AE00C91825 /* DailyDishApp.swift in Sources */,
 				5027145126248154004295B8 /* ContentView.swift in Sources */,
 				50C95D372AEEFFDF000E968C /* MealListViewModel.swift in Sources */,
 			);
@@ -378,8 +374,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"dailydish-ios/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "dailydish-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -390,6 +388,10 @@
 				OTHER_LDFLAGS = "-lsqlite3";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.krugosvet.dailydish-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -400,8 +402,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"dailydish-ios/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "dailydish-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -412,6 +416,10 @@
 				OTHER_LDFLAGS = "-lsqlite3";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.krugosvet.dailydish-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -422,6 +430,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -432,6 +441,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "io.krugosvet.dailydish-ios.DailyDishUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -445,6 +457,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -455,6 +468,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "io.krugosvet.dailydish-ios.DailyDishUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -472,7 +488,7 @@
 				5027145926248155004295B8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		5027145A26248155004295B8 /* Build configuration list for PBXNativeTarget "dailydish-ios" */ = {
 			isa = XCConfigurationList;
@@ -481,7 +497,7 @@
 				5027145C26248155004295B8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		50AB69D62AF2BC6300934C6F /* Build configuration list for PBXNativeTarget "DailyDishUITests" */ = {
 			isa = XCConfigurationList;
@@ -490,7 +506,7 @@
 				50AB69D52AF2BC6300934C6F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 
@@ -500,7 +516,7 @@
 			repositoryURL = "https://github.com/elderanakain/daily-dish";
 			requirement = {
 				kind = exactVersion;
-				version = 1.3.1;
+				version = 1.4.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

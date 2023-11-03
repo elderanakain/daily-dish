@@ -140,10 +140,30 @@ jobs:
                         -configuration Debug \
                         -parallel-testing-enabled NO
 
+    macOS:
+        runs-on: self-hosted
+        timeout-minutes: 5
+        needs: [ common ]
+        steps:
+            -   uses: actions/checkout@v4
+
+            -   name: clear cache
+                run: swift package clean && swift package purge-cache && swift package reset && swift package resolve
+
+            -   name: tests
+                working-directory: ./iosApp
+                run: |
+                    xcodebuild clean test \
+                        -project dailydish-ios.xcodeproj \
+                        -scheme dailydish-ios \
+                        -sdk macosx \
+                        -configuration Debug \
+                        -parallel-testing-enabled NO
+
     release:
         runs-on: self-hosted
         timeout-minutes: 5
-        needs: [ android, backend, ios ]
+        needs: [ android, backend, ios, macOS ]
         steps:
             -   uses: actions/checkout@v4
             -   uses: actions/setup-java@v3

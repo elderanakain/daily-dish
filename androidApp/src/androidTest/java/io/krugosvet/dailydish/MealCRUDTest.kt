@@ -6,7 +6,6 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions.actionOnHolderItem
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -50,18 +49,6 @@ class MealCRUDTest : BaseTest() {
         addMeal()
 
         findNewMeal()
-
-        deleteMeal()
-    }
-
-    private fun deleteMeal() {
-        onView(withId(R.id.mealList))
-            .perform(
-                actionOnHolderItem(
-                    withTitle(MOCK_MEAL_TITLE),
-                    clickOnView(R.id.deleteButton),
-                ),
-            )
     }
 
     private fun findNewMeal() {

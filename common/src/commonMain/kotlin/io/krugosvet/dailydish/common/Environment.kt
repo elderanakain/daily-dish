@@ -1,5 +1,8 @@
 package io.krugosvet.dailydish.common
 
+import co.touchlab.kermit.Logger
+import co.touchlab.kermit.Severity.Debug
+import co.touchlab.kermit.koin.KermitKoinLogger
 import io.krugosvet.dailydish.common.core.platformModule
 import io.krugosvet.dailydish.common.dto.dtoModule
 import io.krugosvet.dailydish.common.repository.MealRepository
@@ -43,7 +46,12 @@ internal class EnvironmentImpl : Environment, KoinComponent {
     override val setCurrentTimeToMealUseCase: SetCurrentTimeToCookedDateMealUseCase by inject()
 
     override fun start() {
+        Logger.setMinSeverity(Debug)
+        Logger.setTag("Core")
+
         koinApp = koinApplication {
+            logger(KermitKoinLogger(Logger))
+
             modules(
                 dbModule,
                 networkModule,

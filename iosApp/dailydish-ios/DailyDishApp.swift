@@ -4,7 +4,7 @@ import DDCore
 @main
 struct DailyDishApp: App {
     
-    @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
+    static let env: DDCore.Environment = DDCore.EnvironmentCompanion.shared.doInit()
     
     var body: some Scene {
         return WindowGroup {
