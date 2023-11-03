@@ -1,7 +1,7 @@
 package io.krugosvet.dailydish.android.ui.addMeal
 
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertTrue
 import org.junit.Before
 import org.junit.Test
 
