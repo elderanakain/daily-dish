@@ -4,7 +4,7 @@ import co.touchlab.skie.configuration.FlowInterop
 import co.touchlab.skie.configuration.SealedInterop
 import co.touchlab.skie.configuration.SuspendInterop
 import org.gradle.api.internal.artifacts.repositories.resolver.MavenUniqueSnapshotComponentIdentifier
-import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode.DISABLE
+import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
@@ -19,7 +19,7 @@ plugins {
     `maven-publish`
 }
 
-val isOnMaster: Boolean = (rootProject.extra.get("isOnMaster") as String).toBooleanStrict()
+val isDebugBuild: Boolean = !(rootProject.extra.get("isOnMaster") as String).toBooleanStrict()
 val framework = "DDCore"
 
 version = libs.versions.common.get()
@@ -32,12 +32,13 @@ kotlin {
 
     jvm()
 
-    listOf(iosArm64(), iosX64(), iosSimulatorArm64())
+    listOf(iosSimulatorArm64(), macosArm64())
+        .plus(if (!isDebugBuild) listOf(iosArm64(), iosX64(), macosX64()) else emptyList())
         .forEach {
             it.binaries {
                 framework(framework) {
-                    isStatic = true
-                    embedBitcodeMode = DISABLE
+                    isStatic = !isDebugBuild
+                    embedBitcodeMode = BitcodeEmbeddingMode.DISABLE
                     binaryOption("bundleShortVersionString", version.toString())
                     linkerOpts("-lsqlite3")
                 }
@@ -47,21 +48,33 @@ kotlin {
     applyDefaultHierarchyTemplate()
 
     sourceSets {
-        commonMain { dependencies { implementation(libs.bundles.common) } }
-        commonTest { dependencies { implementation(kotlin("test")) } }
-        val mobileMain by creating { dependsOn(commonMain.get()) }
+        commonMain {
+            dependencies { implementation(libs.bundles.common) }
+        }
 
-        jvmMain { dependencies { implementation(libs.bundles.jvm) } }
+        commonTest {
+            dependencies { implementation(kotlin("test")) }
+        }
 
-        iosMain {
-            dependsOn(mobileMain)
-            dependencies { implementation(libs.bundles.native) }
+        val mobileMain by creating {
+            dependsOn(commonMain.get())
+        }
+
+        jvmMain {
+            dependencies { implementation(libs.bundles.jvm) }
         }
 
         androidMain {
             dependsOn(mobileMain)
             dependencies { implementation(libs.bundles.android) }
         }
+
+        appleMain {
+            dependsOn(mobileMain)
+            dependencies { implementation(libs.bundles.native) }
+        }
+        iosMain { dependsOn(appleMain.get()) }
+        macosMain { dependsOn(appleMain.get()) }
     }
 
     explicitApiWarning()
@@ -129,16 +142,11 @@ publishing {
 
 kmmbridge {
     frameworkName = framework
-    buildType = if (isOnMaster) NativeBuildType.RELEASE else NativeBuildType.DEBUG
+    buildType = if (!isDebugBuild) NativeBuildType.RELEASE else NativeBuildType.DEBUG
 
     mavenPublishArtifacts(repository = publishRepository)
     spm(useCustomPackageFile = true)
     manualVersions()
-
-    rootProject.extensions.extraProperties["spmBuildTargets"] = when {
-        isOnMaster -> "ios_simulator_arm64,ios_arm64,ios_x64"
-        else -> "ios_simulator_arm64"
-    }
 
     val version = version.toString()
 

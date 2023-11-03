@@ -47,8 +47,9 @@ internal actual class MealRepositoryImpl(
         mealService.get(mealId)
 
     override suspend fun fetch() {
-        val entities = mealService.getAll()
-            .map { entityFactory.from(it) }
+        val response = mealService.getAll()
+
+        val entities = response.map(entityFactory::from)
 
         mealDao.replaceAll(entities)
     }

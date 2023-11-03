@@ -1,5 +1,5 @@
 [versions]
-agp = "8.1.2"
+agp = "8.2.0-rc02"
 kotlin = "1.9.20"
 sqldelight = "2.0.0"
 coroutines = "1.7.3"
@@ -10,10 +10,10 @@ datetime = "0.4.1"
 hikari = "5.0.1"
 slf4j = "2.0.9"
 kotliner = "4.0.0"
-androidNavigation = "2.7.4"
+androidNavigation = "2.7.5"
 androidXCore = "1.12.0"
 appCompat = "1.6.1"
-androidFragment = "1.6.1"
+androidFragment = "1.6.2"
 androidPrefs = "1.2.1"
 androidActivity = "1.8.0"
 androidConstraintLayout = "2.1.4"
@@ -23,20 +23,24 @@ androidRecyclerView = "1.3.2"
 androidLifecycle = "2.6.2"
 androidWork = "2.8.1"
 androidTimber = "5.0.1"
+androidTestCore = "1.5.0"
 hamster = "1.3"
 junit = "4.13.2"
-androidJunit = "1.1.3"
-androidTest = "1.4.0"
-espresso = "3.4.0"
+androidJunit = "1.1.5"
+androidTest = "1.5.2"
+androidTruth = "1.5.0"
+espresso = "3.5.1"
 postgresql = "42.6.0"
 logback = "1.4.11"
 leakCanary = "2.12"
 kover = "0.7.4"
 hilt = "2.48.1"
-hilt-work = "1.0.0"
+hilt-work = "1.1.0"
 androidStartup = "1.1.1"
 kmmBridge = "0.5.0"
 skie = "0.5.2"
+kermit = "2.0.2"
+hamcrest = "2.2"
 
 [libraries]
 sqldelight = { module = "app.cash.sqldelight:runtime", version.ref = "sqldelight" }
@@ -100,6 +104,7 @@ android-work = { module = "androidx.work:work-runtime-ktx", version.ref = "andro
 android-timber = { module = "com.jakewharton.timber:timber", version.ref = "androidTimber" }
 android-hamster = { module = "org.hamcrest:hamcrest-all", version.ref = "hamster" }
 android-startup = { module = "androidx.startup:startup-runtime", version.ref = "androidStartup" }
+hamcrest = { module = "org.hamcrest:hamcrest", version.ref = "hamcrest" }
 
 hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
@@ -110,9 +115,9 @@ junit = { module = "junit:junit", version.ref = "junit" }
 leakCanary = { module = "com.squareup.leakcanary:leakcanary-android-instrumentation", version.ref = "leakCanary" }
 
 android-junit = { module = "androidx.test.ext:junit", version.ref = "androidJunit" }
-android-test-core = { module = "androidx.test:core", version.ref = "androidTest" }
+android-test-core = { module = "androidx.test:core", version.ref = "androidTestCore" }
 android-test-runner = { module = "androidx.test:runner", version.ref = "androidTest" }
-android-truth = { module = "androidx.test.ext:truth", version.ref = "androidTest" }
+android-truth = { module = "androidx.test.ext:truth", version.ref = "androidTruth" }
 
 espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
 espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "espresso" }
@@ -123,20 +128,22 @@ espresso-idling = { module = "androidx.test.espresso.idling:idling-concurrent", 
 espresso-resource = { module = "androidx.test.espresso:espresso-idling-resource", version.ref = "espresso" }
 postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test-junit5", version.ref = "kotlin" }
+
+kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
+kermit-koin = { module = "co.touchlab:kermit-koin", version.ref = "kermit" }
 
 [bundles]
+common = [
+    "sqldelight", "sqldelight-coroutines", "ktor", "serialization", "koin-core", "datetime",
+    "ktor-json", "ktor-logging", "coroutines-core", "ktor-serialization", "ktor-negotiation",
+    "ktor-jsonx", "kermit", "kermit-koin"
+]
+
 jvm = ["slf4j", "hikari", "ktor-cio", "koin-ktor", "sqldelight-jvm"]
 
 android = ["slf4j", "sqldelight-android", "koin-android", "coroutines-android", "android-startup"]
 
 native = ["ktor-native", "sqldelight-native"]
-
-common = [
-    "sqldelight", "sqldelight-coroutines", "ktor", "serialization", "koin-core", "datetime",
-    "ktor-json", "ktor-logging", "coroutines-core", "ktor-serialization", "ktor-negotiation",
-    "ktor-jsonx"
-]
 
 androidApp = [
     "androidx-core", "android-appCompat", "android-prefs", "android-activity", "android-material",
@@ -148,12 +155,12 @@ androidApp = [
 
 androidAppKapt = ["hilt-compiler"]
 
-androidUnitTest = ["junit", "kotlin-test"]
+androidUnitTest = ["android-junit", "junit"]
 
 androidInstrumentedTest = [
     "android-junit", "android-test-core", "android-test-runner", "android-truth", "espresso-core",
     "espresso-contrib", "espresso-intents", "espresso-accessibility", "espresso-web",
-    "espresso-idling", "espresso-resource", "leakCanary", "hilt-test"
+    "espresso-idling", "espresso-resource", "leakCanary", "hilt-test", "hamcrest"
 ]
 
 backEnd = [
@@ -167,7 +174,6 @@ backEnd-test = ["ktor-server-test", "koin-test"]
 [plugins]
 android-library = { id = "com.android.library", version.ref = "agp" }
 android-app = { id = "com.android.application", version.ref = "agp" }
-android-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-safeargs = { id = "androidx.navigation.safeargs", version.ref = "androidNavigation" }
 kotlin = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

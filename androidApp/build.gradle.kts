@@ -90,5 +90,6 @@ dependencies {
     kaptAndroidTest(libs.bundles.androidAppKapt)
 
     testImplementation(libs.bundles.androidUnitTest)
+
     androidTestImplementation(libs.bundles.androidInstrumentedTest)
 }
