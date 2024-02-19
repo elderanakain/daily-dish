@@ -29,8 +29,12 @@ public final class MealListViewModel: ObservableObject {
     func observeMeals() async {
         logger.debug("Observing meals")
         
-        for try await meals in repository.observe() {
-            self.meals = meals
+        do {
+            for try await meals in repository.observe() {
+                self.meals = meals
+            }
+        } catch {
+            logger.error("\(error)")
         }
     }
 }
