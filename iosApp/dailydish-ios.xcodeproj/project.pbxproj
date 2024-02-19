@@ -12,7 +12,6 @@
 		5027145326248155004295B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5027145226248155004295B8 /* Assets.xcassets */; };
 		5027145626248155004295B8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5027145526248155004295B8 /* Preview Assets.xcassets */; };
 		50AB69CF2AF2BC6300934C6F /* DailyDishUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50AB69CE2AF2BC6300934C6F /* DailyDishUITests.swift */; };
-		50AB69D12AF2BC6300934C6F /* DailyDishUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50AB69D02AF2BC6300934C6F /* DailyDishUITestsLaunchTests.swift */; };
 		50C95D372AEEFFDF000E968C /* MealListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C95D362AEEFFDF000E968C /* MealListViewModel.swift */; };
 		50FD61A2262600AE00C91825 /* DailyDishApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FD61A1262600AE00C91825 /* DailyDishApp.swift */; };
 /* End PBXBuildFile section */
@@ -48,7 +47,6 @@
 		5027145726248155004295B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50AB69CC2AF2BC6300934C6F /* DailyDishUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DailyDishUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		50AB69CE2AF2BC6300934C6F /* DailyDishUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyDishUITests.swift; sourceTree = "<group>"; };
-		50AB69D02AF2BC6300934C6F /* DailyDishUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyDishUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		50C95D362AEEFFDF000E968C /* MealListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealListViewModel.swift; sourceTree = "<group>"; };
 		50FD61A1262600AE00C91825 /* DailyDishApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyDishApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -115,7 +113,6 @@
 			isa = PBXGroup;
 			children = (
 				50AB69CE2AF2BC6300934C6F /* DailyDishUITests.swift */,
-				50AB69D02AF2BC6300934C6F /* DailyDishUITestsLaunchTests.swift */,
 			);
 			path = DailyDishUITests;
 			sourceTree = "<group>";
@@ -237,7 +234,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50AB69D12AF2BC6300934C6F /* DailyDishUITestsLaunchTests.swift in Sources */,
 				50AB69CF2AF2BC6300934C6F /* DailyDishUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -516,7 +512,7 @@
 			repositoryURL = "https://github.com/elderanakain/daily-dish";
 			requirement = {
 				kind = exactVersion;
-				version = 1.4.0;
+				version = 1.4.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

@@ -1,0 +1,38 @@
+name: "Create tag"
+description: "Creates a tag based on the provided version"
+
+outputs:
+    version:
+        description: "Retrieved version"
+        value: ${{ steps.get-version.outputs.version }}
+
+runs:
+    using: composite
+    steps:
+        -   name: get version
+            id: get-version
+            shell: bash
+            run: echo "version=$(${{github.workspace}}/gradlew -q -PisOnMaster=${{ github.ref == 'refs/heads/master' }} printVersion)" >> $GITHUB_OUTPUT
+
+        -   name: create a tag
+            uses: actions/github-script@v7
+            with:
+                script: |
+                    try {
+                        await github.rest.git.updateRef({
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                          ref: 'tags/${{ steps.get-version.outputs.version }}',
+                          sha: context.sha,
+                          force: true,
+                        });
+                    } catch (error) {
+                        console.log(error);
+                    
+                        await github.rest.git.createRef({
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                          ref: 'refs/tags/${{ steps.get-version.outputs.version }}',
+                          sha: context.sha,
+                        });
+                    }

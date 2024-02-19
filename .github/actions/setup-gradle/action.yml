@@ -1,0 +1,11 @@
+name: "Setup Gradle"
+
+runs:
+    using: composite
+    steps:
+        -   uses: actions/setup-java@v4
+            with:
+                java-version: 17
+                distribution: 'zulu'
+
+        -   uses: gradle/gradle-build-action@v3
