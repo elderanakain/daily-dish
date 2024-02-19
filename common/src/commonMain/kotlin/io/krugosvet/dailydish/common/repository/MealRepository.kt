@@ -17,6 +17,7 @@ public interface MealRepository {
 
     public suspend fun update(meal: Meal)
 
+    @Throws(Exception::class)
     public suspend fun fetch()
 }
 

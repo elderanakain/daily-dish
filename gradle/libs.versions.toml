@@ -1,6 +1,6 @@
 [versions]
-agp = "8.2.0-rc02"
-kotlin = "1.9.20"
+agp = "8.2.2"
+kotlin = "1.9.22"
 sqldelight = "2.0.0"
 coroutines = "1.7.3"
 koin = "3.5.0"

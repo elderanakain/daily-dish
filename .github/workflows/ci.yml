@@ -90,7 +90,6 @@ jobs:
                         -sdk iphonesimulator \
                         -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0.1' \
                         -configuration Debug
-                        -parallel-testing-enabled NO
 
             -   name: macOS tests
                 working-directory: ./iosApp
@@ -100,7 +99,6 @@ jobs:
                         -scheme dailydish-ios \
                         -sdk macosx \
                         -configuration Debug
-                        -parallel-testing-enabled NO
 
     release:
         runs-on: self-hosted

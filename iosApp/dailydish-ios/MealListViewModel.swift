@@ -15,26 +15,22 @@ public final class MealListViewModel: ObservableObject {
     
     init(repository: MealRepository) {
         self.repository = repository
-        
-        Task {
-            do {
-                try await repository.fetch()
-            } catch {
-                logger.error("\(error)")
-            }
-        }
     }
 
     @MainActor
-    func observeMeals() async {
-        logger.debug("Observing meals")
+    func observeMeals() async throws {
+        logger.debug("Fetching meals")
         
         do {
-            for try await meals in repository.observe() {
-                self.meals = meals
-            }
+            try await repository.fetch()
         } catch {
             logger.error("\(error)")
+        }
+        
+        logger.debug("Observing meals")
+        
+        for try await meals in repository.observe() {
+            self.meals = meals
         }
     }
 }

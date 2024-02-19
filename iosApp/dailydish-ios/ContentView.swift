@@ -1,15 +1,22 @@
 import SwiftUI
 import DDCore
 import Foundation
+import os
 
 struct ContentView: View {
+    
+    private let logger = Logger.init()
     
     @ObservedObject var viewModel = MealListViewModel(repository: DailyDishApp.env.mealRepository)
 
     var body: some View {
         MealList(meals: viewModel.meals)
             .task {
-                await viewModel.observeMeals()
+                do {
+                    try await viewModel.observeMeals()
+                } catch {
+                    logger.error("\(error)")
+                }
             }
     }
 }
