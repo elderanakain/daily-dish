@@ -15,10 +15,18 @@ import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.testing.testApplication
 import kotlin.test.assertEquals
+import org.junit.After
 import org.junit.Test
+import org.koin.core.context.stopKoin
 import org.koin.ktor.ext.getKoin
+import org.koin.test.KoinTest
 
-class ApplicationTest {
+class ApplicationTest : KoinTest {
+
+    @After
+    fun tearDown() {
+        stopKoin()
+    }
 
     @Test
     fun `test response on server error`() = testApplication {
