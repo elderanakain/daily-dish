@@ -29,11 +29,9 @@ class DailyDishApplication :
         reminderService.schedule()
     }
 
-    override fun getWorkManagerConfiguration() =
-        Configuration.Builder()
-            .setWorkerFactory(
-                EntryPoints.get(this, WorkerEntryPoint::class.java).workerFactory(),
-            )
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setWorkerFactory(EntryPoints.get(this, WorkerEntryPoint::class.java).workerFactory())
             .build()
 
     @EntryPoint
