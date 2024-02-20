@@ -12,7 +12,6 @@ val isOnMaster: Boolean by extra { providers.gradleProperty("isOnMaster").get().
 dependencyResolutionManagement {
     repositories {
         google()
-        gradlePluginPortal()
         mavenCentral()
 
         maven {
