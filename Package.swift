@@ -2,8 +2,8 @@
 import PackageDescription
 
 // BEGIN KMMBRIDGE VARIABLES BLOCK (do not edit)
-let remoteKotlinUrl = "https://maven.pkg.github.com/elderanakain/daily-dish/io/krugosvet/dailydish/common-kmmbridge/1.4.2-SNAPSHOT/common-kmmbridge-1.4.2-20240227.211155-7.zip"
-let remoteKotlinChecksum = "70b44caedc9ec78e384522d31e6ffe277b51cf3a952e7c7ab13c0c031b2c40c0"
+let remoteKotlinUrl = "https://maven.pkg.github.com/elderanakain/daily-dish/io/krugosvet/dailydish/common-kmmbridge/1.4.2-SNAPSHOT/common-kmmbridge-1.4.2-20240228.210416-8.zip"
+let remoteKotlinChecksum = "de48de665b198208f44738429fb31c8d236894579e7c8104ef55970f632ff69c"
 let packageName = "DDCore"
 // END KMMBRIDGE BLOCK
 
