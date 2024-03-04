@@ -24,6 +24,9 @@ jobs:
 
             -   uses: ./.github/actions/setup-android
 
+            -   uses: ./.github/actions/check-version
+                if: ${{ github.ref != 'refs/heads/master' }}
+
             -   name: tests
                 run: ./gradlew -PisOnMaster=${{ github.ref == 'refs/heads/master' }} :common:check --build-cache
 
