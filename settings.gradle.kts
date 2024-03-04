@@ -26,7 +26,7 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            version("common", "1.4.3".let { if (!isOnMaster) it.plus("-SNAPSHOT") else it })
+            version("common", "1.4.4".let { if (!isOnMaster) it.plus("-SNAPSHOT") else it })
         }
     }
 }
