@@ -1,6 +1,6 @@
 [versions]
 agp = "8.3.0"
-kotlin = "1.9.22"
+kotlin = "1.9.23"
 sqldelight = "2.0.1"
 coroutines = "1.8.0"
 koin = "3.5.3"
@@ -38,7 +38,7 @@ hilt = "2.51"
 hilt-work = "1.2.0"
 androidStartup = "1.1.1"
 kmmBridge = "0.5.2"
-skie = "0.6.1"
+skie = "0.6.2"
 kermit = "2.0.3"
 hamcrest = "2.2"
 
